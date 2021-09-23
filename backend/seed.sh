@@ -7,12 +7,12 @@
 # Variable Definitions
 # Path to directory bash script is living
 HOST="localhost";
-PORT="5433";
+PORT="5432";
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Database Variable Definitions
-DATABASE="community_feedback_db"
+DATABASE="ab_testing_framework_db"
 USER="postgres"
 
 ### Import Our Database ###

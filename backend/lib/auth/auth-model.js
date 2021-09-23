@@ -12,7 +12,7 @@ module.exports = {
         ...(options.user_type != null && { user_type: options.user_type }),
       },
     ];
-    const result = await knex_pg('community_user').insert(data, ['id']);
+    const result = await knex_pg('user_account').insert(data, ['id']);
     return result[0].id;
   },
 };

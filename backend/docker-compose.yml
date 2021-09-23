@@ -1,9 +1,9 @@
 
 version: "3.8"
 networks:
-  community_feedback_network:
+  ab_testing_framework_network:
   default:
-    name: community_feedback_network
+    name: ab_testing_framework_network
 services:
   postgres:
     image: postgres
@@ -13,11 +13,11 @@ services:
     ports: 
       - '5432:5432'
     volumes:
-      - community-feedback-postgres:/var/lib/postgresql/data
+      - ab-testing-framework-postgres:/var/lib/postgresql/data
     networks:
-      - community_feedback_network
+      - ab_testing_framework_network
 
-  community-feedback-backend:
+  ab-testing-framework-backend:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -32,7 +32,7 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - community_feedback_network
+      - ab_testing_framework_network
         
 volumes:
-  community-feedback-postgres:
+  ab-testing-framework-postgres:
