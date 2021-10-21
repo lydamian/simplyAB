@@ -12,7 +12,7 @@ import axios from 'axios';
 const getAuthToken = async (username, password, twoFactorAuthToken) => {
   console.log('[authService] getAuthToken:');
   try {
-    const response = await axios.post('/api/admin/token', {
+    const response = await axios.post('some_url', {
       username,
       password,
       twofactor: twoFactorAuthToken,
