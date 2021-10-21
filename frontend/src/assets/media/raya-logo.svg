@@ -1,0 +1,5 @@
+<svg width="1000" height="577" viewBox="0 0 1000 577" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse id="cyan-ellipse" cx="691.5" cy="288.5" rx="308.5" ry="288.5" fill="#EA108A"/>
+<ellipse id="pink-ellipse" cx="308.5" cy="288.5" rx="308.5" ry="288.5" fill="#18AEBF"/>
+<path id="middle-ellipse" fill-rule="evenodd" clip-rule="evenodd" d="M500 514.702C571.28 461.857 617 380.172 617 288.5C617 196.828 571.28 115.143 500 62.2979C428.72 115.143 383 196.828 383 288.5C383 380.172 428.72 461.857 500 514.702Z" fill="#332877"/>
+</svg>

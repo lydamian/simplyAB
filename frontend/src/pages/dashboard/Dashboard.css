@@ -1,0 +1,39 @@
+#dashboard {
+  display: grid;
+  gap: 12px;
+  /* padding: 10px; */
+  grid-template-columns: 12% 1fr;
+  grid-template-rows: minmax(0, 10vh) minmax(88vh, auto);
+  grid-template-areas: 
+    "raya-navbar-area raya-header-bar-area"
+    "raya-navbar-area raya-dashboard-body-area"                     
+}
+
+#dashboard .raya-logo {
+  height: 8vh;
+  width: auto;
+  margin: 0 auto;
+  padding-left: 12%;
+  grid-area: raya-logo-area;
+}
+#dashboard .raya-navbar {
+  grid-area: raya-navbar-area;
+  margin-bottom: 0;
+  border-radius: 20px;
+  margin-top: 5px;
+  height: 99vh;
+}
+#dashboard .raya-navbar .link {
+  /* background-color: rgba(0,0,0,0); */
+  /* color: white; */
+  margin-top: 6px;
+  justify-content: left;
+  text-overflow: ellipsis;
+}
+#dashboard .raya-header-bar {
+  grid-area: raya-header-bar-area;
+  margin-bottom: 0;
+}
+#dashboard .raya-dashboard-body {
+  grid-area: raya-dashboard-body-area;
+}

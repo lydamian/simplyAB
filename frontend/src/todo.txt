@@ -1,0 +1,2 @@
+I like the idea of a progress ui, showing which step of the applicant process they are in or status e.g. waitlisted, banned pending, vip
+can probably put this in the detailedapplicantpage on the top so its easy to see the status of that user.

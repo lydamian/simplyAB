@@ -1,0 +1,34 @@
+.applicants {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, auto);
+  grid-template-rows: auto;
+  grid-template-areas: 
+    "applicants-tab-bar applicants-tab-bar"
+    "applicants-table applicant-detailed-info"
+    ;
+  
+  grid-gap: 4px;
+}
+
+.applicants .applicants-tab-bar {
+  grid-area: applicants-tab-bar;
+}
+
+.applicants .applicants-data-list {
+  grid-area: applicants-table;
+  height: 100%;
+}
+
+.applicants .applicant-detailed-info {
+  grid-area: applicant-detailed-info;
+  height: 100%;
+}
+
+.applicants .applicants-data-list .filters-section .filters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.applicants .applicants-data-list tbody tr {
+  cursor: pointer !important;
+}

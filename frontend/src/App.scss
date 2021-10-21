@@ -1,0 +1,99 @@
+@charset "utf-8";
+
+:root {
+  --raya-teal-color: #15ACBE;
+  --raya-pink-color: #E21489;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+abbr {
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.raya-pink-background {
+  background: #E21489
+}
+
+.raya-teal-background {
+  background: #15ACBE
+}
+
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+.font-roboto-san-serif {
+  font-family: 'Roboto', sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Yeseva+One&display=swap');
+.font-yeseva-one-cursive {
+  font-family: 'Yeseva One', cursive;
+}
+
+@import "./assets/styles/raisincss/raisin.css";
+
+// Customization
+
+// You can easily customize Bulma with your own variables.
+// Just uncomment the following block to see the result.
+
+/*
+// 1. Import the initial variables
+@import "../node_modules/bulma/sass/utilities/initial-variables";
+// 2. Set your own initial variables
+// Update the blue shade, used for links
+$blue: #06bcef;
+// Add pink and its invert
+$pink: #ff8080;
+$pink-invert: #fff;
+// Update the sans-serif font family
+$family-sans-serif: "Helvetica", "Arial", sans-serif;
+// 3. Set the derived variablescs
+// Use the new pink as the primary color
+$primary: $pink;
+$primary-invert: $pink-invert;
+// 4. Import the rest of Bulma
+*/
+
+@import "../node_modules/bulma/bulma";

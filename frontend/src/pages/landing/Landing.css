@@ -1,0 +1,72 @@
+#landing {
+  width: 100vw;
+  height: 100vh;
+}
+
+#landing-background {
+  background-image: url("../../assets/media/landing-background-test.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  width: 100%;
+  height: 100%;
+}
+
+#ellipse {
+  animation-name: test-animation;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+#main-section {
+  height: 10em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80%;
+  width: 100%;
+}
+
+#main-section > .content {
+  background: rgba(72, 77, 109, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 10%;
+  margin: 0;
+}
+
+
+#undraw-designer-girl {
+  position: fixed;
+  transform: translate(-140px, 35vh);
+}
+
+#undraw-designer-girl #right-leg {
+  animation: designer-girl-right-leg-move 4s ease;
+  animation-iteration-count: infinite;
+}
+#undraw-designer-girl #board {
+  animation: designer-girl-board-move 4s ease;
+  animation-iteration-count: infinite;
+}
+
+@keyframes designer-girl-board-move {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotateY(10deg);
+  }
+}
+
+@keyframes designer-girl-right-leg-move {
+  from {
+    /* transform: translate(-140px, 35vh); */
+    transform: rotate(0deg);
+  }
+  to {
+    /* transform: translate(-120px, 35vh); */
+    transform: rotateX(0deg);
+    /* transform: rotateY(-200deg); */
+    transform: rotateZ(-0.5deg);
+  }
+}

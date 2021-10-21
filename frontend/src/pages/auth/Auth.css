@@ -1,0 +1,15 @@
+.login > .container {
+  width: 30vw;
+  height: 40vh;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+}
+
+.login > .avatar > img {
+  height: 300px;
+  width: auto;
+}
+
+.password-visibility {
+  pointer-events: initial !important;
+}

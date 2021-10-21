@@ -8,6 +8,7 @@ module.exports = [
     path: '/api/auth/register',
     handler: auth_handler.register,
     options: {
+      auth: false,
       validate: {
         payload: Joi.object({
           email_address: Joi.string()
@@ -26,6 +27,7 @@ module.exports = [
     path: '/api/auth/login',
     handler: auth_handler.login,
     options: {
+      auth: false,
       validate: {
         payload: Joi.object({
           email_address: Joi.string()

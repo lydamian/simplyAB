@@ -1,0 +1,4 @@
+This Directory/Folder contains the UI broken into 'pages' of the application.
+Each page can have subfolders with components containg UI code it needs. these components should
+be pages specific so therefore since they are not resuable accross the application they dont bnelong in the
+components folder.
