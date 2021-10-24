@@ -29,14 +29,6 @@ CREATE TABLE IF NOT EXISTS user_account
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
 );
 
-DROP TABLE IF EXISTS experiment_entity CASCADE;
-CREATE TABLE IF NOT EXISTS experiment_entity
-(
-  id BIGINT PRIMARY KEY,
-  meta jsonb DEFAULT '{}' NOT NULL,
-  created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
-  last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
-);
 
 DROP TABLE IF EXISTS experiment CASCADE;
 CREATE TABLE IF NOT EXISTS experiment
@@ -46,6 +38,15 @@ CREATE TABLE IF NOT EXISTS experiment
   title varchar(100) NOT NULL UNIQUE,
   description text NOT NULL,
   active boolean DEFAULT true NOT NULL,
+  created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
+  last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
+);
+
+DROP TABLE IF EXISTS experiment_entity CASCADE;
+CREATE TABLE IF NOT EXISTS experiment_entity
+(
+  id BIGINT PRIMARY KEY,
+  meta jsonb DEFAULT '{}' NOT NULL,
   created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
 );
