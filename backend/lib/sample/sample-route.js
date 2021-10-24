@@ -15,4 +15,19 @@ module.exports = [
       },
     },
   },
+  {
+    method: 'GET',
+    path: '/api/sample/ping',
+    handler: async (req, h) => {
+      return h.response({answer: 'pong'});
+    },
+    options: {
+      auth: 'jwt-auth-strategy',
+      validate: {
+        query: Joi.object({
+          name: Joi.string().min(3).max(10).optional(),
+        }),
+      },
+    },
+  },
 ];

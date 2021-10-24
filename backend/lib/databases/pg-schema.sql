@@ -29,12 +29,11 @@ CREATE TABLE IF NOT EXISTS user_account
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
 );
 
-DROP TABLE IF EXISTS experiment_user CASCADE;
-CREATE TABLE IF NOT EXISTS experiment_user
+DROP TABLE IF EXISTS experiment_entity CASCADE;
+CREATE TABLE IF NOT EXISTS experiment_entity
 (
   id BIGINT PRIMARY KEY,
-  first_name varchar(100),
-  last_name varchar(100),
+  meta jsonb DEFAULT '{}' NOT NULL,
   created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
 );
@@ -75,10 +74,10 @@ DROP TABLE IF EXISTS variant_assignment CASCADE;
 CREATE TABLE IF NOT EXISTS variant_assignment
 (
   variant_id INT REFERENCES variant(id) ON DELETE CASCADE NOT NULL,
-  experiment_user_id BIGINT REFERENCES experiment_user(id) ON DELETE CASCADE NOT NULL,
+  experiment_entity_id BIGINT REFERENCES experiment_entity(id) ON DELETE CASCADE NOT NULL,
   created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
-  CONSTRAINT no_duplicate_variant_assignment UNIQUE (variant_id, experiment_user_id)
+  CONSTRAINT no_duplicate_variant_assignment UNIQUE (variant_id, experiment_entity_id)
 );
 
 -- Changes the owner of the table to postgres which is the default when installing postgres

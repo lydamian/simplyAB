@@ -7,4 +7,6 @@ module.exports = {
   PG_DB_DATABASE: (process.env.DB_DATABASE ?? 'ab_testing_framework_db'),
   PG_DB_URL: (process.env.DB_URL ?? 'postgresql://postgres:postgres@postgres:5432/ab_testing_framework_db'),
   JWT_SHARED_SECRET: (process.env.JWT_SHARED_SECRET ?? 'some_shared_secret'),
+  HOST: process.env.HOST,
+  PORT: process.env.PORT,
 };

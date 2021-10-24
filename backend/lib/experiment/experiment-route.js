@@ -1,12 +1,12 @@
 const Joi = require('joi');
-const auth_handler = require('./auth-handler');
+const experiment_handler = require('./experiment-handler');
 const C = require('../constants');
 
 module.exports = [
   {
     method: 'POST',
-    path: '/api/auth/register',
-    handler: auth_handler.register,
+    path: '/api/experiment/create',
+    handler: experiment_handler.create,
     options: {
       auth: false,
       validate: {
@@ -23,13 +23,29 @@ module.exports = [
     },
   },
   {
-    method: 'GET',
-    path: '/api/auth/login',
-    handler: auth_handler.login,
+    method: 'PUT',
+    path: '/api/experiment/update',
+    handler: experiment_handler.update,
     options: {
       auth: false,
       validate: {
-        query: Joi.object({
+        payload: Joi.object({
+          email_address: Joi.string()
+            .regex(new RegExp(C.EMAIL_VALIDATION_REGEX))
+            .required(),
+          password: Joi.string().min(3).required().required(),
+        }),
+      },
+    },
+  },
+  {
+    method: 'DELETE',
+    path: '/api/experiment/delete',
+    handler: experiment_handler.delete,
+    options: {
+      auth: false,
+      validate: {
+        payload: Joi.object({
           email_address: Joi.string()
             .regex(new RegExp(C.EMAIL_VALIDATION_REGEX))
             .required(),
@@ -40,8 +56,8 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/auth/is_authenticated',
-    handler: auth_handler.is_authenticated,
+    path: '/api/experiment/get',
+    handler: experiment_handler.get,
     options: {
       auth: 'jwt-auth-strategy',
     },

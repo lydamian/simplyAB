@@ -1,18 +1,30 @@
 /* eslint-disable */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import faker from 'faker';
 import { Link } from 'react-router-dom';
+import { getExperiments, fetchExperiments } from 'features/experiments/experimentsSlice';
 
 const DefaultDashboardBody = () => {
-  const [display_create_experiment_modal, set_display_create_experiment_modal] = useState(false);
+  const dispatch = useDispatch()
+  const experiments = useSelector(getExperiments)
+  const experimentsStatus = useSelector(state => state.experiments.status)
+  const [displayCreateExperimentModal, setDisplayCreateExperimentModal] = useState(false);
+
+  useEffect(() => {
+    console.log(experimentsStatus);
+    if (experimentsStatus === 'idle') {
+      dispatch(fetchExperiments())
+    }
+  }, [])
 
   return (
     <div>
       <h6>Experiments</h6>
       <button
         className="button is-info rs-m-1"
-        onClick={() => {set_display_create_experiment_modal(true)}}>
+        onClick={() => {setDisplayCreateExperimentModal(true)}}>
         {'...Create Experiment'}
       </button>
       <table className="table rs-shadow-1 rs-border-radius-sm rs-border is-hoverable is-fullwidth">
@@ -27,24 +39,7 @@ const DefaultDashboardBody = () => {
           </tr>
         </thead>
         <tbody>
-        {[
-          {
-            id: faker.datatype.uuid(),
-            title: `${faker.random.word()} Experiment `,
-            description: faker.commerce.productDescription(),
-            active: faker.datatype.boolean() ? 'true': 'false',
-            created_at: faker.datatype.datetime().toISOString(),
-            last_updated_at: faker.datatype.datetime().toISOString(),
-          },
-          {
-            id: faker.datatype.uuid(),
-            title: `${faker.random.word()} Experiment `,
-            description: faker.commerce.productDescription(),
-            active: faker.datatype.boolean() ? 'true': 'false',
-            created_at: faker.datatype.datetime().toISOString(),
-            last_updated_at: faker.datatype.datetime().toISOString(),
-          },
-        ].map((experiment) => (
+        {experiments.map((experiment) => (
           <tr>
             <td><Link to="/dashboard/variants">{experiment.title}</Link></td>
             <td>{experiment.description}</td>
@@ -61,19 +56,19 @@ const DefaultDashboardBody = () => {
 
       {/* Modals */}
       <CreateExperimentModal
-        display_create_experiment_modal={display_create_experiment_modal}
-        set_display_create_experiment_modal={set_display_create_experiment_modal}
+        displayCreateExperimentModal={displayCreateExperimentModal}
+        setDisplayCreateExperimentModal={setDisplayCreateExperimentModal}
       />
     </div>
   );
 };
 
 const CreateExperimentModal = ({
-  display_create_experiment_modal,
-  set_display_create_experiment_modal
+  displayCreateExperimentModal,
+  setDisplayCreateExperimentModal
 }) => {
   return (
-    <div className={`modal ${display_create_experiment_modal ? 'is-active': ''}`}>
+    <div className={`modal ${displayCreateExperimentModal ? 'is-active': ''}`}>
       <div className="modal-background"></div>
       <div className="modal-card">
         <header className="modal-card-head">
@@ -82,7 +77,7 @@ const CreateExperimentModal = ({
             className="modal-close is-large"
             aria-label="close"
             onClick={() => {
-              set_display_create_experiment_modal(false);
+              setDisplayCreateExperimentModal(false);
             }}
           >
           </button>        </header>
@@ -95,7 +90,7 @@ const CreateExperimentModal = ({
           <button
             className="button"
             onClick={() => {
-              set_display_create_experiment_modal(false);
+              setDisplayCreateExperimentModal(false);
             }}
           >
             Cancel

@@ -1,9 +1,9 @@
-const auth_interactor = require('./auth-interactor');
+const experiment_interactor = require('./experiment-interactor');
 
 module.exports = {
-  register: async (req, h) => {
+  create: async (req, h) => {
     try {
-      const user_id = await auth_interactor.register(req.payload);
+      const user_id = await experiment_interactor.create(req.payload);
       return h.response({
         error: null,
         status_code: 'USER_REGISTERED_OK',
@@ -11,21 +11,20 @@ module.exports = {
         user_id,
       }).code(201);
     } catch (error) {
-      console.error(`[register] ${error} ${error.stack}`);
       return h.response({
         error: error.message,
         status_code: 'USER_REGISTERED_ERROR',
         description: 'error registering user',
-      }).code(400);
+      }).code(201);
     }
   },
-  login: async (req, h) => {
+  update: async (req, h) => {
     try {
       const {
         email_address,
         password,
-      } = req.query;
-      const auth_token = await auth_interactor.login(email_address, password);
+      } = req.payload;
+      const auth_token = await experiment_interactor.login(email_address, password);
       return h.response({
         error: null,
         status_code: 'USER_LOGIN_OK',
@@ -40,7 +39,28 @@ module.exports = {
       }).code(201);
     }
   },
-  is_authenticated: async (req, h) => {
+  delete: async (req, h) => {
+    try {
+      const {
+        email_address,
+        password,
+      } = req.payload;
+      const auth_token = await experiment_interactor.login(email_address, password);
+      return h.response({
+        error: null,
+        status_code: 'USER_LOGIN_OK',
+        description: 'user successfully logged in',
+        auth_token,
+      }).code(201);
+    } catch (error) {
+      return h.response({
+        error: error.message,
+        status_code: 'USER_LOGIN_ERROR',
+        description: 'error logging in user',
+      }).code(201);
+    }
+  },
+  get: async (req, h) => {
     try {
       const {
         email_address,

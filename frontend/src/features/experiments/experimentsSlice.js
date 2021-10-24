@@ -3,18 +3,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import experimentsService from 'services/experiments';
 
-export const getExperiments = createAsyncThunk('applicants/getExperiments', async () => {
-  const response = await applicantsService.getApplicants();
+export const fetchExperiments = createAsyncThunk('applicants/fetchExperiments', async () => {
+  const response = await experimentsService.getExperiments();
   return response;
 });
 
 const initialState = {
   status: 'idle',
-  applicantsData: [],
+  experiments: [],
 };
 
 export const experimentsSlice = createSlice({
-  name: 'applicants',
+  name: 'experiments',
   initialState,
   reducers: {
     updateApplicantsData(state, action) {
@@ -26,18 +26,18 @@ export const experimentsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getExperiments.pending, (state) => {
+      .addCase(fetchExperiments.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(getExperiments.fulfilled, (state, action) => {
-        const { applicants } = action.payload;
-        state.applicantsData = applicants
+      .addCase(fetchExperiments.fulfilled, (state, action) => {
+        const { experiments } = action.payload;
+        state.experiments = experiments
         state.status = 'idle';
       });
   },
 });
 
-export const getExperiments = (state) => state.experiments
+export const getExperiments = (state) => state.experiments.experiments
 
 // Action creators are generated for each case reducer function
 export const { updateExperiments } = experimentsSlice.actions;

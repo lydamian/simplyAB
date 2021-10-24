@@ -8,8 +8,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 const init = async () => {
   const server = Hapi.server({
-    port: 5000,
-    host: '0.0.0.0',
+    port: C.PORT ?? 5000,
+    host: C.HOST ?? '0.0.0.0',
     // SET THIS TO * for development purposes ONLY!!!! should not set this in production
     debug: {
       request: '*',
@@ -55,6 +55,7 @@ const init = async () => {
 
   server.route(require('./lib/sample/sample-route'));
   server.route(require('./lib/auth/auth-route'));
+  server.route(require('./lib/experiment/experiment-route'));
 
   await server.start();
   console.log('Server running on %s', server.info.uri);

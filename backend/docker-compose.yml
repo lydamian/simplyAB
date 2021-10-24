@@ -6,6 +6,7 @@ networks:
     name: ab_testing_framework_network
 services:
   postgres:
+    restart: always
     image: postgres
     environment:
       POSTGRES_USER: postgres
