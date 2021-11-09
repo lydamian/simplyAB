@@ -1,35 +1,27 @@
-const experiment_interactor = require('./experiment-interactor');
+const variant_interactor = require('./variant-interactor');
 
 module.exports = {
-  create: async (req, h) => {
+  create_many: async (req, h) => {
     try {
       const {
-        created_by,
-        title,
-        description,
-        active,
-        created_at,
-        last_updated_at,
+        variants
       } = req.payload;
-      const experiment_id = await experiment_interactor.create(
-        created_by,
-        title,
-        description,
-        active,
-        created_at,
-        last_updated_at,
+
+      const variant_ids = await variant_interactor.create_many(
+        variants
       );
+
       return h.response({
         error: null,
-        status_code: 'EXPERIMENT_CREATED_SUCCESS',
-        description: 'experiment successfully created',
-        experiment_id,
+        status_code: 'VARIANTS_CREATED_SUCCESS',
+        description: 'variants successfully created',
+        variant_ids,
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'EXPERIMENT_CREATED_ERROR',
-        description: 'experiment unsuccessfully created',
+        status_code: 'VARIANTS_CREATED_ERROR',
+        description: 'variants unsuccessfully created',
       }).code(201);
     }
   },

@@ -1,27 +1,17 @@
 const { knex_pg } = require('../databases/connections');
-
+const _ = require('lodash');
 module.exports = {
-  create: async (
-    created_by,
-    title,
-    description,
-    active,
-    created_at,
-    last_updated_at,
-  ) => {
-    const data = {
-      created_by,
-      title,
-      description,
-      active,
-      last_updated_at,
-      // optional params, conditionally add
-      ...(created_at != null && { created_at }),
-      ...(last_updated_at != null && { last_updated_at }),
-    };
-    const result = await knex_pg('experiment')
-      .insert(data, ['id']);
-    return result[0].id;
+  create_many: async (variants) => {
+    const result = await knex_pg('variant')
+      .insert(variants, ['id']);
+    return result;
+  },
+
+  delete_all: async (experiment_id) => {
+    const num_deleted = await knex_pg('variant')
+      .where('experiment_id', experiment_id)
+      .del();
+    return num_deleted;
   },
 
   delete: async (id) => {

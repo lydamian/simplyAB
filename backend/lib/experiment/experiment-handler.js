@@ -4,7 +4,7 @@ module.exports = {
   create: async (req, h) => {
     try {
       const {
-        created_by,
+        user_id,
         title,
         description,
         active,
@@ -12,7 +12,7 @@ module.exports = {
         last_updated_at,
       } = req.payload;
       const experiment_id = await experiment_interactor.create(
-        created_by,
+        user_id,
         title,
         description,
         active,
@@ -76,9 +76,10 @@ module.exports = {
   get: async (req, h) => {
     try {
       const {
-        email_address,
+        user_id,
       } = req.auth.credentials;
       console.log(req.auth.credentials);
+      const experiments = experiment_interactor.get(user_id);
       return h.response({
         error: null,
         status_code: 'USER_AUTHENTICATED_TRUE',

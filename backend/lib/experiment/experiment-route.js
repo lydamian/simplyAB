@@ -8,10 +8,10 @@ module.exports = [
     path: '/api/experiment/create',
     handler: experiment_handler.create,
     options: {
-      auth: false,
+      auth: 'jwt-auth-strategy',
       validate: {
         payload: Joi.object({
-          created_by: Joi.number()
+          user_id: Joi.number()
             .max(Number.MAX_SAFE_INTEGER)
             .required(),
           title: Joi.string()
@@ -38,9 +38,10 @@ module.exports = [
   {
     method: 'PUT',
     path: '/api/experiment/update',
+    auth: 'jwt-auth-strategy',
     handler: experiment_handler.update,
     options: {
-      auth: false,
+      auth: 'jwt-auth-strategy',
       validate: {
         payload: Joi.object({
           email_address: Joi.string()
@@ -68,7 +69,7 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/experiment/get',
+    path: '/api/experiment/get/{user_id}',
     handler: experiment_handler.get,
     options: {
       auth: 'jwt-auth-strategy',
@@ -77,9 +78,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/api/experiment/ping',
-    handler: (req, h) => {
-      return h.response('pong');
-    },
+    handler: (req, h) => h.response('pong'),
     options: {
       auth: false,
     },

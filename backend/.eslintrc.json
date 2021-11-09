@@ -8,5 +8,8 @@
   "plugins": ["import"],
   "parserOptions": {
       "ecmaVersion": 6
+  },
+  "rules": {
+    "camelcase": 0
   } 
 }

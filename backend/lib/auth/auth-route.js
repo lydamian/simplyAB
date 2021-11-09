@@ -24,8 +24,8 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/auth/login',
-    handler: auth_handler.login,
+    path: '/api/auth/token',
+    handler: auth_handler.get_token,
     options: {
       auth: false,
       validate: {
@@ -33,7 +33,7 @@ module.exports = [
           email_address: Joi.string()
             .regex(new RegExp(C.EMAIL_VALIDATION_REGEX))
             .required(),
-          password: Joi.string().min(3).required().required(),
+          password: Joi.string().min(3).required(),
         }),
       },
     },

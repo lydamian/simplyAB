@@ -19,24 +19,29 @@ module.exports = {
       }).code(400);
     }
   },
-  login: async (req, h) => {
+  get_token: async (req, h) => {
     try {
       const {
         email_address,
         password,
       } = req.query;
-      const auth_token = await auth_interactor.login(email_address, password);
+
+      const auth_token = await auth_interactor.get_auth_token(
+        email_address,
+        password,
+      );
+
       return h.response({
         error: null,
-        status_code: 'USER_LOGIN_OK',
-        description: 'user successfully logged in',
+        status_code: 'GET_AUTH_TOKEN_SUCCESS',
+        description: 'user successfully received auth token in',
         auth_token,
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'USER_LOGIN_ERROR',
-        description: 'error logging in user',
+        status_code: 'GET_AUTH_TOKEN_ERROR',
+        description: 'user unsuccesfully received auth token',
       }).code(201);
     }
   },

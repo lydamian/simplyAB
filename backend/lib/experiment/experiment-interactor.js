@@ -6,7 +6,7 @@ const LOG_TAG = 'auth-interactor';
 
 module.exports = {
   create: async (
-    created_by,
+    user_id,
     title,
     description,
     active,
@@ -15,7 +15,7 @@ module.exports = {
   ) => {
 
     const experiment_id = await experiment_model.create(
-      created_by,
+      user_id,
       title,
       description,
       active,

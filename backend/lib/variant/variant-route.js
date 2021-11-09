@@ -1,44 +1,43 @@
 const Joi = require('joi');
-const experiment_handler = require('./experiment-handler');
+const variant_handler = require('./variant-handler');
 const C = require('../constants');
 
 module.exports = [
   {
     method: 'POST',
-    path: '/api/experiment/create',
-    handler: experiment_handler.create,
+    path: '/api/variant/create_many',
+    handler: variant_handler.create_many,
     options: {
       auth: false,
       validate: {
         payload: Joi.object({
-          created_by: Joi.number()
-            .max(Number.MAX_SAFE_INTEGER)
-            .required(),
-          title: Joi.string()
-            .min(1)
-            .max(100)
-            .required(),
-          description: Joi.string()
-            .required(),
-          active: Joi.boolean()
-            .optional()
-            .default(true),
-          created_at: Joi.date()
-            .optional()
-            .iso()
-            .default(new Date()),
-          last_updated_at: Joi.date()
-            .optional()
-            .iso()
-            .default(new Date()),
+          variants: Joi.array()
+            .items(Joi.object({
+              percent: Joi.number()
+                .max(Number.MAX_SAFE_INTEGER)
+                .required(),
+              title: Joi.string()
+                .min(1)
+                .max(100)
+                .required(),
+              experiment_id: Joi.number()
+                .max(Number.MAX_SAFE_INTEGER)
+                .required(),
+              created_at: Joi.date()
+                .optional()
+                .iso(),
+              last_updated_at: Joi.date()
+                .optional()
+                .iso(),
+            })),
         }),
       },
     },
   },
   {
     method: 'PUT',
-    path: '/api/experiment/update',
-    handler: experiment_handler.update,
+    path: '/api/variant/update',
+    handler: variant_handler.update,
     options: {
       auth: false,
       validate: {
@@ -53,8 +52,8 @@ module.exports = [
   },
   {
     method: 'DELETE',
-    path: '/api/experiment/delete',
-    handler: experiment_handler.delete,
+    path: '/api/variant/delete',
+    handler: variant_handler.delete,
     options: {
       auth: false,
       validate: {
@@ -68,18 +67,16 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/experiment/get',
-    handler: experiment_handler.get,
+    path: '/api/variant/get',
+    handler: variant_handler.get,
     options: {
       auth: 'jwt-auth-strategy',
     },
   },
   {
     method: 'GET',
-    path: '/api/experiment/ping',
-    handler: (req, h) => {
-      return h.response('pong');
-    },
+    path: '/api/variant/ping',
+    handler: (req, h) => h.response('pong'),
     options: {
       auth: false,
     },

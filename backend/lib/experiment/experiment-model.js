@@ -2,7 +2,7 @@ const { knex_pg } = require('../databases/connections');
 
 module.exports = {
   create: async (
-    created_by,
+    user_id,
     title,
     description,
     active,
@@ -10,7 +10,7 @@ module.exports = {
     last_updated_at,
   ) => {
     const data = {
-      created_by,
+      user_id,
       title,
       description,
       active,
