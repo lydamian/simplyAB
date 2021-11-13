@@ -30,22 +30,24 @@ module.exports = {
   update: async (req, h) => {
     try {
       const {
+        user_id,
+      } = req.auth.credentials;
+      const {
         project_id,
         title,
         description,
       } = req.payload;
-      const auth_token = await project_interactor.update(project_id, title, description);
+      await project_interactor.update(user_id, project_id, title, description);
       return h.response({
         error: null,
-        status_code: 'USER_LOGIN_OK',
-        description: 'user successfully logged in',
-        auth_token,
+        status_code: 'PROJECT_UPDATED_SUCCESSFULLY',
+        description: 'successfully updated project',
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'USER_LOGIN_ERROR',
-        description: 'error logging in user',
+        status_code: 'PROJECT_UPDATED_ERROR',
+        description: 'error updating project',
       }).code(201);
     }
   },
@@ -73,18 +75,18 @@ module.exports = {
       const {
         user_id,
       } = req.auth.credentials;
-      const projects = project_interactor.get(user_id);
+      const projects = await project_interactor.get(user_id);
       return h.response({
         error: null,
-        status_code: 'USER_AUTHENTICATED_TRUE',
-        description: 'valid authentication token',
+        status_code: 'PROJECT_GET_SUCCESS',
+        description: `successfully got all projects for user: ${user_id}`,
         projects,
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'USER_AUTHENTICATED_FALSE',
-        description: 'invalid authentication token',
+        status_code: 'PROJECT_GET_ERROR',
+        description: 'project unsuccessfully gett\'d',
       }).code(201);
     }
   },

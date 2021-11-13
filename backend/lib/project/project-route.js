@@ -59,10 +59,17 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/project/get/{user_id}',
+    path: '/api/project/get',
     handler: project_handler.get,
     options: {
       auth: 'jwt-auth-strategy',
+      validate: {
+        query: Joi.object({
+          user_id: Joi.number()
+            .max(Number.MAX_SAFE_INTEGER)
+            .required(),
+        }),
+      },
     },
   },
   {

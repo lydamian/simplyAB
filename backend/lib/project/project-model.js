@@ -22,14 +22,15 @@ module.exports = {
     return result[0].id;
   },
 
-  update: async (project_id, title, description) => {
+  update: async (user_id, project_id, title, description) => {
     const updated_rows = await knex_pg('project')
       .where('id', project_id)
+      .andWhere('user_id', user_id)
       .update({
         title,
         description,
       })
-    const success = updated_rows.length > 0;
+    const success = updated_rows > 0;
     return success;
   },
 
@@ -41,10 +42,9 @@ module.exports = {
   },
 
   get: async (user_id) => {
-    const rows = await knex_pg
-      .select('id')
-      .from('project')
+    const rows = await knex_pg('project')
+      .select('*')
       .where('user_id', user_id);
-  return true === (rows?.[0] && true);
+    return rows;
   }
 };

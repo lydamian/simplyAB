@@ -17,8 +17,18 @@ module.exports = {
     );
     return project_id;
   },
-  update: async (project_id, title, description) => {
-    const result = project_model.update(project_id, title, description);
+  update: async (user_id, project_id, title, description) => {
+    const success = await project_model.update(user_id, project_id, title, description);
+    if (success === false) {
+      console.error(
+        `Error updating project for user: ${user_id}`,
+        `project_id: ${project_id},`,
+        `title: ${title},`,
+        `description: ${description}`
+      );
+      throw new Error(`unsuccessfully updated project ${project_id} for user: ${user_id}`);
+    }
+    return success;
   },
   delete: async (id) => {
     const num_deleted = await project_model.delete(id);
