@@ -1,9 +1,23 @@
 const auth_interactor = require('./auth-interactor');
+const LOG_TAG = '[auth-handler]';
 
 module.exports = {
   register: async (req, h) => {
     try {
-      const user_id = await auth_interactor.register(req.payload);
+      const {
+        email_address,
+        username,
+        password,
+        first_name,
+        last_name,
+      } = req.payload;
+      const user_id = await auth_interactor.register(
+        email_address,
+        username,
+        password,
+        first_name,
+        last_name
+      );
       return h.response({
         error: null,
         status_code: 'USER_REGISTERED_OK',
@@ -11,7 +25,7 @@ module.exports = {
         user_id,
       }).code(201);
     } catch (error) {
-      console.error(`[register] ${error} ${error.stack}`);
+      console.error(`${LOG_TAG} ${error} ${error.stack}`);
       return h.response({
         error: error.message,
         status_code: 'USER_REGISTERED_ERROR',
@@ -38,6 +52,7 @@ module.exports = {
         auth_token,
       }).code(201);
     } catch (error) {
+      console.log(LOG_TAG, error.message, error.stack);
       return h.response({
         error: error.message,
         status_code: 'GET_AUTH_TOKEN_ERROR',

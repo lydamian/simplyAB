@@ -38,7 +38,6 @@ module.exports = [
   {
     method: 'PUT',
     path: '/api/experiment/update',
-    auth: 'jwt-auth-strategy',
     handler: experiment_handler.update,
     options: {
       auth: 'jwt-auth-strategy',

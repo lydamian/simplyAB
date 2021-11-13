@@ -5,8 +5,25 @@ const C = require('../constants');
 const LOG_TAG = 'auth-interactor';
 
 module.exports = {
-  register: async (payload) => {
-    auth_model.create_user(payload)
+  register: async (
+    email_address,
+    username,
+    password,
+    first_name,
+    last_name
+  ) => {
+    // check if user already exists
+    const is_existing_user = await auth_model.is_existing_user(email_address);
+    if (is_existing_user) {
+      throw new Error(`email already taken ${email_address}`);
+    }
+    auth_model.create_user(
+      email_address,
+      username,
+      password,
+      first_name,
+      last_name
+    )
   },
 
   get_auth_token: async (email_address, password) => {
@@ -26,10 +43,9 @@ module.exports = {
     return auth_model.get_auth_user(email_address, password);
   },
 
-  create_token: async (id, email_address, password) => {
-    console.log(LOG_TAG, id, email_address, password);
+  create_token: async (user_id, email_address, password) => {
     const auth_token = jwt.sign({
-      id,
+      user_id,
       email_address,
       password,
     }, C.JWT_SHARED_SECRET);

@@ -40,7 +40,7 @@ const init = async () => {
         isValid: true,
         credentials: {
           email_address: artifacts.decoded.payload.email_address,
-          email_address: artifacts.decoded.payload.user_id,
+          user_id: artifacts.decoded.payload.user_id,
           password: artifacts.decoded.payload.password,
         },
       };
@@ -56,6 +56,7 @@ const init = async () => {
 
   server.route(require('./lib/sample/sample-route'));
   server.route(require('./lib/auth/auth-route'));
+  server.route(require('./lib/project/project-route'));
   server.route(require('./lib/experiment/experiment-route'));
   server.route(require('./lib/variant/variant-route'));
 
