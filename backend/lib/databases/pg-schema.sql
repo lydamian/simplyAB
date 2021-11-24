@@ -40,7 +40,6 @@ CREATE TABLE IF NOT EXISTS project
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
 );
 
-
 DROP TABLE IF EXISTS experiment CASCADE;
 CREATE TABLE IF NOT EXISTS experiment
 (

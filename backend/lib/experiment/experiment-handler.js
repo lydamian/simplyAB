@@ -4,20 +4,18 @@ module.exports = {
   create: async (req, h) => {
     try {
       const {
-        user_id,
+        project_id,
         title,
         description,
         active,
         created_at,
-        last_updated_at,
       } = req.payload;
       const experiment_id = await experiment_interactor.create(
-        user_id,
+        project_id,
         title,
         description,
         active,
         created_at,
-        last_updated_at,
       );
       return h.response({
         error: null,
@@ -36,21 +34,28 @@ module.exports = {
   update: async (req, h) => {
     try {
       const {
-        email_address,
-        password,
+        experiment_id,
+        title,
+        description,
+        active,
       } = req.payload;
-      const auth_token = await experiment_interactor.login(email_address, password);
+      const success = await experiment_interactor.update(
+        experiment_id,
+        title,
+        description,
+        active,
+      );
       return h.response({
         error: null,
-        status_code: 'USER_LOGIN_OK',
-        description: 'user successfully logged in',
-        auth_token,
+        status_code: 'EXPERIMENT_UPDATED_SUCCESS',
+        description: 'experiment successfully updated',
+        success,
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'USER_LOGIN_ERROR',
-        description: 'error logging in user',
+        status_code: 'EXPERIMENT_UPDATED_ERROR',
+        description: 'experiment unsuccesfully updated',
       }).code(201);
     }
   },
@@ -78,21 +83,21 @@ module.exports = {
       const {
         user_id,
       } = req.auth.credentials;
-      console.log(req.auth.credentials);
-      const experiments = experiment_interactor.get(user_id);
+      const {
+        project_id
+      } = req.params;
+      const experiments = await experiment_interactor.get(project_id);
       return h.response({
         error: null,
-        status_code: 'USER_AUTHENTICATED_TRUE',
-        description: 'valid authentication token',
-        user: {
-          email_address,
-        },
+        status_code: 'EXPERIMENTS_FETCH_SUCCESS',
+        description: `successfully fetched experiments for ${project_id}`,
+        experiments
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'USER_AUTHENTICATED_FALSE',
-        description: 'invalid authentication token',
+        status_code: 'EXPERIMENTS_FETCH_ERROR',
+        description: `unsuccessfully fetched experiments for ${project_id}`,
       }).code(201);
     }
   },

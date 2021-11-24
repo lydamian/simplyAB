@@ -78,15 +78,15 @@ module.exports = {
       const projects = await project_interactor.get(user_id);
       return h.response({
         error: null,
-        status_code: 'PROJECT_GET_SUCCESS',
-        description: `successfully got all projects for user: ${user_id}`,
+        status_code: 'PROJECT_FETCHED_SUCCESS',
+        description: `successfully fetched all projects for user: ${user_id}`,
         projects,
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'PROJECT_GET_ERROR',
-        description: 'project unsuccessfully gett\'d',
+        status_code: 'PROJECT_FETCHED_ERROR',
+        description: `unsuccessfully fetched all projects for user: ${user_id}`,
       }).code(201);
     }
   },

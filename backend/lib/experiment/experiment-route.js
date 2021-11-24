@@ -11,7 +11,7 @@ module.exports = [
       auth: 'jwt-auth-strategy',
       validate: {
         payload: Joi.object({
-          user_id: Joi.number()
+          project_id: Joi.number()
             .max(Number.MAX_SAFE_INTEGER)
             .required(),
           title: Joi.string()
@@ -27,10 +27,6 @@ module.exports = [
             .optional()
             .iso()
             .default(new Date()),
-          last_updated_at: Joi.date()
-            .optional()
-            .iso()
-            .default(new Date()),
         }),
       },
     },
@@ -43,10 +39,17 @@ module.exports = [
       auth: 'jwt-auth-strategy',
       validate: {
         payload: Joi.object({
-          email_address: Joi.string()
-            .regex(new RegExp(C.EMAIL_VALIDATION_REGEX))
+          experiment_id: Joi.number()
+            .max(Number.MAX_SAFE_INTEGER)
             .required(),
-          password: Joi.string().min(3).required().required(),
+          title: Joi.string()
+            .min(1)
+            .max(100)
+            .optional(),
+          description: Joi.string()
+            .optional(),
+          active: Joi.boolean()
+            .optional(),
         }),
       },
     },
@@ -68,10 +71,17 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/experiment/get/{user_id}',
+    path: '/api/experiment/get/{project_id}',
     handler: experiment_handler.get,
     options: {
       auth: 'jwt-auth-strategy',
+      validate: {
+        params: Joi.object({
+          project_id: Joi.number()
+            .max(Number.MAX_SAFE_INTEGER)
+            .required(),
+        }),
+      },
     },
   },
   {
