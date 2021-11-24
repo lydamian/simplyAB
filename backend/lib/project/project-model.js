@@ -1,4 +1,3 @@
-const { default: knex } = require('knex');
 const { knex_pg } = require('../databases/connections');
 
 module.exports = {

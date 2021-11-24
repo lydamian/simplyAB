@@ -1,36 +1,39 @@
 const variant_model = require('./variant-model');
 const C = require('../constants');
 const LOG_TAG = '[variant-interactor]';
+const MAX_VARIANT_SUM = 100;
 
 module.exports = {
-  create_many: async (variants) => {
+  /**
+   * Upserts many variants for an experiment.
+   *
+   * @param {Number} experiment_id
+   * @param {Object} variants
+   * 
+   * @returns {Promise.<Array.<Object>>} 
+   */
+   upsert: async (experiment_id, variants) => {
     const variant_percentage_sum = variants.reduce((sum, variant) => {
       return sum + variant.percent 
     }, 0);
       
-    if (variant_percentage_sum != 100) {
-      console.log(`${LOG_TAG} variant percentage ${variant_percentage_sum} is not 100`);
-      throw new Error('variant percentages do not add up to 100');
+    if (variant_percentage_sum > MAX_VARIANT_SUM) {
+      console.error(`${LOG_TAG} variant percentage ${variant_percentage_sum} is greater than ${MAX_VARIANT_SUM}`);
+      throw new Error('variant percentages greater than MAX_VARIANT_SUM');
     }
 
-    const all_experiment_ids_same = variants.every(variant => {
-      return variant.experiment_id === variants[0].experiment_id;
-    });
+    variant_model.delete_all(experiment_id);
+    return variant_model.upsert(experiment_id, variants);
+  },
 
-    if (all_experiment_ids_same === false) {
-      throw new Error('all experiment ids are not the same');
-    }
-  
-    variant_model.delete_all(variants[0].experiment_id);
-  
-    return variant_model.create_many(variants);
-  },
-  update: async (email_address, password) => {
-  },
-  delete: async (id) => {
-    const num_deleted = await experiment_model.delete(id);
-    return num_deleted > 0;
-  },
-  get: async (email_address, password) => {
+  /**
+   * gets all variants given an experiment_id.
+   * 
+   * @param {Number} experiment_id
+   * 
+   * @returns {Promise.<Array.<Object>>} 
+   */
+  get: async (experiment_id) => {
+    return variant_model.get(experiment_id);
   },
 };

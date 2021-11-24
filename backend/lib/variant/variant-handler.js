@@ -1,13 +1,15 @@
 const variant_interactor = require('./variant-interactor');
 
 module.exports = {
-  create_many: async (req, h) => {
+  upsert: async (req, h) => {
     try {
       const {
+        experiment_id,
         variants
       } = req.payload;
 
-      const variant_ids = await variant_interactor.create_many(
+      const variant_ids = await variant_interactor.upsert(
+        experiment_id,
         variants
       );
 
@@ -25,65 +27,27 @@ module.exports = {
       }).code(201);
     }
   },
-  update: async (req, h) => {
-    try {
-      const {
-        email_address,
-        password,
-      } = req.payload;
-      const auth_token = await experiment_interactor.login(email_address, password);
-      return h.response({
-        error: null,
-        status_code: 'USER_LOGIN_OK',
-        description: 'user successfully logged in',
-        auth_token,
-      }).code(201);
-    } catch (error) {
-      return h.response({
-        error: error.message,
-        status_code: 'USER_LOGIN_ERROR',
-        description: 'error logging in user',
-      }).code(201);
-    }
-  },
-  delete: async (req, h) => {
-    try {
-      const {
-        id,
-      } = req.payload;
-      const result = experiment_interactor.delete(id);
-      return h.response({
-        error: null,
-        status_code: 'EXPERIMENT_DELETED_SUCCESS',
-        description: 'experiment successfully deleted',
-      }).code(201);
-    } catch (error) {
-      return h.response({
-        error: error.message,
-        status_code: 'EXPERIMENT_DELETED_ERROR',
-        description: 'experiment unsucessfully deleted',
-      }).code(201);
-    }
-  },
+
   get: async (req, h) => {
     try {
       const {
-        email_address,
+        user_id,
       } = req.auth.credentials;
-      console.log(req.auth.credentials);
+      const {
+        experiment_id
+      } = req.params;
+      const variants = await variant_interactor.get(experiment_id);
       return h.response({
         error: null,
-        status_code: 'USER_AUTHENTICATED_TRUE',
-        description: 'valid authentication token',
-        user: {
-          email_address,
-        },
+        status_code: 'VARIANTS_FETCH_SUCCESS',
+        description: `successfuly fetched all variants for experiment: ${experiment_id}`,
+        variants
       }).code(201);
     } catch (error) {
       return h.response({
         error: error.message,
-        status_code: 'USER_AUTHENTICATED_FALSE',
-        description: 'invalid authentication token',
+        status_code: 'VARIANTS_FETCH_ERROR',
+        description: 'unsuccessfuly fetched all variants for experiment: ${experiment_id}',
       }).code(201);
     }
   },
