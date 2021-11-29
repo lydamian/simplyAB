@@ -1,20 +1,39 @@
 const { knex_pg } = require('../databases/connections');
+const DUPLICATE_CONSTRAINT_VIOLATED_ERROR = 23505;
 
 module.exports = {
+  /**
+   * Creates an experiment.
+   *
+   * @param {Number} project_id 
+   * @param {String} key 
+   * @param {String} title 
+   * @param {String} description 
+   * @param {Number} traffic_allocation_percentage 
+   * @param {Boolean} active 
+   * @param {Date} created_at
+   *
+   * @returns {Promise.<Object>}]
+   * @throws {Error} if unique constraint violated on
+   * (project_id, key) OR
+   * (project_id, title)
+   */
   create: async (
     project_id,
+    key,
     title,
     description,
+    traffic_allocation_percentage,
     active,
-    created_at,
-    last_updated_at
+    created_at
   ) => {
     const data = {
       project_id,
+      key,
       title,
       description,
+      traffic_allocation_percentage,
       active,
-      last_updated_at,
       // optional params, conditionally add
       ...(created_at != null && { created_at }),
     };
@@ -32,15 +51,19 @@ module.exports = {
 
   update: async (
     experiment_id,
+    key,
     title,
     description,
+    traffic_allocation_percentage,
     active
   ) => {
     const updated_rows = await knex_pg('experiment')
     .where('id', experiment_id)
     .update({
       title,
+      key,
       description,
+      traffic_allocation_percentage,
       active
     })
     const success = updated_rows > 0;
@@ -50,15 +73,19 @@ module.exports = {
   /**
    * Get all active experiments given a project_id.
    * 
+   * @param {Number} user_id
    * @param {Number} project_id
    *
    * @returns {Promise.<Array.<Object>>}
    */
-  get: async (project_id) => {
-    const rows = await knex_pg('experiment')
+  get: async (user_id, project_id) => {
+    const rows = await knex_pg
       .select('*')
+      .from('experiment')
+      .innerJoin('project', 'experiment.project_id', 'project.id')
       .where('project_id', project_id)
-      .andWhere('active', true);
+      .andWhere('active', true)
+      .andWhere('user_id', user_id);
     return rows;
   }
 };

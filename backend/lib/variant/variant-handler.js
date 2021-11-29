@@ -36,7 +36,7 @@ module.exports = {
       const {
         experiment_id
       } = req.params;
-      const variants = await variant_interactor.get(experiment_id);
+      const variants = await variant_interactor.get(user_id, experiment_id);
       return h.response({
         error: null,
         status_code: 'VARIANTS_FETCH_SUCCESS',

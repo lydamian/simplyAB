@@ -16,11 +16,16 @@ module.exports = [
             .required(),
           variants: Joi.array()
             .items(Joi.object({
-              percent: Joi.number()
-                .max(Number.MAX_SAFE_INTEGER)
+              key: Joi.string()
+                .min(1)
+                .max(100)
                 .required(),
               title: Joi.string()
                 .min(1)
+                .max(100)
+                .required(),
+              traffic_allocation_percentage: Joi.number()
+                .min(0)
                 .max(100)
                 .required(),
               created_at: Joi.date()

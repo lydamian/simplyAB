@@ -41,8 +41,9 @@ module.exports = {
   },
 
   get: async (user_id) => {
-    const rows = await knex_pg('project')
+    const rows = await knex_pg
       .select('*')
+      .from('project')
       .where('user_id', user_id);
     return rows;
   }

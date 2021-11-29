@@ -18,6 +18,9 @@ module.exports = [
           password: Joi.string().min(3).required().required(),
           first_name: Joi.string().min(1).max(100).required(),
           last_name: Joi.string().min(1).max(100).optional(),
+          user_type: Joi.string()
+            .valid(...Object.values(C.user_account_types))
+            .optional(),
         }),
       },
     },

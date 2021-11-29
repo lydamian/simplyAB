@@ -23,14 +23,9 @@ module.exports = {
     try {
       const new_variants = await knex_pg.transaction(async trx => {
         // validate that no other variants exist for this experiment
-        const other_variants_exist = await knex_pg
-          .select('id')
-          .from('variant')
-          .where('experiment_id', experiment_id);
-
-        if (other_variants_exist.length > 0) {
-          throw new Error(`variants already exist for ${experiment_id}, cannot create new variants: ${JSON.stringify(variants)}`)
-        }
+        await trx('variant')
+          .where('experiment_id', experiment_id)
+          .del();
         const new_variants = await trx('variant')
           .insert(data_to_insert, '*');
         return new_variants;
@@ -59,14 +54,19 @@ module.exports = {
   /**
    * Get all variants given a experiment_id.
    * 
+   * @param {Number} user_id
    * @param {Number} experiment_id
    *
    * @returns {Promise.<Array.<Object>>}
    */
-   get: async (experiment_id) => {
-    const rows = await knex_pg('variant')
+   get: async (user_id, experiment_id) => {
+    const rows = await knex_pg
       .select('*')
+      .from('variant')
+      .innerJoin('experiment', 'variant.experiment_id', 'experiment.id')
+      .innerJoin('project', 'experiment.project_id', 'project.id')
       .where('experiment_id', experiment_id)
+      .andWhere('project.user_id', user_id);
     return rows;
   },
 }

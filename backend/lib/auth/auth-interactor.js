@@ -10,7 +10,8 @@ module.exports = {
     username,
     password,
     first_name,
-    last_name
+    last_name,
+    user_type
   ) => {
     // check if user already exists
     const is_existing_user = await auth_model.is_existing_user(email_address);
@@ -22,7 +23,8 @@ module.exports = {
       username,
       password,
       first_name,
-      last_name
+      last_name,
+      user_type
     )
   },
 

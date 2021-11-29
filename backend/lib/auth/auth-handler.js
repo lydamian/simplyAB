@@ -10,13 +10,15 @@ module.exports = {
         password,
         first_name,
         last_name,
+        user_type
       } = req.payload;
       const user_id = await auth_interactor.register(
         email_address,
         username,
         password,
         first_name,
-        last_name
+        last_name,
+        user_type
       );
       return h.response({
         error: null,

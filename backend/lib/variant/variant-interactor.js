@@ -14,7 +14,7 @@ module.exports = {
    */
    upsert: async (experiment_id, variants) => {
     const variant_percentage_sum = variants.reduce((sum, variant) => {
-      return sum + variant.percent 
+      return sum + variant.traffic_allocation_percentage; 
     }, 0);
       
     if (variant_percentage_sum > MAX_VARIANT_SUM) {
@@ -29,11 +29,12 @@ module.exports = {
   /**
    * gets all variants given an experiment_id.
    * 
+   * @param {Number} user_id
    * @param {Number} experiment_id
    * 
    * @returns {Promise.<Array.<Object>>} 
    */
-  get: async (experiment_id) => {
-    return variant_model.get(experiment_id);
+  get: async (user_id, experiment_id) => {
+    return variant_model.get(user_id, experiment_id);
   },
 };

@@ -14,11 +14,19 @@ module.exports = [
           project_id: Joi.number()
             .max(Number.MAX_SAFE_INTEGER)
             .required(),
+          key: Joi.string()
+            .min(1)
+            .max(100)
+            .required(),
           title: Joi.string()
             .min(1)
             .max(100)
             .required(),
           description: Joi.string()
+            .required(),
+          traffic_allocation_percentage: Joi.number()
+            .min(0)
+            .max(100)
             .required(),
           active: Joi.boolean()
             .optional()
@@ -42,12 +50,20 @@ module.exports = [
           experiment_id: Joi.number()
             .max(Number.MAX_SAFE_INTEGER)
             .required(),
+          key: Joi.string()
+            .min(1)
+            .max(100)
+            .required(),
           title: Joi.string()
             .min(1)
             .max(100)
             .optional(),
           description: Joi.string()
             .optional(),
+          traffic_allocation_percentage: Joi.number()
+            .min(0)
+            .max(100)
+            .required(),
           active: Joi.boolean()
             .optional(),
         }),
