@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
 const project_model = require('./project-model');
+const project_helper = require('./project-helper');
 const C = require('../constants');
 
 const LOG_TAG = 'auth-interactor';
@@ -18,6 +18,7 @@ module.exports = {
     return project_id;
   },
   update: async (user_id, project_id, title, description) => {
+    await project_helper.validate_project_ownership(user_id, project_id);
     const success = await project_model.update(user_id, project_id, title, description);
     if (success === false) {
       console.error(
@@ -30,8 +31,9 @@ module.exports = {
     }
     return success;
   },
-  delete: async (id) => {
-    const num_deleted = await project_model.delete(id);
+  delete: async (user_id, project_id) => {
+    await project_helper.validate_project_ownership(user_id, project_id);
+    const num_deleted = await project_model.delete(project_id);
     return num_deleted > 0;
   },
   get: async (user_id) => {

@@ -47,7 +47,7 @@ module.exports = [
     path: '/api/project/delete',
     handler: project_handler.delete,
     options: {
-      auth: false,
+      auth: 'jwt-auth-strategy',
       validate: {
         payload: Joi.object({
           project_id: Joi.number()

@@ -33,9 +33,9 @@ module.exports = {
     return success;
   },
 
-  delete: async (id) => {
+  delete: async (project_id) => {
     const num_deleted = await knex_pg('project')
-      .where('id', id)
+      .where('id', project_id)
       .del();
     return num_deleted;
   },
@@ -46,5 +46,19 @@ module.exports = {
       .from('project')
       .where('user_id', user_id);
     return rows;
+  },
+
+  /**
+   * gets project owner.
+   *
+   * @param {Number} project_id 
+   * @returns {Promise.<Number>|null}
+   */
+  get_owner: async (project_id) => {
+    const rows = await knex_pg
+      .select('user_id')
+      .from('project')
+      .where('id', project_id);
+    return rows?.[0].user_id ?? null;
   }
 };

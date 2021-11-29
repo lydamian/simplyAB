@@ -44,6 +44,7 @@ module.exports = {
         description: 'successfully updated project',
       }).code(201);
     } catch (error) {
+      console.error(error, error.stack);
       return h.response({
         error: error.message,
         status_code: 'PROJECT_UPDATED_ERROR',
@@ -54,15 +55,22 @@ module.exports = {
   delete: async (req, h) => {
     try {
       const {
+        user_id,
+      } = req.auth.credentials;
+      const {
         project_id,
       } = req.payload;
-      const result = project_interactor.delete(project_id);
+      const success = await project_interactor.delete(user_id, project_id);
+      if (success === false) {
+        throw new Error(`Error deleting project: ${project_id} for user: ${user_id}`);
+      }
       return h.response({
         error: null,
         status_code: 'project_DELETED_SUCCESS',
         description: 'project successfully deleted',
       }).code(201);
     } catch (error) {
+      console.error(error, error.stack);
       return h.response({
         error: error.message,
         status_code: 'project_DELETED_ERROR',
@@ -83,6 +91,7 @@ module.exports = {
         projects,
       }).code(201);
     } catch (error) {
+      console.error(error, error.stack);
       return h.response({
         error: error.message,
         status_code: 'PROJECT_FETCHED_ERROR',
