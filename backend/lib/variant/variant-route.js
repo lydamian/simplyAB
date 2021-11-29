@@ -8,7 +8,7 @@ module.exports = [
     path: '/api/variant/upsert',
     handler: variant_handler.upsert,
     options: {
-      auth: false,
+      auth: 'jwt-auth-strategy',
       validate: {
         payload: Joi.object({
           experiment_id: Joi.number()

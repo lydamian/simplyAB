@@ -61,7 +61,7 @@ module.exports = {
    */
    get: async (user_id, experiment_id) => {
     const rows = await knex_pg
-      .select('*')
+      .select('variant.*')
       .from('variant')
       .innerJoin('experiment', 'variant.experiment_id', 'experiment.id')
       .innerJoin('project', 'experiment.project_id', 'project.id')

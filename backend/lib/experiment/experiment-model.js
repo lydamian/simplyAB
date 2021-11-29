@@ -42,9 +42,9 @@ module.exports = {
     return result[0].id;
   },
 
-  delete: async (id) => {
+  delete: async (experiment_id) => {
     const num_deleted = await knex_pg('experiment')
-      .where('id', id)
+      .where('id', experiment_id)
       .del();
     return num_deleted;
   },
@@ -80,12 +80,27 @@ module.exports = {
    */
   get: async (user_id, project_id) => {
     const rows = await knex_pg
-      .select('*')
+      .select('experiment.*')
       .from('experiment')
       .innerJoin('project', 'experiment.project_id', 'project.id')
       .where('project_id', project_id)
       .andWhere('active', true)
       .andWhere('user_id', user_id);
     return rows;
+  },
+  
+  /**
+   * gets experiment owner.
+   *
+   * @param {Number} project_id 
+   * @returns {Promise.<Number>|null}
+   */
+    get_owner: async (experiment_id) => {
+    const rows = await knex_pg
+      .select('user_id')
+      .from('experiment')
+      .innerJoin('project', 'experiment.project_id', 'project.id')
+      .where('experiment.id', experiment_id);
+    return rows?.[0]?.user_id ?? null;
   }
 };

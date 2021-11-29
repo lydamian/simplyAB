@@ -59,6 +59,6 @@ module.exports = {
       .select('user_id')
       .from('project')
       .where('id', project_id);
-    return rows?.[0].user_id ?? null;
+    return rows?.[0]?.user_id ?? null;
   }
 };

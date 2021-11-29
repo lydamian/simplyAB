@@ -1,4 +1,5 @@
 const variant_model = require('./variant-model');
+const experiment_helper = require('../experiment/experiment-helper');
 const C = require('../constants');
 const LOG_TAG = '[variant-interactor]';
 const MAX_VARIANT_SUM = 100;
@@ -7,12 +8,14 @@ module.exports = {
   /**
    * Upserts many variants for an experiment.
    *
+   * @param {Number} user_id
    * @param {Number} experiment_id
    * @param {Object} variants
    * 
    * @returns {Promise.<Array.<Object>>} 
    */
-   upsert: async (experiment_id, variants) => {
+   upsert: async (user_id, experiment_id, variants) => {
+    await experiment_helper.validate_experiment_ownership(user_id, experiment_id);
     const variant_percentage_sum = variants.reduce((sum, variant) => {
       return sum + variant.traffic_allocation_percentage; 
     }, 0);
@@ -35,6 +38,7 @@ module.exports = {
    * @returns {Promise.<Array.<Object>>} 
    */
   get: async (user_id, experiment_id) => {
+    await experiment_helper.validate_experiment_ownership(user_id, experiment_id);
     return variant_model.get(user_id, experiment_id);
   },
 };

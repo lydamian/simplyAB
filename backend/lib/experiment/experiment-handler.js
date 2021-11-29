@@ -55,6 +55,7 @@ module.exports = {
         active,
       } = req.payload;
       const success = await experiment_interactor.update(
+        user_id,
         experiment_id,
         key,
         title,
@@ -69,6 +70,7 @@ module.exports = {
         success,
       }).code(201);
     } catch (error) {
+      console.error(error, error.stack);
       return h.response({
         error: error.message,
         status_code: 'EXPERIMENT_UPDATED_ERROR',
@@ -79,15 +81,22 @@ module.exports = {
   delete: async (req, h) => {
     try {
       const {
-        id,
+        user_id,
+      } = req.auth.credentials;
+      const {
+        experiment_id,
       } = req.payload;
-      const result = experiment_interactor.delete(id);
+      const success = await experiment_interactor.delete(user_id, experiment_id);
+      if (success === false) {
+        throw new Error(`Failed to delete experiment for user: ${user_id} and experiment: ${experiment_id}`);
+      }
       return h.response({
         error: null,
         status_code: 'EXPERIMENT_DELETED_SUCCESS',
         description: 'experiment successfully deleted',
       }).code(201);
     } catch (error) {
+      console.error(error, error.stack);
       return h.response({
         error: error.message,
         status_code: 'EXPERIMENT_DELETED_ERROR',
@@ -96,13 +105,13 @@ module.exports = {
     }
   },
   get: async (req, h) => {
+    const {
+      user_id,
+    } = req.auth.credentials;
+    const {
+      project_id,
+    } = req.params;
     try {
-      const {
-        user_id,
-      } = req.auth.credentials;
-      const {
-        project_id
-      } = req.params;
       const experiments = await experiment_interactor.get(user_id, project_id);
       return h.response({
         error: null,
@@ -111,6 +120,7 @@ module.exports = {
         experiments
       }).code(201);
     } catch (error) {
+      console.error(error, error.stack);
       return h.response({
         error: error.message,
         status_code: 'EXPERIMENTS_FETCH_ERROR',

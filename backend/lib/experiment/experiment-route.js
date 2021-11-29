@@ -75,10 +75,10 @@ module.exports = [
     path: '/api/experiment/delete',
     handler: experiment_handler.delete,
     options: {
-      auth: false,
+      auth: 'jwt-auth-strategy',
       validate: {
         payload: Joi.object({
-          id: Joi.number()
+          experiment_id: Joi.number()
             .max(Number.MAX_SAFE_INTEGER)
             .required(),
         }),

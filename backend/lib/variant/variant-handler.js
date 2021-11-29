@@ -4,11 +4,15 @@ module.exports = {
   upsert: async (req, h) => {
     try {
       const {
+        user_id,
+      } = req.auth.credentials;
+      const {
         experiment_id,
         variants
       } = req.payload;
 
       const variant_ids = await variant_interactor.upsert(
+        user_id,
         experiment_id,
         variants
       );
@@ -29,13 +33,13 @@ module.exports = {
   },
 
   get: async (req, h) => {
+    const {
+      user_id,
+    } = req.auth.credentials;
+    const {
+      experiment_id
+    } = req.params;
     try {
-      const {
-        user_id,
-      } = req.auth.credentials;
-      const {
-        experiment_id
-      } = req.params;
       const variants = await variant_interactor.get(user_id, experiment_id);
       return h.response({
         error: null,
@@ -47,7 +51,7 @@ module.exports = {
       return h.response({
         error: error.message,
         status_code: 'VARIANTS_FETCH_ERROR',
-        description: 'unsuccessfuly fetched all variants for experiment: ${experiment_id}',
+        description: `unsuccessfuly fetched all variants for experiment: ${experiment_id}`,
       }).code(201);
     }
   },
