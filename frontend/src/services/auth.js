@@ -1,6 +1,7 @@
 import axios from 'axios';
 import constants from 'Constants';
 import logger from 'utils/logger';
+import helpers from 'utils/helpers';
 
 const LOG_TAG = '[services/auth.js]';
 /**
@@ -32,9 +33,12 @@ const getAuthToken = async (emailAddress, password) => {
     logger.error(
       LOG_TAG,
       `${constants.SIMPLY_AB_HOSTNAME}/api/auth/token`,
+      error.response.data,
+      error.response.status,
       error.message,
       error.stack
     );
+    return error.response;
   }
 };
 
@@ -77,13 +81,51 @@ const registerUser = async (
     logger.error(
       LOG_TAG,
       `${constants.SIMPLY_AB_HOSTNAME}/api/auth/register`,
+      error.response.data,
+      error.response.status,
       error.message,
       error.stack
-    )
+    );
+    return error.response;
   }
 }
 
-export default {
-  getAuthToken,
+/**
+ * Gets user info.
+ * 
+ * @returns {Promise.<Object>}
+ */
+const getUser = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/user`,
+      headers: {
+        Authorization: helpers.getAuthToken()
+      },
+    });
+    logger.info(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/auth/user`,
+      response.status,
+      JSON.stringify(response.data),
+    );
+    return response;
+  } catch (error) {
+    logger.error(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/auth/user`,
+      error.response.data,
+      error.response.status,
+      error.message,
+      error.stack
+    );
+    return error.response;
+  }
+}
+const defaultExport = {
   registerUser,
-};
+  getAuthToken,
+  getUser,
+}
+export default defaultExport;

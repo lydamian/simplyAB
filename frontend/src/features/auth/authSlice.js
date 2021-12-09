@@ -16,9 +16,10 @@ const LOG_TAG = '[authSlice]';
 const initialState = {
   status: 'idle',
   isAuthenticated: false,
+  user: null,
 };
 
-// Thunk functions
+// Thunk functions (async actions creator factories)
 const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) => {
   try {
     const response = await authService.getAuthToken(emailAddress, password);
@@ -54,12 +55,17 @@ const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) 
       message: 'Succesfully logged in user',
       type: 'SUCCESS',
     }));
-    
+
+    store.dispatch(getUser());
+
     return {
       isAuthenticated: true,
     };
   } catch (error) {
     logger.error(`${LOG_TAG} login ERROR:`, error.message, error.stack);
+    return {
+      isAuthenticated: initialState.isAuthenticated,
+    };
   }
 });
 
@@ -114,6 +120,37 @@ const register = createAsyncThunk('auth/register', async ({
     return;
   } catch (error) {
     logger.error(`${LOG_TAG} register ERROR:`, error.message, error.stack);
+    return;
+  }
+});
+
+const getUser = createAsyncThunk('auth/user', async () => {
+  try {
+    const response = await authService.getUser();
+  
+    const {
+      error,
+      status_code,
+      description,
+      user,
+    } = response.data;
+    
+    logger.info(
+      `${LOG_TAG} register`,
+      `HTTP_STATUS: ${response.status}`,
+      `error: ${error}`,
+      `status_code: ${status_code}`,
+      `description: ${description}`,
+      `user: ${JSON.stringify(user)}`,
+    );
+    return {
+      user,
+    };
+  } catch (error) {
+    logger.error(`${LOG_TAG} getUser ERROR:`, error.message, error.stack);
+    return {
+      user: initialState.user
+    };
   }
 });
 
@@ -129,7 +166,7 @@ const authSlice = createSlice({
     logout: {
       reducer(state) {
         Object.assign(state, initialState);
-        localStorage.removeItem('X-Raya-Token');
+        localStorage.removeItem('simply_ab_auth_token');
       },
     },
   },
@@ -151,6 +188,16 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         state.status = 'idle';
+      })
+      .addCase(getUser.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        const {
+          user
+        } = action.payload;
+        state.user = user;
+        state.status = 'idle';
       });
   },
 });
@@ -158,18 +205,9 @@ const authSlice = createSlice({
 const isAuthenticated = (state) => state.auth.isAuthenticated;
 const getStatus = (state) => state.auth.status;
 
-const getAuthToken = () => {
-  const authToken = localStorage.get('simply_ab_auth_token');
-  if (authToken != null) {
-    return true;
-  }
-  return false;
-};
-
 export {
   isAuthenticated,
   getStatus,
-  getAuthToken,
   login,
   register,
 };

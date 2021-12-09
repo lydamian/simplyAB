@@ -8,7 +8,7 @@ const logger = {
   },
   error: function(...args) {
     if(constants.DEBUG){
-      console.log(...args);
+      console.error(...args);
     }
   }
 }
