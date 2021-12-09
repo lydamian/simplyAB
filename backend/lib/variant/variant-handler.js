@@ -28,7 +28,7 @@ module.exports = {
         error: error.message,
         status_code: 'VARIANTS_CREATED_ERROR',
         description: 'variants unsuccessfully created',
-      }).code(201);
+      }).code(400);
     }
   },
 
@@ -52,7 +52,7 @@ module.exports = {
         error: error.message,
         status_code: 'VARIANTS_FETCH_ERROR',
         description: `unsuccessfuly fetched all variants for experiment: ${experiment_id}`,
-      }).code(201);
+      }).code(400);
     }
   },
 };

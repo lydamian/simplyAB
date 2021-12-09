@@ -14,6 +14,9 @@ const init = async () => {
     debug: {
       request: '*',
     },
+    routes: {
+      cors: true,
+    }
   });
 
   // Declare an authentication strategy using the jwt scheme.

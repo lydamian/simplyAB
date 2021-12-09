@@ -24,7 +24,7 @@ module.exports = {
         error: error.message,
         status_code: 'project_CREATED_ERROR',
         description: 'project unsuccessfully created',
-      }).code(201);
+      }).code(400);
     }
   },
   update: async (req, h) => {
@@ -49,7 +49,7 @@ module.exports = {
         error: error.message,
         status_code: 'PROJECT_UPDATED_ERROR',
         description: 'error updating project',
-      }).code(201);
+      }).code(400);
     }
   },
   delete: async (req, h) => {
@@ -75,7 +75,7 @@ module.exports = {
         error: error.message,
         status_code: 'project_DELETED_ERROR',
         description: 'project unsucessfully deleted',
-      }).code(201);
+      }).code(400);
     }
   },
   get: async (req, h) => {
@@ -96,7 +96,7 @@ module.exports = {
         error: error.message,
         status_code: 'PROJECT_FETCHED_ERROR',
         description: `unsuccessfully fetched all projects for user: ${user_id}`,
-      }).code(201);
+      }).code(400);
     }
   },
 };

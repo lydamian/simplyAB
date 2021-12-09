@@ -20,6 +20,7 @@ module.exports = {
         last_name,
         user_type
       );
+
       return h.response({
         error: null,
         status_code: 'USER_REGISTERED_OK',
@@ -59,9 +60,33 @@ module.exports = {
         error: error.message,
         status_code: 'GET_AUTH_TOKEN_ERROR',
         description: 'user unsuccesfully received auth token',
-      }).code(201);
+      }).code(400);
     }
   },
+
+  get_user: async (req, h) => {
+    try {
+      const {
+        user_id,
+      } = req.auth.credentials;
+
+      const user = await auth_interactor.get_user(user_id);
+
+      return h.response({
+        error: null,
+        status_code: 'USER_GET_SUCCESS',
+        description: 'successfully retrieved user data',
+        user,
+      }).code(201);
+    } catch (error) {
+      return h.response({
+        error: error.message,
+        status_code: 'USER_GET_ERROR',
+        description: 'unsucessfully retrieved user data',
+      }).code(400);
+    }
+  },
+
   is_authenticated: async (req, h) => {
     try {
       const {
@@ -81,7 +106,7 @@ module.exports = {
         error: error.message,
         status_code: 'USER_AUTHENTICATED_FALSE',
         description: 'invalid authentication token',
-      }).code(201);
+      }).code(400);
     }
   },
 };

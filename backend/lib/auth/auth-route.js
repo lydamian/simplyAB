@@ -43,6 +43,14 @@ module.exports = [
   },
   {
     method: 'GET',
+    path: '/api/auth/user',
+    handler: auth_handler.get_user,
+    options: {
+      auth: 'jwt-auth-strategy',
+    },
+  },
+  {
+    method: 'GET',
     path: '/api/auth/is_authenticated',
     handler: auth_handler.is_authenticated,
     options: {

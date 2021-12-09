@@ -41,6 +41,10 @@ module.exports = {
     return auth_token;
   },
 
+  get_user: async (user_id) => {
+    return auth_model.get_user(user_id);
+  },
+
   get_auth_user: async (email_address, password) => {
     return auth_model.get_auth_user(email_address, password);
   },

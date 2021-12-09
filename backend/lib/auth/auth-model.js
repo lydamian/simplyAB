@@ -28,6 +28,22 @@ module.exports = {
       .where('email_address', email_address)
     return true === (result?.[0] && true);
   },
+
+  get_user: async (user_id) => {
+    const result = await knex_pg
+      .select(
+        'id',
+        'email_address',
+        'username',
+        'first_name',
+        'last_name',
+        'user_type',
+        'created_at',
+      )
+      .from('user_account')
+      .where('id', user_id)
+    return result[0] ?? null;
+  },
  
   get_auth_user: async (email_address, password) => {
     const data = [

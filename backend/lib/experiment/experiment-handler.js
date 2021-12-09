@@ -75,7 +75,7 @@ module.exports = {
         error: error.message,
         status_code: 'EXPERIMENT_UPDATED_ERROR',
         description: 'experiment unsuccesfully updated',
-      }).code(201);
+      }).code(400);
     }
   },
   delete: async (req, h) => {
@@ -101,7 +101,7 @@ module.exports = {
         error: error.message,
         status_code: 'EXPERIMENT_DELETED_ERROR',
         description: 'experiment unsucessfully deleted',
-      }).code(201);
+      }).code(400);
     }
   },
   get: async (req, h) => {
@@ -125,7 +125,7 @@ module.exports = {
         error: error.message,
         status_code: 'EXPERIMENTS_FETCH_ERROR',
         description: `unsuccessfully fetched experiments for ${project_id}`,
-      }).code(201);
+      }).code(400);
     }
   },
 };
