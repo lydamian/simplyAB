@@ -9,6 +9,7 @@ module.exports = {
   JWT_SHARED_SECRET: (process.env.JWT_SHARED_SECRET ?? 'some_shared_secret'),
   HOST: process.env.HOST,
   PORT: process.env.PORT,
+  NODE_ENV: process.env.NODE_ENV,
   user_account_types: {
     STANDARD: 'STANDARD',
     ADMIN: 'ADMIN'

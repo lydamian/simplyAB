@@ -1,5 +1,5 @@
 const Hapi = require('@hapi/hapi');
-const Jwt = require('@hapi/jwt');
+const Jwt = require('hapi-auth-jwt2');
 const C = require('./lib/constants');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -19,32 +19,28 @@ const init = async () => {
     }
   });
 
-  // Declare an authentication strategy using the jwt scheme.
-  // Use keys: with a shared secret key OR json web key set uri.
-  // Use verify: To determine how key contents are verified beyond signature.
-  // If verify is set to false, the keys option is not required and ignored.
-  // The verify: { aud, iss, sub } options are required if verify is not set to false.
-  // The verify: { exp, nbf, timeSkewSec, maxAgeSec } parameters have defaults.
-  // Use validate: To create a function called after token validation.
   await server.register(Jwt);
-  server.auth.strategy('jwt-auth-strategy', 'jwt', {
-    keys: C.JWT_SHARED_SECRET,
-    verify: {
-      aud: false,
-      iss: false,
-      sub: false,
-      nbf: true,
-      exp: true,
-      maxAgeSec: 1000000000000000, // 4 hours
-      timeSkewSec: 15,
+  server.auth.strategy('jwt-auth-strategy', 'jwt',
+  {
+    key: C.JWT_SHARED_SECRET,
+    verifyOptions: {
+      algorithms: [ 'HS256' ] // specify your secure algorithm
     },
-    validate: (artifacts, request, h) => {
+    // (required) the function which is run once the Token has been decoded with signature async function(decoded, request, h) where:
+    // decoded - (required) is the decoded and verified JWT received in the request
+    // request - (required) is the original request received from the client
+    // h - (required) the response toolkit.
+    // Returns an object { isValid, credentials, response } where:
+    // isValid - true if the JWT was valid, otherwise false.
+    // credentials - (optional) alternative credentials to be set instead of decoded.
+    // response - (optional) If provided will be used immediately as a takeover response.
+    // errorMessage - (optional defaults to 'Invalid credentials') - the error message raised to Boom if the token is invalid (passed to errorFunc as errorContext.message)
+    validate: (decoded, request, h) => {
       return {
         isValid: true,
         credentials: {
-          email_address: artifacts.decoded.payload.email_address,
-          user_id: artifacts.decoded.payload.user_id,
-          password: artifacts.decoded.payload.password,
+          email_address: decoded.email_address,
+          user_id: decoded.user_id,
         },
       };
     },
