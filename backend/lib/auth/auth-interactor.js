@@ -54,7 +54,7 @@ module.exports = {
       user_id,
       email_address,
       password,
-    }, C.JWT_SHARED_SECRET);
+    }, C.JWT_SHARED_SECRET, { expiresIn: '1h'});
 
     return auth_token;
   },

@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const experiment_model = require('./experiment-model');
 const experiment_helper = require('./experiment-helper');
 const project_helper = require('../project/project-helper');
