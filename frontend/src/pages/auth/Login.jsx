@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import UndrawLogin from 'assets/media/undraw-login.svg';
-import { login, isLoggedIn } from 'features/auth/authSlice';
+import { login, isAuthenticated } from 'features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Alerts from 'parts/alerts/Alerts';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
-  const [twoFactorAuthToken, setTwoFactorAuthToken] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
-  const isUserLoggedIn = useSelector(isLoggedIn);
+  const isUserAuthenticated = useSelector(isAuthenticated);
 
   const loginHandler = (event) => {
-    dispatch(login({ username, password, twoFactorAuthToken }));
+    dispatch(login({ emailAddress, password }));
     event.preventDefault();
   };
 
-  if (isUserLoggedIn) {
+  if (isUserAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
 
@@ -36,7 +35,7 @@ function Login() {
           <form onSubmit={loginHandler}>
             <div className="field">
               <div className="control">
-                <input className="input" name="username" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Your Username" />
+                <input className="input" name="emil-address" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} type="text" placeholder="Email" />
               </div>
             </div>
 
@@ -47,7 +46,7 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Your Password"
+                  placeholder="Password"
                 />
                 <span className="password-visibility icon is-clickable is-small is-right">
                   <i
@@ -59,11 +58,6 @@ function Login() {
               </div>
             </div>
 
-            <div className="field">
-              <div className="control">
-                <input className="input" value={twoFactorAuthToken} onChange={(e) => setTwoFactorAuthToken(e.target.value)} type="password" placeholder="Two Factor Auth Token" />
-              </div>
-            </div>
             <div className="field">
               <label control="none" htmlFor="remember-me" className="checkbox">
                 <input id="remember-me" type="checkbox" />

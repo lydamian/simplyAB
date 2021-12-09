@@ -1,28 +1,34 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import UndrawLogin from 'assets/media/undraw-login.svg';
-import { login, isLoggedIn } from 'features/auth/authSlice';
+import { register, isAuthenticated } from 'features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Alerts from 'parts/alerts/Alerts';
 
 function Register() {
-  const [username, setUsername] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
-  const [twoFactorAuthToken, setTwoFactorAuthToken] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
-  const isUserLoggedIn = useSelector(isLoggedIn);
+  const isUserAuthenticated = useSelector(isAuthenticated);
 
-  const loginHandler = (event) => {
-    dispatch(login({ username, password, twoFactorAuthToken }));
-    event.preventDefault();
-  };
-
-  if (isUserLoggedIn) {
+  if (isUserAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
+
+  const registerHandler = (event) => {
+    dispatch(register({
+      emailAddress,
+      password,
+      firstName,
+      lastName,
+    }));
+    event.preventDefault();
+  };
 
   return (
     <section className="login hero has-background-light is-fullheight">
@@ -33,10 +39,10 @@ function Register() {
           <figure className="avatar">
             <img src={UndrawLogin} alt="login-placeholder-img" />
           </figure>
-          <form onSubmit={loginHandler}>
+          <form onSubmit={registerHandler}>
             <div className="field">
               <div className="control">
-                <input className="input" name="username" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Your Username" />
+                <input className="input" name="email-address" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} type="text" placeholder="Email" />
               </div>
             </div>
 
@@ -47,7 +53,7 @@ function Register() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Your Password"
+                  placeholder="Password"
                 />
                 <span className="password-visibility icon is-clickable is-small is-right">
                   <i
@@ -61,9 +67,16 @@ function Register() {
 
             <div className="field">
               <div className="control">
-                <input className="input" value={twoFactorAuthToken} onChange={(e) => setTwoFactorAuthToken(e.target.value)} type="password" placeholder="Two Factor Auth Token" />
+                <input className="input" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name" />
               </div>
             </div>
+
+            <div className="field">
+              <div className="control">
+                <input className="input" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name" />
+              </div>
+            </div>
+
             <div className="field">
               <label control="none" htmlFor="remember-me" className="checkbox">
                 <input id="remember-me" type="checkbox" />
