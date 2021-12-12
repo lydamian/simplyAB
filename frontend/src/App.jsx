@@ -33,6 +33,9 @@ function App() {
           <Route exact path="/dashboard">
             <Dashboard />
           </Route>
+          <Route exact path="/dashboard/projects">
+            <Dashboard section={constants.dashboard.sections.PROJECTS} />
+          </Route>
           <Route exact path="/dashboard/experiments">
             <Dashboard section={constants.dashboard.sections.EXPERIMENTS} />
           </Route>

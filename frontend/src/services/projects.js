@@ -1,6 +1,9 @@
 import axios from 'axios';
-import faker from 'faker';
-import _ from 'lodash';
+import constants from 'Constants';
+import logger from 'utils/logger';
+import helpers from 'utils/helpers';
+
+const LOG_TAG = '[services/projects]';
 /**
  * gets all experiments.
  *
@@ -10,38 +13,39 @@ import _ from 'lodash';
  * @returns {{token: String, username: String }} Object
 }
  */
-const getProjects = async (username, password, twoFactorAuthToken) => {
-  return {
-    projects: _.range(5).map(() => ({
-      id: faker.datatype.uuid(),
-      title: `${faker.random.word()} Experiment `,
-      description: faker.commerce.productDescription(),
-      active: faker.datatype.boolean() ? 'true': 'false',
-      created_at: faker.datatype.datetime().toISOString(),
-      last_updated_at: faker.datatype.datetime().toISOString(),
-    }))
-  };
+const getProjects = async (user_id) => {
   try {
-    const response = await axios.post('some_url', {
-      username,
-      password,
-      twofactor: twoFactorAuthToken,
+    const query_params = new URLSearchParams({
+      user_id,
+    }).toString();
+    const response = await axios({
+      method: 'get',
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/get?${query_params}`,
+      headers: {
+        Authorization: helpers.getAuthToken()
+      },
     });
-    console.log('[authService] getAuthToken /api/admin/token response', JSON.stringify({ ...response.data }));
-    return {
-      ...response.data,
-      error: null,
-      success: true,
-    };
+    logger.info(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/get`,
+      response.status,
+      JSON.stringify(response.data),
+    );
+    return response;
   } catch (error) {
-    return {
-      success: false,
-      error: error.message,
-      token: null,
-    };
+    logger.error(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/get`,
+      error.response.data,
+      error.response.status,
+      error.message,
+      error.stack
+    );
+    return error.response;
   }
 };
 
-export default {
+const defaultExport = {
   getProjects,
-};
+}
+export default getProjects;

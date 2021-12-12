@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Link
 } from 'react-router-dom';
-import RayaLogo from 'assets/media/raya-logo.svg';
 import { useDispatch } from 'react-redux';
 import { logout } from 'features/auth/authSlice';
 
@@ -18,6 +17,14 @@ const NavBar = () => {
       </Link>
       <hr className="has-background-primary-dark"/>
       <div>
+        <Link to= "/dashboard/projects">
+          <button type="button" className="button is-fullwidth is-rounded is-info link">
+            <span className="icon is-large">
+              <i className="fas fa-lg fa-user-clock" />
+            </span>
+            <div>&nbsp;Projects</div>
+          </button>
+        </Link>
         <Link to="/dashboard/experiments">
           <button type="button" className="button is-fullwidth is-rounded is-info link">
             <span className="icon is-large">

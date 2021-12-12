@@ -5,6 +5,7 @@ export default {
     sections: {
       EXPERIMENTS: 'EXPERIMENTS',
       VARIANTS: 'VARIANTS',
+      PROJECTS: 'PROJECTS',
     },
   },
 };

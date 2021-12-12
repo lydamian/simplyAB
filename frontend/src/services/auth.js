@@ -3,7 +3,7 @@ import constants from 'Constants';
 import logger from 'utils/logger';
 import helpers from 'utils/helpers';
 
-const LOG_TAG = '[services/auth.js]';
+const LOG_TAG = '[services/auth]';
 /**
  * gets authentication token.
  *
