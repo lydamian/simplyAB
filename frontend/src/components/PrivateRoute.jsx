@@ -1,19 +1,23 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import {
+  useLocation,
+  Navigate,
+} from 'react-router-dom'
 import { isAuthenticated, getStatus } from 'features/auth/authSlice';
+
 import { useSelector } from 'react-redux';
 
-function PrivateRoute({ children, ...rest }) {
+
+function PrivateRoute({ children }) {
+  let location = useLocation();
   const userIsAuthenticated = useSelector(isAuthenticated);
-  const status = useSelector(getStatus);
+  if (userIsAuthenticated) {
+    return children
+  }
   return (
-    <Route
-      {...rest}
-      render={({ location }) => (userIsAuthenticated && status === 'idle'
-        ? children
-        : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
+    <Navigate
+      to="/login"
+      state={{ from: location }} 
     />
   );
 }

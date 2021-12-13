@@ -3,7 +3,6 @@ import './Auth.css';
 import UndrawLogin from 'assets/media/undraw-login.svg';
 import { register, isAuthenticated } from 'features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import Alerts from 'parts/alerts/Alerts';
 
 function Register() {
@@ -17,7 +16,7 @@ function Register() {
   const isUserAuthenticated = useSelector(isAuthenticated);
 
   if (isUserAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Navigate to="/dashboard" />;
   }
 
   const registerHandler = (event) => {

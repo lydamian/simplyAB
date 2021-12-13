@@ -1,19 +1,20 @@
 import React from 'react';
+import { Outlet } from "react-router-dom";
+
 import HeaderBar from 'parts/header-bar/HeaderBar';
 import PropTypes from 'prop-types';
 import NavBar from 'parts/navbar/NavBar';
 import Alerts from 'parts/alerts/Alerts';
-import DashboardBody from './DashboardBody';
 
 import './Dashboard.css';
 
-const Dashboard = ({ section }) => (
+const Dashboard = () => (
   <div>
     <Alerts />
     <div id="dashboard">
       <HeaderBar />
-      <NavBar section={section} />
-      <DashboardBody section={section} />
+      <NavBar />
+      <Outlet />
     </div>
   </div>
 );

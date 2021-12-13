@@ -3,7 +3,7 @@ import './Auth.css';
 import UndrawLogin from 'assets/media/undraw-login.svg';
 import { login, isAuthenticated } from 'features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Alerts from 'parts/alerts/Alerts';
 
 function Login() {
@@ -11,6 +11,8 @@ function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  // hooks
+  let navigate = useNavigate();
   const dispatch = useDispatch();
   const isUserAuthenticated = useSelector(isAuthenticated);
 
@@ -20,7 +22,7 @@ function Login() {
   };
 
   if (isUserAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    navigate("/dashboard");
   }
 
   return (
