@@ -1,30 +1,31 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-// import {
-//   getProjects,
-// } from 'features/projects/projectsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  getProjects,
+  fetchProjects,
+} from 'features/projects/projectsSlice';
 
-const Projects = function () {
+const Projects = function Projects() {
   // hooks
   const dispatch = useDispatch();
+  const projects = useSelector(getProjects);
 
-  const reRunUseEffectHookOn = [];
   useEffect(() => {
-    console.log('inside projects.js');
-    dispatch();
-  }, reRunUseEffectHookOn);
+    dispatch(fetchProjects());
+  }, [projects]);
+
   return (
     <div>
-      <ProjectThumbnail {...{
-        project_id: 1,
-        title: 10,
-        description: 'hello',
-        created_at: '1999',
-        last_updated_at: '1999',
-
-      }}
-      />
+      {projects.map((project) => (
+        <ProjectThumbnail
+          projectId={project.projectId}
+          title={project.title}
+          description={project.description}
+          createdAt={project.createdAt}
+          lastUpdatedAt={project.lastUpdatedAt}
+        />
+      ))}
     </div>
   );
 };

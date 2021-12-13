@@ -7,7 +7,7 @@ import Alerts from 'parts/alerts/Alerts';
 
 import './Dashboard.css';
 
-const Dashboard = function () {
+const Dashboard = function Dashboard() {
   return (
     <div>
       <Alerts />

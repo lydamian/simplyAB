@@ -70,7 +70,7 @@ const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) 
     );
 
     if (error != null) {
-      store.dispatch(addAlert({
+      await store.dispatch(addAlert({
         message: 'Unsuccesfully logged in user',
         type: 'DANGER',
       }));
@@ -79,8 +79,8 @@ const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) 
       };
     }
 
-    localStorage.setItem('simply_ab_auth_token', auth_token);
-    store.dispatch(addAlert({
+    localStorage.setItem('simply_ab_auth_token', authToken);
+    await store.dispatch(addAlert({
       message: 'Succesfully logged in user',
       type: 'SUCCESS',
     }));

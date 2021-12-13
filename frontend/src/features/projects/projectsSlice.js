@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import logger from 'utils/logger';
-import projectsService from 'services/projects'
+import projectsService from 'services/projects';
 
 const LOG_TAG = '[projectsSlice]';
 
@@ -11,9 +11,16 @@ const initialState = {
   projects: [],
 };
 
-export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async () => {
+export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async (
+  payload,
+  {
+    getState,
+    rejectWithValue,
+  },
+) => {
   try {
-    const response = await projectsService.getProjects();
+    const userId = getState().auth.user.id;
+    const response = await projectsService.getProjects(userId);
     const {
       error,
       status_code: statusCode,
@@ -30,14 +37,10 @@ export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async 
       `projects: ${JSON.stringify(projects)}`,
     );
 
-    return {
-      projects,
-    };
+    return projects;
   } catch (error) {
     logger.error(`${LOG_TAG} fetchProjects ERROR:`, error.message, error.stack);
-    return {
-      projects: initialState.projects,
-    };
+    rejectWithValue(initialState.projects);
   }
 });
 
@@ -52,14 +55,19 @@ export const projectsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchProjects.fulfilled, (state, action) => {
-        const { projects } = action.payload;
+        const projects = action.payload;
         state.projects = projects
+        state.status = 'idle';
+      })
+      .addCase(fetchProjects.rejected, (state, action) => {
+        const projects = action.payload;
+        state.projects = projects;
         state.status = 'idle';
       });
   },
 });
 
-export const getProjects = (state) => state.projects.projects
+export const getProjects = (state) => state.projects.projects;
 
 // Action creators are generated for each case reducer function
 export const { updateProjects } = projectsSlice.actions;

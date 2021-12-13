@@ -16,7 +16,7 @@ const LOG_TAG = '[services/projects]';
 const getProjects = async (userId) => {
   try {
     const queryParams = new URLSearchParams({
-      userId,
+      user_id: userId,
     }).toString();
     const response = await axios({
       method: 'get',
@@ -45,4 +45,6 @@ const getProjects = async (userId) => {
   }
 };
 
-export default getProjects;
+export default {
+  getProjects,
+};

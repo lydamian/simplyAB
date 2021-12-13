@@ -12,7 +12,6 @@ const Experiments = () => {
   const experimentsStatus = useSelector(state => state.experiments.status)
 
   useEffect(() => {
-    console.log(experimentsStatus);
     if (experimentsStatus === 'idle') {
       dispatch(fetchExperiments())
     }

@@ -25,16 +25,6 @@
     "plugins": [
         "react"
     ],
-    "rules": {
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
-        "import/no-import-module-exports": 0,
-        "import/no-unresolved": [
-            0, 
-            { "caseSensitive": false }
-        ],
-        "no-unused-vars": "warn",
-        "react/prop-types": "warn"
-    },
     "globals": {
         "React": true,
         "google": true,
@@ -46,5 +36,17 @@
         "expect": true,
         "jsdom": true,
         "JSX": true
+    },
+        "rules": {
+            "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+            "import/no-import-module-exports": "off",
+        "import/no-unresolved": [
+            0, 
+            { "caseSensitive": false }
+        ],
+        "no-unused-vars": "warn",
+        "react/prop-types": "warn",
+        "no-use-before-define": "off",
+        "consistent-return": "off"
     }
 }
