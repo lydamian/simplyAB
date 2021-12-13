@@ -3,9 +3,10 @@ import './Auth.css';
 import UndrawLogin from 'assets/media/undraw-login.svg';
 import { register, isAuthenticated } from 'features/auth/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import Alerts from 'parts/alerts/Alerts';
 
-function Register() {
+const Register = function () {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -84,7 +85,7 @@ function Register() {
               </label>
             </div>
             <button type="submit" className="button is-block is-info  is-fullwidth">
-            Register
+              Register
             </button>
           </form>
         </div>
@@ -100,6 +101,6 @@ function Register() {
       </div>
     </section>
   );
-}
+};
 
 export default Register;

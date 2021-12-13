@@ -1,0 +1,50 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        // "plugin:react/recommended",
+        "airbnb"
+    ],
+    "settings": {
+        "import/resolver": {
+            "node": {
+              "paths": ["src"]
+            }
+        }
+    },
+    "parserOptions": {
+        "project": "./jsconfig.json",
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2021,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+        "import/no-import-module-exports": 0,
+        "import/no-unresolved": [
+            0, 
+            { "caseSensitive": false }
+        ],
+        "no-unused-vars": "warn",
+        "react/prop-types": "warn"
+    },
+    "globals": {
+        "React": true,
+        "google": true,
+        "mount": true,
+        "mountWithRouter": true,
+        "shallow": true,
+        "shallowWithRouter": true,
+        "context": true,
+        "expect": true,
+        "jsdom": true,
+        "JSX": true
+    }
+}

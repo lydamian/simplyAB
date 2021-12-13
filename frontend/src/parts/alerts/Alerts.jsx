@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ALERT_TYPES from '../../features/alerts/ALERT_TYPES';
 // import PropTypes from 'prop-types';
 
-const Alerts = () => {
+const Alerts = function () {
   const alerts = useSelector(getAllAlerts);
   return (
     <div className="alerts is-fullwidth rs-fixed rs-w-full rs-z-40">
@@ -31,7 +31,7 @@ const getAlertBackground = (alertType) => ({
   [ALERT_TYPES.DANGER]: 'has-background-danger',
 }[alertType] || '');
 
-const Alert = ({ id, message, type }) => {
+const Alert = function ({ id, message, type }) {
   const dispatch = useDispatch();
   const bulmaBackground = getAlertBackground(type);
 

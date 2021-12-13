@@ -1,8 +1,6 @@
 /* eslint-disable semi */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import store from 'state/store';
-import { addAlert } from 'features/alerts/alertsSlice';
 import logger from 'utils/logger';
 import projectsService from 'services/projects'
 
@@ -15,19 +13,19 @@ const initialState = {
 
 export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async () => {
   try {
-    const response = await projectsService.getProjects();  
+    const response = await projectsService.getProjects();
     const {
       error,
-      status_code,
+      status_code: statusCode,
       description,
       projects,
     } = response.data;
-    
+
     logger.info(
       `${LOG_TAG} fetchProjects`,
       `HTTP_STATUS: ${response.status}`,
       `error: ${error}`,
-      `status_code: ${status_code}`,
+      `status_code: ${statusCode}`,
       `description: ${description}`,
       `projects: ${JSON.stringify(projects)}`,
     );
@@ -38,7 +36,7 @@ export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async 
   } catch (error) {
     logger.error(`${LOG_TAG} fetchProjects ERROR:`, error.message, error.stack);
     return {
-      projects: initialState.projects
+      projects: initialState.projects,
     };
   }
 });

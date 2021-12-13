@@ -14,13 +14,13 @@ const LOG_TAG = '[services/auth]';
  */
 const getAuthToken = async (emailAddress, password) => {
   try {
-    const query_params = new URLSearchParams({
+    const queryParams = new URLSearchParams({
       email_address: emailAddress,
-      password: password,
+      password,
     }).toString();
     const response = await axios({
       method: 'get',
-      url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/token?${query_params}`,
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/token?${queryParams}`,
     });
     logger.info(
       LOG_TAG,
@@ -36,7 +36,7 @@ const getAuthToken = async (emailAddress, password) => {
       error.response.data,
       error.response.status,
       error.message,
-      error.stack
+      error.stack,
     );
     return error.response;
   }
@@ -45,11 +45,11 @@ const getAuthToken = async (emailAddress, password) => {
 /**
  * Registers a new user.
  *
- * @param {String} emailAddress 
- * @param {String} password 
- * @param {String} firstName 
- * @param {String|null} lastName 
- * 
+ * @param {String} emailAddress
+ * @param {String} password
+ * @param {String} firstName
+ * @param {String|null} lastName
+ *
  * @returns {Promise.<Object>}
  */
 const registerUser = async (
@@ -65,10 +65,10 @@ const registerUser = async (
       data: {
         email_address: emailAddress,
         username: emailAddress,
-        password: password,
+        password,
         first_name: firstName,
         last_name: lastName,
-      }
+      },
     });
     logger.info(
       LOG_TAG,
@@ -84,15 +84,15 @@ const registerUser = async (
       error.response.data,
       error.response.status,
       error.message,
-      error.stack
+      error.stack,
     );
     return error.response;
   }
-}
+};
 
 /**
  * Gets user info.
- * 
+ *
  * @returns {Promise.<Object>}
  */
 const getUser = async () => {
@@ -101,7 +101,7 @@ const getUser = async () => {
       method: 'get',
       url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/user`,
       headers: {
-        Authorization: helpers.getAuthToken()
+        Authorization: helpers.getAuthToken(),
       },
     });
     logger.info(
@@ -118,14 +118,14 @@ const getUser = async () => {
       error.response.data,
       error.response.status,
       error.message,
-      error.stack
+      error.stack,
     );
     return error.response;
   }
-}
+};
 const defaultExport = {
   registerUser,
   getAuthToken,
   getUser,
-}
+};
 export default defaultExport;

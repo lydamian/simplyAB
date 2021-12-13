@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Auth.css';
 import UndrawLogin from 'assets/media/undraw-login.svg';
 import { login, isAuthenticated } from 'features/auth/authSlice';
@@ -6,13 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Alerts from 'parts/alerts/Alerts';
 
-function Login() {
+const Login = function () {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   // hooks
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isUserAuthenticated = useSelector(isAuthenticated);
 
@@ -21,9 +21,11 @@ function Login() {
     event.preventDefault();
   };
 
-  if (isUserAuthenticated) {
-    navigate("/dashboard");
-  }
+  useEffect(() => {
+    if (isUserAuthenticated === true) {
+      navigate('/dashboard');
+    }
+  }, [isUserAuthenticated]);
 
   return (
     <section className="login hero has-background-light is-fullheight">
@@ -84,6 +86,6 @@ function Login() {
       </div>
     </section>
   );
-}
+};
 
 export default Login;

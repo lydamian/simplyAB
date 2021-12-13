@@ -43,8 +43,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 # Demo
 
-![raya-react-dg-dash](https://github.com/lydamian/raya-react-dg-dash/blob/main/raya-react-dg-dash.gif)
-
 ## Project Guide
 
 ### Understanding Project

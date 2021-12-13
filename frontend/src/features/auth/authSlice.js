@@ -19,26 +19,56 @@ const initialState = {
 };
 
 // Thunk functions (async actions creator factories)
+const getUser = createAsyncThunk('auth/user', async () => {
+  try {
+    const response = await authService.getUser();
+
+    const {
+      error,
+      status_code: statusCode,
+      description,
+      user,
+    } = response.data;
+
+    logger.info(
+      `${LOG_TAG} register`,
+      `HTTP_STATUS: ${response.status}`,
+      `error: ${error}`,
+      `status_code: ${statusCode}`,
+      `description: ${description}`,
+      `user: ${JSON.stringify(user)}`,
+    );
+    return {
+      user,
+    };
+  } catch (error) {
+    logger.error(`${LOG_TAG} getUser ERROR:`, error.message, error.stack);
+    return {
+      user: initialState.user,
+    };
+  }
+});
+
 const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) => {
   try {
     const response = await authService.getAuthToken(emailAddress, password);
-  
+
     const {
-      status_code,
+      status_code: statusCode,
       error,
       description,
-      auth_token,
+      auth_token: authToken,
     } = response.data;
-  
+
     logger.info(
       `${LOG_TAG} login`,
       `HTTP_STATUS: ${response.status}`,
       `error: ${error}`,
-      `status_code: ${status_code}`,
+      `status_code: ${statusCode}`,
       `description: ${description}`,
-      `auth_token: ${auth_token}`,
+      `auth_token: ${authToken}`,
     );
-  
+
     if (error != null) {
       store.dispatch(addAlert({
         message: 'Unsuccesfully logged in user',
@@ -46,7 +76,7 @@ const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) 
       }));
       return {
         isAuthenticated: false,
-      }
+      };
     }
 
     localStorage.setItem('simply_ab_auth_token', auth_token);
@@ -72,32 +102,32 @@ const register = createAsyncThunk('auth/register', async ({
   emailAddress,
   password,
   firstName,
-  lastName
+  lastName,
 }) => {
   try {
     const response = await authService.registerUser(
       emailAddress,
       password,
       firstName,
-      lastName
+      lastName,
     );
-  
+
     const {
       error,
-      status_code,
+      status_code: statusCode,
       description,
-      user_id,
+      user_id: userId,
     } = response.data;
-    
+
     logger.info(
       `${LOG_TAG} register`,
       `HTTP_STATUS: ${response.status}`,
       `error: ${error}`,
-      `status_code: ${status_code}`,
+      `status_code: ${statusCode}`,
       `description: ${description}`,
-      `user_id: ${user_id}`,
+      `user_id: ${userId}`,
     );
-  
+
     if (error != null) {
       store.dispatch(addAlert({
         message: 'Something went wrong',
@@ -105,51 +135,20 @@ const register = createAsyncThunk('auth/register', async ({
       }));
       return;
     }
-  
+
     store.dispatch(addAlert({
       message: 'Succesfully registered',
       type: 'SUCCESS',
     }));
-  
+
     store.dispatch(login({
       emailAddress,
       password,
     }));
-    
+
     return;
   } catch (error) {
     logger.error(`${LOG_TAG} register ERROR:`, error.message, error.stack);
-    return;
-  }
-});
-
-const getUser = createAsyncThunk('auth/user', async () => {
-  try {
-    const response = await authService.getUser();
-  
-    const {
-      error,
-      status_code,
-      description,
-      user,
-    } = response.data;
-    
-    logger.info(
-      `${LOG_TAG} register`,
-      `HTTP_STATUS: ${response.status}`,
-      `error: ${error}`,
-      `status_code: ${status_code}`,
-      `description: ${description}`,
-      `user: ${JSON.stringify(user)}`,
-    );
-    return {
-      user,
-    };
-  } catch (error) {
-    logger.error(`${LOG_TAG} getUser ERROR:`, error.message, error.stack);
-    return {
-      user: initialState.user
-    };
   }
 });
 
@@ -193,7 +192,7 @@ const authSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action) => {
         const {
-          user
+          user,
         } = action.payload;
         state.user = user;
         state.status = 'idle';

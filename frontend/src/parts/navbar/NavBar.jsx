@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  Link
+  Link,
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from 'features/auth/authSlice';
 
-const NavBar = () => {
+const NavBar = function () {
   const dispatch = useDispatch();
 
   return (
@@ -15,9 +15,9 @@ const NavBar = () => {
           S. A/B
         </div>
       </Link>
-      <hr className="has-background-primary-dark"/>
+      <hr className="has-background-primary-dark" />
       <div>
-        <Link to= "/dashboard/projects">
+        <Link to="/dashboard/projects">
           <button type="button" className="button is-fullwidth is-rounded is-info link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
@@ -41,7 +41,7 @@ const NavBar = () => {
             <div>&nbsp;Variants</div>
           </button>
         </Link>
-        <hr className="has-background-primary-dark"/>
+        <hr className="has-background-primary-dark" />
         <button type="button" onClick={() => dispatch(logout())} className="button is-primary is-fullwidth is-rounded is-dark link">
           <span className="icon is-large">
             <i className="fas fa-lg fa-power-off" />

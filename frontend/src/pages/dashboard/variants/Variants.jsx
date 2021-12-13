@@ -1,4 +1,7 @@
-const Variants = () => {
+/* eslint-disable jsx-a11y/control-has-associated-label */
+import React from 'react';
+
+const Variants = function () {
   return (
     <div>
       <h6>Variants</h6>
@@ -9,7 +12,7 @@ const Variants = () => {
             <th>Percent</th>
             <th>Created</th>
             <th>Last Modified</th>
-            <th></th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -19,8 +22,8 @@ const Variants = () => {
             <td>01/20/2021</td>
             <td>01/20/2021</td>
             <td>
-              <span class="icon">
-                <i class="fas fa-ellipsis-v"></i>
+              <span className="icon">
+                <i className="fas fa-ellipsis-v" />
               </span>
             </td>
           </tr>
@@ -30,31 +33,22 @@ const Variants = () => {
             <td>01/20/2021</td>
             <td>01/20/2021</td>
             <td>
-              <span class="icon">
-                <i class="fas fa-ellipsis-v"></i>
+              <span className="icon">
+                <i className="fas fa-ellipsis-v" />
               </span>
             </td>
           </tr>
           <tr>
             <td>+ Add Variant</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td />
+            <td />
+            <td />
+            <td />
           </tr>
         </tbody>
       </table>
     </div>
-  )
-}
-
-
-const VariantEditorModal = () => {
-  return (
-    <div>
-      VariantEditorModal
-    </div>
-  )
-}
+  );
+};
 
 export default Variants;

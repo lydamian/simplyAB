@@ -13,16 +13,16 @@ const LOG_TAG = '[services/projects]';
  * @returns {{token: String, username: String }} Object
 }
  */
-const getProjects = async (user_id) => {
+const getProjects = async (userId) => {
   try {
-    const query_params = new URLSearchParams({
-      user_id,
+    const queryParams = new URLSearchParams({
+      userId,
     }).toString();
     const response = await axios({
       method: 'get',
-      url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/get?${query_params}`,
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/get?${queryParams}`,
       headers: {
-        Authorization: helpers.getAuthToken()
+        Authorization: helpers.getAuthToken(),
       },
     });
     logger.info(
@@ -39,13 +39,10 @@ const getProjects = async (user_id) => {
       error.response.data,
       error.response.status,
       error.message,
-      error.stack
+      error.stack,
     );
     return error.response;
   }
 };
 
-const defaultExport = {
-  getProjects,
-}
 export default getProjects;
