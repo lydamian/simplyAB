@@ -5,6 +5,7 @@ import {
 import './App.css';
 import PrivateRoute from 'components/PrivateRoute';
 import Projects from 'pages/dashboard/projects/Projects';
+import CreateProject from 'pages/dashboard/projects/CreateProject';
 import Experiments from 'pages/dashboard/experiments/Experiments';
 import Variants from 'pages/dashboard/variants/Variants';
 import Login from './pages/auth/Login';
@@ -14,7 +15,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 
 require('dotenv').config(); // allows us to inject environment variables
 
-const App = function () {
+const App = function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
@@ -31,6 +32,7 @@ const App = function () {
         )}
       >
         <Route path="projects" element={<Projects />} />
+        <Route path="projects/create" element={<CreateProject />} />
         <Route path="/dashboard/experiments" element={<Experiments />} />
         <Route path="/dashboard/variants" element={<Variants />} />
       </Route>

@@ -7,7 +7,7 @@ import { isAuthenticated } from 'features/auth/authSlice';
 
 import { useSelector } from 'react-redux';
 
-const PrivateRoute = function ({ children }) {
+const PrivateRoute = function PrivateRoute({ children }) {
   const location = useLocation();
   const userIsAuthenticated = useSelector(isAuthenticated);
   if (userIsAuthenticated) {

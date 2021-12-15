@@ -5,7 +5,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { logout } from 'features/auth/authSlice';
 
-const NavBar = function () {
+const NavBar = function NavBar() {
   const dispatch = useDispatch();
 
   return (
@@ -18,7 +18,7 @@ const NavBar = function () {
       <hr className="has-background-primary-dark" />
       <div>
         <Link to="/dashboard/projects">
-          <button type="button" className="button is-fullwidth is-rounded is-info link">
+          <button type="button" className="button is-fullwidth is-rounded is-link link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
             </span>
@@ -26,7 +26,7 @@ const NavBar = function () {
           </button>
         </Link>
         <Link to="/dashboard/experiments">
-          <button type="button" className="button is-fullwidth is-rounded is-info link">
+          <button type="button" className="button is-fullwidth is-rounded is-link link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
             </span>
@@ -34,7 +34,7 @@ const NavBar = function () {
           </button>
         </Link>
         <Link to="/dashboard/variants">
-          <button type="button" className="button is-fullwidth is-rounded is-info link">
+          <button type="button" className="button is-fullwidth is-rounded is-link link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
             </span>

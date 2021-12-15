@@ -1,6 +1,12 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import {
+  useSelector,
+  useDispatch,
+} from 'react-redux';
+import {
+  useNavigate,
+} from 'react-router-dom';
 import {
   getProjects,
   fetchProjects,
@@ -9,6 +15,7 @@ import {
 const Projects = function Projects() {
   // hooks
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const projects = useSelector(getProjects);
 
   useEffect(() => {
@@ -17,6 +24,15 @@ const Projects = function Projects() {
 
   return (
     <div>
+      <button
+        className="button is-link"
+        type="button"
+        onClick={() => {
+          navigate('/dashboard/projects/create');
+        }}
+      >
+        Create new
+      </button>
       {projects.map((project) => (
         <ProjectThumbnail
           projectId={project.projectId}

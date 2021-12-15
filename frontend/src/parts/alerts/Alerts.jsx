@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import 'animate.css';
 import './Alerts.css';
 import { clearAlert, getAllAlerts } from 'features/alerts/alertsSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,7 +37,10 @@ const Alert = function Alert({ id, message, type }) {
   const bulmaBackground = getAlertBackground(type);
 
   return (
-    <div id={id} className={`alert has-text-white ${bulmaBackground}`}>
+    <div
+      id={id}
+      className={`alert has-text-white ${bulmaBackground} animate__animated animate__fadeInDown`}
+    >
       {message}
       <button type="button" className="button is-ghost is-pulled-right" onClick={() => dispatch(clearAlert(id))}>
         <span className="alert-close icon is-large">

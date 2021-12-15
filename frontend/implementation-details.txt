@@ -1,0 +1,23 @@
+implementation details:
+
+* Folder structure guide:
+* CSS frameworks and libraries
+  * bulma
+  * raisincss
+* State management system
+* http request library
+* Logic architecture
+* ReduxPersist
+* fullpath import reasoning
+* utility library
+* redux-toolkit
+* authentication strategy
+* Keep me logged in strategy
+* authentication refresh token strategy
+* auto login authentication strategy
+* Animation library
+* Logging framework
+* Routing strategy
+* Eslint
+  * airbnb style guide with some tweaks
+* Redux Persist
