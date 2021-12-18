@@ -5,11 +5,15 @@ import experimentsService from 'services/experiments';
 
 export const fetchExperiments = createAsyncThunk('applicants/fetchExperiments', async (
   payload,
+  {
+    getState,
+  },
 ) => {
+  const userId = getState().auth.user.id;
   const {
     projectId,
   } = payload;
-  const response = await experimentsService.getExperiments(projectId);
+  const response = await experimentsService.getExperiments(userId, projectId);
   return response;
 });
 

@@ -25,7 +25,7 @@ export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async 
     const response = await projectsService.getProjects(userId);
     const {
       error,
-      status_code: statusCode,
+      statusCode,
       description,
       projects,
     } = response.data;
@@ -39,6 +39,9 @@ export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async 
       `projects: ${JSON.stringify(projects)}`,
     );
 
+    if (error != null) {
+      return initialState.projects;
+    }
     return projects;
   } catch (error) {
     logger.error(`${LOG_TAG} fetchProjects ERROR:`, error.message, error.stack);
@@ -64,9 +67,9 @@ export const postProject = createAsyncThunk('applicants/postProject', async (
     );
     const {
       error,
-      status_code: statusCode,
+      statusCode,
       description,
-      project_id: projectId,
+      projectId,
     } = response.data;
 
     logger.info(

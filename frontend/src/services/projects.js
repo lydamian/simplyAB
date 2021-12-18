@@ -23,22 +23,8 @@ const getProjects = async (userId) => {
         Authorization: helpers.getAuthToken(),
       },
     });
-    logger.info(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/project/get`,
-      response.status,
-      JSON.stringify(response.data),
-    );
     return response;
   } catch (error) {
-    logger.error(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/project/get`,
-      error.response.data,
-      error.response.status,
-      error.message,
-      error.stack,
-    );
     return error.response;
   }
 };

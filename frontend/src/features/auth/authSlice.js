@@ -38,6 +38,12 @@ const getUser = createAsyncThunk('auth/user', async () => {
       `description: ${description}`,
       `user: ${JSON.stringify(user)}`,
     );
+
+    if (error != null) {
+      return {
+        user: initialState.user,
+      };
+    }
     return {
       user,
     };
@@ -62,10 +68,10 @@ const login = createAsyncThunk('auth/login', async (
     const response = await authService.getAuthToken(emailAddress, password);
 
     const {
-      status_code: statusCode,
+      statusCode,
       error,
       description,
-      auth_token: authToken,
+      authToken,
     } = response.data;
 
     logger.info(
@@ -83,7 +89,7 @@ const login = createAsyncThunk('auth/login', async (
         type: 'DANGER',
       }));
       return {
-        isAuthenticated: false,
+        isAuthenticated: initialState.isAuthenticated,
       };
     }
 
@@ -127,18 +133,18 @@ const register = createAsyncThunk('auth/register', async (
 
     const {
       error,
-      status_code: statusCode,
+      statusCode,
       description,
-      user_id: userId,
+      userId,
     } = response.data;
 
     logger.info(
       `${LOG_TAG} register`,
       `HTTP_STATUS: ${response.status}`,
       `error: ${error}`,
-      `status_code: ${statusCode}`,
+      `statusCode: ${statusCode}`,
       `description: ${description}`,
-      `user_id: ${userId}`,
+      `userId: ${userId}`,
     );
 
     if (error != null) {

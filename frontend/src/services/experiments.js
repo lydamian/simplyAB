@@ -1,24 +1,50 @@
-import faker from 'faker';
-import _ from 'lodash';
+import axios from 'utils/request';
+import constants from 'Constants';
+import helpers from 'utils/helpers';
+import logger from 'utils/logger';
+
+const LOG_TAG = '[services/experiments]';
+
 /**
- * gets all experiments.
+ * Gets all experiments for a user or a projectId optionally.
  *
- * @param {String} username
- * @param {String} password
- * @param {String} twoFactorAuthToken
+ * @param {Number} userId
+ * @param {Number|null} projectId
+ *
  * @returns {{token: String, username: String }} Object
 }
  */
-const getExperiments = async () => ({
-  experiments: _.range(5).map(() => ({
-    id: faker.datatype.uuid(),
-    title: `${faker.random.word()} Experiment `,
-    description: faker.commerce.productDescription(),
-    active: faker.datatype.boolean() ? 'true' : 'false',
-    created_at: faker.datatype.datetime().toISOString(),
-    last_updated_at: faker.datatype.datetime().toISOString(),
-  })),
-});
+const getExperiments = async (userId, projectId) => {
+  try {
+    const queryParams = new URLSearchParams({
+      project_id: projectId,
+    }).toString();
+    const response = await axios({
+      method: 'get',
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/experiment/get?${queryParams}`,
+      headers: {
+        Authorization: helpers.getAuthToken(),
+      },
+    });
+    logger.info(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/experiment/get`,
+      response.status,
+      JSON.stringify(response.data),
+    );
+    return response;
+  } catch (error) {
+    logger.error(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/experiment/get`,
+      error.response.data,
+      error.response.status,
+      error.message,
+      error.stack,
+    );
+    return error.response;
+  }
+};
 
 export default {
   getExperiments,

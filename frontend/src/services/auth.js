@@ -22,22 +22,8 @@ const getAuthToken = async (emailAddress, password) => {
       method: 'get',
       url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/token?${queryParams}`,
     });
-    logger.info(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/auth/token`,
-      response.status,
-      JSON.stringify(response.data),
-    );
     return response;
   } catch (error) {
-    logger.error(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/auth/token`,
-      error.response.data,
-      error.response.status,
-      error.message,
-      error.stack,
-    );
     return error.response;
   }
 };
@@ -70,22 +56,8 @@ const registerUser = async (
         last_name: lastName,
       },
     });
-    logger.info(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/auth/register`,
-      response.status,
-      JSON.stringify(response.data),
-    );
     return response;
   } catch (error) {
-    logger.error(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/auth/register`,
-      error.response.data,
-      error.response.status,
-      error.message,
-      error.stack,
-    );
     return error.response;
   }
 };
