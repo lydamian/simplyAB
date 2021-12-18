@@ -51,7 +51,7 @@ module.exports = {
       return h.response({
         error: null,
         status_code: 'GET_AUTH_TOKEN_SUCCESS',
-        description: 'user successfully received auth token in',
+        description: 'user successfully received auth token',
         auth_token,
       }).code(201);
     } catch (error) {
