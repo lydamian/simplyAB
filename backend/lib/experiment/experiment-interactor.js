@@ -60,8 +60,16 @@ module.exports = {
     const num_deleted = await experiment_model.delete(experiment_id);
     return num_deleted > 0;
   },
+  /**
+   * Gets all experiments for a user, filtered by project_id if
+   * present.
+   * @param {*} user_id 
+   * @param {*} project_id 
+   */
   get: async (user_id, project_id) => {
-    await project_helper.validate_project_ownership(user_id, project_id);
+    if (project_id != null) {
+      await project_helper.validate_project_ownership(user_id, project_id);
+    }
     return experiment_model.get(user_id, project_id);
   },
 };

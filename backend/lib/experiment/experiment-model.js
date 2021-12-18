@@ -74,7 +74,7 @@ module.exports = {
    * Get all active experiments given a project_id.
    * 
    * @param {Number} user_id
-   * @param {Number} project_id
+   * @param {Number|null} project_id
    *
    * @returns {Promise.<Array.<Object>>}
    */
@@ -83,9 +83,13 @@ module.exports = {
       .select('experiment.*')
       .from('experiment')
       .innerJoin('project', 'experiment.project_id', 'project.id')
-      .where('project_id', project_id)
       .andWhere('active', true)
-      .andWhere('user_id', user_id);
+      .andWhere('user_id', user_id)
+      .modify((queryBuilder) => {
+        if (project_id != null) {
+            queryBuilder.where('project_id', project_id);
+        }
+      });
     return rows;
   },
   

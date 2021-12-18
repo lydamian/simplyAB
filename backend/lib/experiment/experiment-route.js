@@ -87,7 +87,7 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/experiment/get/{project_id}',
+    path: '/api/experiment/get/{project_id?}',
     handler: experiment_handler.get,
     options: {
       auth: 'jwt-auth-strategy',
@@ -95,7 +95,7 @@ module.exports = [
         params: Joi.object({
           project_id: Joi.number()
             .max(Number.MAX_SAFE_INTEGER)
-            .required(),
+            .optional(),
         }),
       },
     },
