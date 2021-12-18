@@ -49,7 +49,15 @@ const getUser = createAsyncThunk('auth/user', async () => {
   }
 });
 
-const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) => {
+const login = createAsyncThunk('auth/login', async (
+  {
+    emailAddress,
+    password,
+  },
+  {
+    dispatch,
+  },
+) => {
   try {
     const response = await authService.getAuthToken(emailAddress, password);
 
@@ -70,7 +78,7 @@ const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) 
     );
 
     if (error != null) {
-      await store.dispatch(addAlert({
+      await dispatch(addAlert({
         message: 'Unsuccesfully logged in user',
         type: 'DANGER',
       }));
@@ -80,12 +88,12 @@ const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) 
     }
 
     localStorage.setItem('simply_ab_auth_token', authToken);
-    await store.dispatch(addAlert({
+    await dispatch(addAlert({
       message: 'Succesfully logged in user',
       type: 'SUCCESS',
     }));
 
-    store.dispatch(getUser());
+    dispatch(getUser());
 
     return {
       isAuthenticated: true,
@@ -98,12 +106,17 @@ const login = createAsyncThunk('auth/login', async ({ emailAddress, password }) 
   }
 });
 
-const register = createAsyncThunk('auth/register', async ({
-  emailAddress,
-  password,
-  firstName,
-  lastName,
-}) => {
+const register = createAsyncThunk('auth/register', async (
+  {
+    emailAddress,
+    password,
+    firstName,
+    lastName,
+  },
+  {
+    dispatch,
+  },
+) => {
   try {
     const response = await authService.registerUser(
       emailAddress,
@@ -129,19 +142,19 @@ const register = createAsyncThunk('auth/register', async ({
     );
 
     if (error != null) {
-      store.dispatch(addAlert({
+      dispatch(addAlert({
         message: 'Something went wrong',
         type: 'DANGER',
       }));
       return;
     }
 
-    store.dispatch(addAlert({
+    dispatch(addAlert({
       message: 'Succesfully registered',
       type: 'SUCCESS',
     }));
 
-    store.dispatch(login({
+    dispatch(login({
       emailAddress,
       password,
     }));

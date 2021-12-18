@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'utils/request';
 import constants from 'Constants';
 import logger from 'utils/logger';
 import helpers from 'utils/helpers';

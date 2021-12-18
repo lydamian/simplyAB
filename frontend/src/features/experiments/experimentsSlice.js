@@ -3,8 +3,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import experimentsService from 'services/experiments';
 
-export const fetchExperiments = createAsyncThunk('applicants/fetchExperiments', async () => {
-  const response = await experimentsService.getExperiments();
+export const fetchExperiments = createAsyncThunk('applicants/fetchExperiments', async (
+  payload,
+) => {
+  const {
+    projectId,
+  } = payload;
+  const response = await experimentsService.getExperiments(projectId);
   return response;
 });
 

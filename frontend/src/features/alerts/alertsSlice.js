@@ -4,7 +4,6 @@ import {
   createSlice,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
-import store from 'state/store';
 import { nanoid } from 'nanoid';
 import logger from 'utils/logger';
 import ALERT_TYPES from 'features/alerts/ALERT_TYPES';
@@ -17,11 +16,11 @@ const initialState = [];
 const addAlert = createAsyncThunk('alerts/addAlert', async ({
   message,
   type,
-}, { rejectWithValue }) => {
+}, { dispatch, rejectWithValue }) => {
   try {
     const alertId = nanoid();
     setTimeout(() => {
-      store.dispatch(clearAlert(alertId));
+      dispatch(clearAlert(alertId));
     }, THREE_SECONDS_MS); // clear the alert automatically after 3 seconds
     return {
       alertId,

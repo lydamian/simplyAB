@@ -6,6 +6,7 @@ import {
 } from 'react-redux';
 import {
   useNavigate,
+  Link,
 } from 'react-router-dom';
 import {
   getProjects,
@@ -20,10 +21,10 @@ const Projects = function Projects() {
 
   useEffect(() => {
     dispatch(fetchProjects());
-  }, [projects]);
-
+  }, []);
   return (
     <div>
+      <h2 className="title is-2">Projects</h2>
       <button
         className="button is-link"
         type="button"
@@ -33,80 +34,58 @@ const Projects = function Projects() {
       >
         Create new
       </button>
-      {projects.map((project) => (
-        <ProjectThumbnail
-          projectId={project.projectId}
-          title={project.title}
-          description={project.description}
-          createdAt={project.createdAt}
-          lastUpdatedAt={project.lastUpdatedAt}
-        />
-      ))}
+      <div className="box rs-flex">
+        {projects.map((project) => (
+          <ProjectThumbnail
+            projectId={project.id}
+            title={project.title}
+            description={project.description}
+            createdAt={project.createdAt}
+            lastUpdatedAt={project.lastUpdatedAt}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
-const ProjectThumbnail = function ({
+const ProjectThumbnail = function ProjectThumbnail({
   projectId,
   title,
   description,
   createdAt,
   lastUpdatedAt,
 }) {
+  console.log('we doin this', projectId);
   return (
-    <div>
-      {JSON.stringify({
-        projectId,
-        title,
-        description,
-        createdAt,
-        lastUpdatedAt,
-      }, null, 2)}
+    <div className="box" project-id={projectId}>
+      <Link to={`/dashboard/experiments/${projectId}`}>
+        <article className="media">
+          <div className="media-left">
+            <figure className="image is-64x64">
+              <img src={`https://picsum.photos/200?dont-cache-me=${Math.random()}`} alt="" />
+            </figure>
+          </div>
+          <div className="media-content">
+            <div className="content">
+              <p>
+                <strong>
+                  {title}
+                </strong>
+                {' '}
+                <small>{' '}</small>
+                {' '}
+                <br />
+                <p>
+                  {description}
+                </p>
+              </p>
+            </div>
+          </div>
+        </article>
+      </Link>
     </div>
   );
-  // return (
-  //   <div className="box">
-  //     <article className="media">
-  //       <div className="media-left">
-  //         <figure className="image is-64x64">
-  //           <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image" />
-  //         </figure>
-  //       </div>
-  //       <div className="media-content">
-  //         <div className="content">
-  //           <p>
-  //             <strong>John Smith</strong>
-  //             {' '}
-  //             <small>@johnsmith</small>
-  //             {' '}
-  //             <small>31m</small>
-  //             <br />
-  //             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
-  //           </p>
-  //         </div>
-  //         <nav className="level is-mobile">
-  //           <div className="level-left">
-  //             <a className="level-item" aria-label="reply">
-  //               <span className="icon is-small">
-  //                 <i className="fas fa-reply" aria-hidden="true" />
-  //               </span>
-  //             </a>
-  //             <a className="level-item" aria-label="retweet">
-  //               <span className="icon is-small">
-  //                 <i className="fas fa-retweet" aria-hidden="true" />
-  //               </span>
-  //             </a>
-  //             <a className="level-item" aria-label="like">
-  //               <span className="icon is-small">
-  //                 <i className="fas fa-heart" aria-hidden="true" />
-  //               </span>
-  //             </a>
-  //           </div>
-  //         </nav>
-  //       </div>
-  //     </article>
-  //   </div>
-  // );
 };
 
 export default Projects;

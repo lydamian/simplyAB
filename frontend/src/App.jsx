@@ -34,6 +34,7 @@ const App = function App() {
         <Route path="projects" element={<Projects />} />
         <Route path="projects/create" element={<CreateProject />} />
         <Route path="/dashboard/experiments" element={<Experiments />} />
+        <Route path="/dashboard/experiments/:projectId" element={<Experiments />} />
         <Route path="/dashboard/variants" element={<Variants />} />
       </Route>
       <Route

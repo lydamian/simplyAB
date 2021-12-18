@@ -21,3 +21,6 @@ implementation details:
 * Eslint
   * airbnb style guide with some tweaks
 * Redux Persist
+* Axios interceptors
+  - we only camelcase our responses since we want to use camelcase on the frontend.
+  - we dont automate snake_casing our external requests parameters since we cant control external requirements.
