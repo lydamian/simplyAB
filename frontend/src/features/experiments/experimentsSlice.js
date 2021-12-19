@@ -17,9 +17,7 @@ export const fetchExperiments = createAsyncThunk('experiments/fetchExperiments',
   },
 ) => {
   try {
-    const {
-      projectId,
-    } = payload;
+    const projectId = payload?.projectId;
     const response = await experimentsService.getExperiments(projectId);
 
     const {
