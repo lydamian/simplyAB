@@ -19,6 +19,10 @@ const Projects = function Projects() {
   const navigate = useNavigate();
   const projects = useSelector(getProjects);
 
+  if (projects == null) {
+    alert('WHy is project null');
+  }
+
   useEffect(() => {
     dispatch(fetchProjects());
   }, []);
@@ -56,7 +60,6 @@ const ProjectThumbnail = function ProjectThumbnail({
   createdAt,
   lastUpdatedAt,
 }) {
-  console.log('we doin this', projectId);
   return (
     <div className="box" project-id={projectId}>
       <Link to={`/dashboard/experiments/${projectId}`}>

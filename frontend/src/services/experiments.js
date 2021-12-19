@@ -26,22 +26,8 @@ const getExperiments = async (userId, projectId) => {
         Authorization: helpers.getAuthToken(),
       },
     });
-    logger.info(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/experiment/get`,
-      response.status,
-      JSON.stringify(response.data),
-    );
     return response;
   } catch (error) {
-    logger.error(
-      LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/experiment/get`,
-      error.response.data,
-      error.response.status,
-      error.message,
-      error.stack,
-    );
     return error.response;
   }
 };
