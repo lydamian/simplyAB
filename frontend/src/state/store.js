@@ -1,4 +1,8 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  combineReducers,
+  createAction,
+} from '@reduxjs/toolkit';
 import {
   persistReducer,
   FLUSH,
@@ -14,17 +18,33 @@ import projectsReducer from '../features/projects/projectsSlice';
 import experimentsReducer from '../features/experiments/experimentsSlice';
 import alertsReducer from '../features/alerts/alertsSlice';
 
+const LOGOUT_REQUEST = 'root/logout';
+const logout = createAction(LOGOUT_REQUEST);
+
 const persistConfig = {
   key: 'root',
   storage,
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
+  /** Your app's top level reducers */
   projects: projectsReducer,
   experiments: experimentsReducer,
   auth: authReducer,
   alerts: alertsReducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === LOGOUT_REQUEST) {
+    // for all keys defined in your persistConfig(s)
+    storage.removeItem('persist:root');
+
+    // remove auth token from localStorage
+    localStorage.removeItem('simply_ab_auth_token');
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -38,3 +58,7 @@ const store = configureStore({
 });
 
 export default store;
+
+export {
+  logout,
+};

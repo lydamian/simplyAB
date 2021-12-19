@@ -4,7 +4,7 @@ import './HeaderBar.css';
 import { useDispatch } from 'react-redux';
 import {
   logout,
-} from 'features/auth/authSlice';
+} from 'state/store';
 import { Link } from 'react-router-dom';
 
 

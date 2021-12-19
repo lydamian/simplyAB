@@ -180,12 +180,6 @@ const authSlice = createSlice({
         Object.assign(state, initialState);
       },
     },
-    logout: {
-      reducer(state) {
-        Object.assign(state, initialState);
-        localStorage.removeItem('simply_ab_auth_token');
-      },
-    },
   },
   extraReducers: (builder) => {
     builder

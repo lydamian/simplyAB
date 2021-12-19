@@ -1,9 +1,6 @@
 import axios from 'utils/request';
 import constants from 'Constants';
 import helpers from 'utils/helpers';
-import logger from 'utils/logger';
-
-const LOG_TAG = '[services/experiments]';
 
 /**
  * Gets all experiments for a user or a projectId optionally.

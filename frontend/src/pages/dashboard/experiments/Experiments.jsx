@@ -18,7 +18,7 @@ const Experiments = () => {
 
   useEffect(() => {
     if (experimentsStatus === 'idle') {
-      dispatch(fetchExperiments());
+      dispatch(fetchExperiments(projectId));
     }
   }, []);
 
