@@ -8,6 +8,7 @@ import {
   useNavigate,
   Link,
 } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 import {
   getProjects,
   fetchProjects,
@@ -41,6 +42,7 @@ const Projects = function Projects() {
       <div className="box rs-flex">
         {projects.map((project) => (
           <ProjectThumbnail
+            key={nanoid()}
             projectId={project.id}
             title={project.title}
             description={project.description}

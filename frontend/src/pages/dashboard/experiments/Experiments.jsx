@@ -6,6 +6,7 @@ import {
   Link,
   useParams,
 } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 import { getExperiments, fetchExperiments } from 'features/experiments/experimentsSlice';
 
 const Experiments = () => {
@@ -18,7 +19,7 @@ const Experiments = () => {
 
   useEffect(() => {
     if (experimentsStatus === 'idle') {
-      dispatch(fetchExperiments(projectId));
+      dispatch(fetchExperiments({projectId}));
     }
   }, []);
 
@@ -44,8 +45,8 @@ const Experiments = () => {
           </thead>
           <tbody>
           {experiments.map((experiment) => (
-            <tr>
-              <td><Link to="/dashboard/variants">{experiment.title}</Link></td>
+            <tr key={nanoid()}>
+              <td><Link to={`/dashboard/variants/${experiment.id}`}>{experiment.title}</Link></td>
               <td>{experiment.description}</td>
               <td>{experiment.active}</td>
               <td>{experiment.created_at}</td>
@@ -67,8 +68,8 @@ const EditExperimentDropdown = () => {
     <div className="dropdown is-right is-hoverable">
       <div className="dropdown-trigger">
         <button className="button is-ghost" aria-haspopup="true" aria-controls="dropdown-menu">
-          <span class="icon">
-            <i class="fas fa-ellipsis-v"></i>
+          <span className="icon">
+            <i className="fas fa-ellipsis-v"></i>
           </span>
         </button>
       </div>

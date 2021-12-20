@@ -16,6 +16,7 @@ import storage from 'redux-persist/lib/storage';
 import authReducer from 'features/auth/authSlice';
 import projectsReducer from '../features/projects/projectsSlice';
 import experimentsReducer from '../features/experiments/experimentsSlice';
+import variantsReducer from '../features/variants/variantsSlice';
 import alertsReducer from '../features/alerts/alertsSlice';
 
 const LOGOUT_REQUEST = 'root/logout';
@@ -30,6 +31,7 @@ const appReducer = combineReducers({
   /** Your app's top level reducers */
   projects: projectsReducer,
   experiments: experimentsReducer,
+  variants: variantsReducer,
   auth: authReducer,
   alerts: alertsReducer,
 });

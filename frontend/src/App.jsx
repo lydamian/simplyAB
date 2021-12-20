@@ -36,6 +36,7 @@ const App = function App() {
         <Route path="/dashboard/experiments" element={<Experiments />} />
         <Route path="/dashboard/experiments/:projectId" element={<Experiments />} />
         <Route path="/dashboard/variants" element={<Variants />} />
+        <Route path="/dashboard/variants/:experimentId" element={<Variants />} />
       </Route>
       <Route
         path="*"

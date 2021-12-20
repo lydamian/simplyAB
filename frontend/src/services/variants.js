@@ -3,21 +3,18 @@ import constants from 'Constants';
 import helpers from 'utils/helpers';
 
 /**
- * Gets all experiments for a user or a projectId optionally.
+ * Gets all variants for a user or a experimentId optionally.
  *
- * @param {Number|null} projectId
+ * @param {Number|null} experimentId
  *
- * @returns {Object}
+ * @returns {Promise.<Object>} Object
 }
  */
-const getExperiments = async (projectId) => {
+const getVariants = async (experimentId) => {
   try {
-    const queryParams = new URLSearchParams({
-      project_id: projectId,
-    }).toString();
     const response = await axios({
       method: 'get',
-      url: `${constants.SIMPLY_AB_HOSTNAME}/api/experiment/get?${queryParams}`,
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/variant/get/${experimentId}`,
       headers: {
         Authorization: helpers.getAuthToken(),
       },
@@ -29,5 +26,5 @@ const getExperiments = async (projectId) => {
 };
 
 export default {
-  getExperiments,
+  getVariants,
 };
