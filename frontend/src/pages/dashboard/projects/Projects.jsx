@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   useSelector,
   useDispatch,
@@ -17,6 +17,7 @@ import {
 } from 'features/projects/projectsSlice';
 import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
 import './Projects.css';
+import useOutsideClick from 'hooks/useOutsideClick';
 
 const Projects = function Projects() {
   // hooks
@@ -58,7 +59,7 @@ const Projects = function Projects() {
                 <td>{format(new Date(project.createdAt), 'PPpp')}</td>
                 <td>{format(new Date(project.lastUpdatedAt), 'PPpp')}</td>
                 <td className="rs-cursor-pointer">
-                  <EditProjectMenu />
+                  <EditProjectMenu project={project} />
                 </td>
               </tr>
             ))}
@@ -69,9 +70,26 @@ const Projects = function Projects() {
   );
 };
 
-const EditProjectMenu = function EditProjectMenu() {
+const EditProjectMenu = function EditProjectMenu({ project }) {
+  // hooks
+  const [isActive, setIsActive] = useState(false);
+  const dropdownRef = useRef();
+  // Change my dropdown state to close when clicked outside
+  useOutsideClick(dropdownRef, () => setIsActive(false));
+
   return (
-    <div className="dropdown is-active">
+    <div
+      className={`dropdown ${isActive ? 'is-active' : ''}`}
+      role="menu"
+      onClick={(event) => {
+        setIsActive(!isActive);
+      }}
+      tabIndex={0}
+      onKeyDown={(event) => {
+        setIsActive(!isActive);
+      }}
+      ref={dropdownRef}
+    >
       <div className="dropdown-trigger">
         <button type="button" className="button" aria-haspopup="true" aria-controls="dropdown-menu2">
           <span>Content</span>
@@ -106,23 +124,6 @@ const EditProjectMenu = function EditProjectMenu() {
         </div>
       </div>
     </div>
-    // <div className="menu">
-    //   <p className="menu-label">
-    //     Administration
-    //   </p>
-    //   <ul className="menu-list">
-    //     <li>Archive</li>
-    //     <li>Delete</li>
-    //     <li>Run</li>
-    //     <li>Pause</li>
-    //   </ul>
-    //   <p className="menu-label">
-    //     General
-    //   </p>
-    //   <ul className="menu-list">
-    //     <li>Edit</li>
-    //   </ul>
-    // </div>
   );
 };
 
