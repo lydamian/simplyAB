@@ -4,8 +4,10 @@ import {
   Link,
   useParams,
 } from 'react-router-dom';
+import { format } from 'date-fns';
 import { nanoid } from 'nanoid';
 import { getVariants, fetchVariants } from 'features/variants/variantsSlice';
+import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
 
 const Variants = function Variants() {
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ const Variants = function Variants() {
 
   return (
     <div>
-      <h6>Variants</h6>
+      <DashboardBodyTitle title="Experiments" />
       <table className="table rs-shadow-1 is-hoverable is-fullwidth">
         <thead>
           <tr>
@@ -36,9 +38,9 @@ const Variants = function Variants() {
           {variants.map((variant) => (
             <tr key={nanoid()}>
               <td><Link to={`/dashboard/variants/edit/${variant.id}`}>{variant.title}</Link></td>
-              <td>{variant.description}</td>
-              <td>{variant.created_at}</td>
-              <td>{variant.last_updated_at}</td>
+              <td>{variant.trafficAllocationPercentage}</td>
+              <td>{format(new Date(variant.createdAt), 'PPpp')}</td>
+              <td>{format(new Date(variant.lastUpdatedAt), 'PPpp')}</td>
             </tr>
           ))}
         </tbody>

@@ -1,35 +1,39 @@
-/* eslint-disable */
-
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Link,
   useParams,
 } from 'react-router-dom';
+import { format } from 'date-fns';
 import { nanoid } from 'nanoid';
 import { getExperiments, fetchExperiments } from 'features/experiments/experimentsSlice';
+import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
+import experimentConstants from './ExperimentConstants';
 
-const Experiments = () => {
+const Experiments = function Experiments() {
   // hooks
-  const dispatch = useDispatch()
-  const experiments = useSelector(getExperiments)
+  const dispatch = useDispatch();
+  const experiments = useSelector(getExperiments);
   const params = useParams();
-  const projectId = params.projectId;
-  const experimentsStatus = useSelector(state => state.experiments.status)
+  const { projectId } = params;
+  const experimentsStatus = useSelector((state) => state.experiments.status);
 
   useEffect(() => {
     if (experimentsStatus === 'idle') {
-      dispatch(fetchExperiments({projectId}));
+      dispatch(fetchExperiments({ projectId }));
     }
   }, []);
 
   return (
     <div>
-      <h2 className="title is-2">Experiments</h2>
+      <DashboardBodyTitle title="Experiments" />
       <button
+        type="button"
         className="button is-link"
-        onClick={() => {}}>
-        {'Create New'}
+        onClick={() => {}}
+      >
+        Create New
       </button>
       <div className="box">
         <table className="table rs-shadow-1 is-hoverable is-fullwidth">
@@ -37,25 +41,31 @@ const Experiments = () => {
             <tr>
               <th>Name</th>
               <th>Description</th>
-              <th>Active</th>
+              <th>Status</th>
               <th>Created</th>
               <th>Last Modified</th>
-              <th></th>
+              <th />
             </tr>
           </thead>
           <tbody>
-          {experiments.map((experiment) => (
-            <tr key={nanoid()}>
-              <td><Link to={`/dashboard/variants/${experiment.id}`}>{experiment.title}</Link></td>
-              <td>{experiment.description}</td>
-              <td>{experiment.active}</td>
-              <td>{experiment.created_at}</td>
-              <td>{experiment.last_updated_at}</td>
-              <td className="rs-cursor-pointer">
-                <EditExperimentDropdown />
-              </td>
-            </tr>
-          ))}
+            {experiments.map((experiment) => (
+              <tr key={nanoid()}>
+                <td><Link to={`/dashboard/variants/${experiment.id}`}>{experiment.title}</Link></td>
+                <td>{experiment.description}</td>
+                <td
+                  style={{
+                    color: experimentConstants.STATUS_MAP[experiment.status].DISPLAY_COLOR,
+                  }}
+                >
+                  {`⬤ ${experiment.status}`}
+                </td>
+                <td>{format(new Date(experiment.createdAt), 'PPpp')}</td>
+                <td>{format(new Date(experiment.lastUpdatedAt), 'PPpp')}</td>
+                <td className="rs-cursor-pointer">
+                  <EditExperimentDropdown />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -63,29 +73,29 @@ const Experiments = () => {
   );
 };
 
-const EditExperimentDropdown = () => {
+const EditExperimentDropdown = function EditExperimentDropdown() {
   return (
     <div className="dropdown is-right is-hoverable">
       <div className="dropdown-trigger">
-        <button className="button is-ghost" aria-haspopup="true" aria-controls="dropdown-menu">
+        <button type="button" className="button is-ghost" aria-haspopup="true" aria-controls="dropdown-menu">
           <span className="icon">
-            <i className="fas fa-ellipsis-v"></i>
+            <i className="fas fa-ellipsis-v" />
           </span>
         </button>
       </div>
       <div className="dropdown-menu" id="dropdown-menu" role="menu">
         <div className="dropdown-content">
-          <a href="#" className="dropdown-item">
+          <a href="/dashboard/" className="dropdown-item">
             Copy
           </a>
           <hr className="dropdown-divider" />
-          <a href="#" className="dropdown-item">
+          <a href="/dashboard/" className="dropdown-item">
             Delete
           </a>
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default Experiments;

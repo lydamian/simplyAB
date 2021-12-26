@@ -56,6 +56,13 @@ const HeaderBar = () => {
           </div>
         </div>
       </nav>
+      <nav class="breadcrumb has-arrow-separator has-background-grey-lighter rs-p-4" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="#">Projects</a></li>
+          <li><a href="#">Experiments</a></li>
+          <li class="is-active"><a href="#" aria-current="page">Variants</a></li>
+        </ul>
+      </nav>
     </div>
   );
 };
