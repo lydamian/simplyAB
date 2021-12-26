@@ -10,7 +10,7 @@ module.exports = {
    * @param {String} title 
    * @param {String} description 
    * @param {Number} traffic_allocation_percentage 
-   * @param {Boolean} active 
+   * @param {String} status 
    * @param {Date} created_at
    *
    * @returns {Promise.<Object>}]
@@ -24,7 +24,7 @@ module.exports = {
     title,
     description,
     traffic_allocation_percentage,
-    active,
+    status,
     created_at
   ) => {
     const data = {
@@ -33,7 +33,7 @@ module.exports = {
       title,
       description,
       traffic_allocation_percentage,
-      active,
+      status,
       // optional params, conditionally add
       ...(created_at != null && { created_at }),
     };
@@ -55,7 +55,7 @@ module.exports = {
     title,
     description,
     traffic_allocation_percentage,
-    active
+    status
   ) => {
     const updated_rows = await knex_pg('experiment')
     .where('id', experiment_id)
@@ -64,32 +64,35 @@ module.exports = {
       key,
       description,
       traffic_allocation_percentage,
-      active
+      status
     })
     const success = updated_rows > 0;
     return success;
   },
 
   /**
-   * Get all active experiments given a project_id.
+   * Get all experiments given a project_id and optionally a status
    * 
    * @param {Number} user_id
-   * @param {Number|null} project_id
+   * @param {Number|null} project_id (optional)
+   * @param {String|null} status (optional)
    *
    * @returns {Promise.<Array.<Object>>}
    */
-  get: async (user_id, project_id) => {
+  get: async (user_id, project_id, status) => {
     const rows = await knex_pg
       .select('experiment.*')
       .from('experiment')
       .innerJoin('project', 'experiment.project_id', 'project.id')
-      .andWhere('active', true)
       .andWhere('user_id', user_id)
       .modify((queryBuilder) => {
         if (project_id != null) {
             queryBuilder.where('project_id', project_id);
         }
-      });
+        if (status != null) {
+          queryBuilder.where('status', status);
+        }
+      })
     return rows;
   },
   

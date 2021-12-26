@@ -10,7 +10,7 @@ module.exports = {
         title,
         description,
         traffic_allocation_percentage,
-        active,
+        status,
         created_at,
       } = req.payload;
       const experiment_id = await experiment_interactor.create(
@@ -19,7 +19,7 @@ module.exports = {
         title,
         description,
         traffic_allocation_percentage,
-        active,
+        status,
         created_at,
       );
       return h.response({
@@ -52,7 +52,7 @@ module.exports = {
         title,
         description,
         traffic_allocation_percentage,
-        active,
+        status,
       } = req.payload;
       const success = await experiment_interactor.update(
         user_id,
@@ -61,7 +61,7 @@ module.exports = {
         title,
         description,
         traffic_allocation_percentage,
-        active,
+        status,
       );
       return h.response({
         error: null,

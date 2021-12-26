@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const experiment_handler = require('./experiment-handler');
-const C = require('../constants');
+const experiment_constants = require('./experiment-constants');
 
 module.exports = [
   {
@@ -28,9 +28,10 @@ module.exports = [
             .min(0)
             .max(100)
             .required(),
-          active: Joi.boolean()
+          status: Joi.string()
+            .valid(...Object.values(experiment_constants.EXPERIMENT_STATUS_TYPES))
             .optional()
-            .default(true),
+            .default(experiment_constants.DEFAULT_EXPERIMENT_STATUS_TYPE),
           created_at: Joi.date()
             .optional()
             .iso()
@@ -64,8 +65,10 @@ module.exports = [
             .min(0)
             .max(100)
             .required(),
-          active: Joi.boolean()
-            .optional(),
+          status: Joi.string()
+            .valid(...Object.values(experiment_constants.EXPERIMENT_STATUS_TYPES))
+            .optional()
+            .default(experiment_constants.DEFAULT_EXPERIMENT_STATUS_TYPE),
         }),
       },
     },

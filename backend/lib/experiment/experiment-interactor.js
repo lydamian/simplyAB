@@ -12,7 +12,7 @@ module.exports = {
     title,
     description,
     traffic_allocation_percentage,
-    active,
+    status,
     created_at
   ) => {
     const experiment_id = await experiment_model.create(
@@ -21,7 +21,7 @@ module.exports = {
       title,
       description,
       traffic_allocation_percentage,
-      active,
+      status,
       created_at
     );
     return experiment_id;
@@ -33,7 +33,7 @@ module.exports = {
     title,
     description,
     traffic_allocation_percentage,
-    active,
+    status,
   ) => {
     await experiment_helper.validate_experiment_ownership(user_id, experiment_id);
     const success = await experiment_model.update(
@@ -42,7 +42,7 @@ module.exports = {
       title,
       description,
       traffic_allocation_percentage,
-      active
+      status
     );
     return success;
   },

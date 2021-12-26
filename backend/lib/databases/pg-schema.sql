@@ -40,6 +40,15 @@ CREATE TABLE IF NOT EXISTS project
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
 );
 
+DROP TYPE IF EXISTS experiment_status CASCADE;
+CREATE TYPE experiment_status AS ENUM (
+  'DRAFT',
+  'RUNNING',
+  'PAUSED',
+  'ARCHIVED',
+  'DELETED'
+);
+
 DROP TABLE IF EXISTS experiment CASCADE;
 CREATE TABLE IF NOT EXISTS experiment
 (
@@ -49,7 +58,7 @@ CREATE TABLE IF NOT EXISTS experiment
   key varchar(100) NOT NULL,
   description text NOT NULL,
   traffic_allocation_percentage INT NOT NULL,
-  active boolean DEFAULT true NOT NULL,
+  status experiment_status DEFAULT 'DRAFT' NOT NULL,
   created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
   CONSTRAINT unique_experiment_title UNIQUE (project_id, title),
