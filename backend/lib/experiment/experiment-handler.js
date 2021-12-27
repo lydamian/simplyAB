@@ -110,7 +110,7 @@ module.exports = {
     } = req.auth.credentials;
     const {
       project_id,
-    } = req.params;
+    } = req.query;
     try {
       const experiments = await experiment_interactor.get(user_id, project_id);
       return h.response({

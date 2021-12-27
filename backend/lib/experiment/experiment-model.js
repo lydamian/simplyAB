@@ -71,7 +71,7 @@ module.exports = {
   },
 
   /**
-   * Get all experiments given a project_id and optionally a status
+   * Get all experiments given a project_id and optionally a status.
    * 
    * @param {Number} user_id
    * @param {Number|null} project_id (optional)
