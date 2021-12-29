@@ -8,7 +8,7 @@ import {
   clearPostProjectSuccess,
 } from 'features/projects/projectsSlice';
 
-const CreateProject = function CreateProject() {
+const EditProject = function EditProject() {
   // hooks
   const [newProjectTitle, setNewProjectTitle] = useState('');
   const [newProjectDescription, setNewProjectDescription] = useState('');
@@ -35,7 +35,7 @@ const CreateProject = function CreateProject() {
   return (
     <div>
       <div className="box">
-        <h3 className="title is-3">Create new project</h3>
+        <h3 className="title is-3">Edit project</h3>
         <p>
           Use SimplyAB to run experiments on a variety of platforms.
         </p>
@@ -78,7 +78,7 @@ const CreateProject = function CreateProject() {
             className="button is-info"
             onClick={submitCreateProjectFormHandler}
           >
-            Create Project
+            Save
           </button>
         </form>
       </div>
@@ -86,4 +86,4 @@ const CreateProject = function CreateProject() {
   );
 };
 
-export default CreateProject;
+export default EditProject;

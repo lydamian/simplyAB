@@ -24,7 +24,7 @@ const Variants = function Variants() {
 
   return (
     <div>
-      <DashboardBodyTitle title="Experiments" />
+      <DashboardBodyTitle title="Variants" />
       <table className="table rs-shadow-1 is-hoverable is-fullwidth">
         <thead>
           <tr>

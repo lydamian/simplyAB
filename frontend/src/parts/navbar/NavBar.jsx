@@ -9,7 +9,7 @@ const NavBar = function NavBar() {
   const dispatch = useDispatch();
 
   return (
-    <div className="raya-navbar box has-background-white">
+    <div className="sab-navbar box has-background-white">
       <Link to="/dashboard">
         <div className="has-text-centered is-size-3 font-yeseva-one-cursive has-text-black">
           S. A/B

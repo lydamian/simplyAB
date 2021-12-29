@@ -3,37 +3,53 @@
   gap: 12px;
   /* padding: 10px; */
   grid-template-columns: 12% 1fr;
-  grid-template-rows: minmax(0, 10vh) minmax(88vh, auto);
+  grid-template-rows: minmax(0, 10vh) minmax(0, 7vh) minmax(88vh, auto);
   grid-template-areas: 
-    "raya-navbar-area raya-header-bar-area"
-    "raya-navbar-area raya-dashboard-body-area"                     
+    "sab-navbar-area sab-header-bar-area"
+    "sab-navbar-area sab-breadcrumb"
+    "sab-navbar-area sab-dashboard-body-area"                     
 }
 
-#dashboard .raya-logo {
+@media only screen and (max-width: 600px) {
+  #dashboard {
+    display: grid;
+    gap: 12px;
+    /* padding: 10px; */
+    grid-template-columns: 0% 1fr;
+    grid-template-rows: minmax(0, 10vh) minmax(0, 8vh) minmax(88vh, auto);
+    grid-template-areas: 
+      "sab-navbar-area sab-header-bar-area"
+      "sab-navbar-area sab-breadcrumb"
+      "sab-navbar-area sab-dashboard-body-area";
+  }
+}
+
+#dashboard .sab-logo {
   height: 8vh;
   width: auto;
   margin: 0 auto;
   padding-left: 12%;
-  grid-area: raya-logo-area;
+  grid-area: sab-logo-area;
 }
-#dashboard .raya-navbar {
-  grid-area: raya-navbar-area;
+#dashboard .sab-navbar {
+  grid-area: sab-navbar-area;
   margin-bottom: 0;
   border-radius: 20px;
   margin-top: 5px;
   height: 99vh;
+  overflow: hidden;
 }
-#dashboard .raya-navbar .link {
+#dashboard .sab-navbar .link {
   /* background-color: rgba(0,0,0,0); */
   /* color: white; */
   margin-top: 6px;
   justify-content: left;
   text-overflow: ellipsis;
 }
-#dashboard .raya-header-bar {
-  grid-area: raya-header-bar-area;
+#dashboard .sab-header-bar {
+  grid-area: sab-header-bar-area;
   margin-bottom: 0;
 }
-#dashboard .raya-dashboard-body {
-  grid-area: raya-dashboard-body-area;
+#dashboard .sab-dashboard-body {
+  grid-area: sab-dashboard-body-area;
 }

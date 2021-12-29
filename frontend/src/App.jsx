@@ -6,6 +6,7 @@ import './App.css';
 import PrivateRoute from 'components/PrivateRoute';
 import Projects from 'pages/dashboard/projects/Projects';
 import CreateProject from 'pages/dashboard/projects/CreateProject';
+import EditProject from 'pages/dashboard/projects/EditProject';
 import Experiments from 'pages/dashboard/experiments/Experiments';
 import Variants from 'pages/dashboard/variants/Variants';
 import Login from './pages/auth/Login';
@@ -33,6 +34,7 @@ const App = function App() {
       >
         <Route path="projects" element={<Projects />} />
         <Route path="projects/create" element={<CreateProject />} />
+        <Route path="projects/edit/:projectId" element={<EditProject />} />
         <Route path="/dashboard/experiments" element={<Experiments />} />
         <Route path="/dashboard/experiments/:projectId" element={<Experiments />} />
         <Route path="/dashboard/variants" element={<Variants />} />

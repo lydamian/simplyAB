@@ -29,7 +29,7 @@ const getProjects = async (userId) => {
   }
 };
 /**
- * creates a new project.
+ * Creates a new project.
  *
  * @param {String} userId
  * @param {String} title
@@ -72,8 +72,86 @@ const createProject = async (
     return error.response;
   }
 };
+/**
+ * Deletes a project.
+ *
+ * @param {Number} projectId
+ *
+ * @returns {Promise.<Object>} response
+ */
+const deleteProject = async (projectId) => {
+  try {
+    const response = await axios({
+      method: 'DELETE',
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      data: {
+        project_id: projectId,
+      },
+      headers: {
+        Authorization: helpers.getAuthToken(),
+      },
+    });
+    logger.info(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      response.status,
+      JSON.stringify(response.data),
+    );
+    return response;
+  } catch (error) {
+    logger.error(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      error.response.data,
+      error.response.status,
+      error.message,
+      error.stack,
+    );
+    return error.response;
+  }
+};
+
+/**
+ * Deletes a project.
+ *
+ * @param {Number} projectId
+ *
+ * @returns {Promise.<Object>} response
+ */
+const updateProject = async (projectId) => {
+  try {
+    const response = await axios({
+      method: 'DELETE',
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      data: {
+        project_id: projectId,
+      },
+      headers: {
+        Authorization: helpers.getAuthToken(),
+      },
+    });
+    logger.info(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      response.status,
+      JSON.stringify(response.data),
+    );
+    return response;
+  } catch (error) {
+    logger.error(
+      LOG_TAG,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      error.response.data,
+      error.response.status,
+      error.message,
+      error.stack,
+    );
+    return error.response;
+  }
+};
 
 export default {
   getProjects,
   createProject,
+  deleteProject,
 };

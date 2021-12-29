@@ -13,7 +13,15 @@ const initialState = {
   postProjectSuccess: null,
 };
 
-export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async (
+// selectors
+const selectAllProjects = (state) => state.projects.projects;
+const selectPostProjectSuccess = (state) => state.projects.postProjectSuccess;
+
+// Action creators are generated for each case reducer function
+const { clearPostProjectSuccess } = projectsSlice.actions;
+
+// thunks
+const fetchProjects = createAsyncThunk('applicants/fetchProjects', async (
   _payload,
   {
     getState,
@@ -49,7 +57,7 @@ export const fetchProjects = createAsyncThunk('applicants/fetchProjects', async 
   }
 });
 
-export const postProject = createAsyncThunk('applicants/postProject', async (
+const postProject = createAsyncThunk('applicants/postProject', async (
   payload,
   {
     dispatch,
@@ -100,7 +108,52 @@ export const postProject = createAsyncThunk('applicants/postProject', async (
   }
 });
 
-export const projectsSlice = createSlice({
+const deleteProject = createAsyncThunk('applicants/deleteProject', async (
+  payload,
+  {
+    dispatch,
+    rejectWithValue,
+  },
+) => {
+  const {
+    projectId,
+  } = payload;
+  try {
+    const response = await projectsService.deleteProject(projectId);
+    const {
+      error,
+      statusCode,
+      description,
+    } = response.data;
+
+    logger.info(
+      `${LOG_TAG} deleteProject`,
+      `HTTP_STATUS: ${response.status}`,
+      `error: ${error}`,
+      `status_code: ${statusCode}`,
+      `description: ${description}`,
+    );
+
+    if (error == null) {
+      await dispatch(fetchProjects());
+      dispatch(addAlert({
+        message: 'Successfully deleted project',
+        type: 'SUCCESS',
+      }));
+      return true;
+    }
+    dispatch(addAlert({
+      message: description,
+      type: 'DANGER',
+    }));
+    return false;
+  } catch (error) {
+    logger.error(`${LOG_TAG} deleteProject ERROR:`, error.message, error.stack);
+    rejectWithValue(false);
+  }
+});
+
+const projectsSlice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
@@ -135,15 +188,29 @@ export const projectsSlice = createSlice({
         const success = action.payload;
         projectState.postProjectSuccess = success;
         projectState.status = 'idle';
+      })
+      .addCase(deleteProject.pending, (projectState) => {
+        projectState.status = 'loading';
+      })
+      .addCase(deleteProject.fulfilled, (projectState, action) => {
+        projectState.status = 'idle';
+      })
+      .addCase(deleteProject.rejected, (projectState, action) => {
+        projectState.status = 'idle';
       });
   },
 });
 
-// getters
-export const getProjects = (state) => state.projects.projects;
-export const getPostProjectSuccess = (state) => state.projects.postProjectSuccess;
-
-// Action creators are generated for each case reducer function
-export const { clearPostProjectSuccess } = projectsSlice.actions;
-
+// exports
 export default projectsSlice.reducer;
+export {
+  // selectors
+  selectAllProjects,
+  selectPostProjectSuccess,
+
+  // actions
+  clearPostProjectSuccess,
+  fetchProjects,
+  postProject,
+  deleteProject,
+};

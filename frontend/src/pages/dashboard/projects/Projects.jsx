@@ -12,8 +12,9 @@ import {
 import { nanoid } from 'nanoid';
 import { format } from 'date-fns';
 import {
-  getProjects,
+  selectAllProjects,
   fetchProjects,
+  deleteProject,
 } from 'features/projects/projectsSlice';
 import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
 import './Projects.css';
@@ -23,16 +24,17 @@ const Projects = function Projects() {
   // hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const projects = useSelector(getProjects);
+  const projects = useSelector(selectAllProjects);
 
   useEffect(() => {
     dispatch(fetchProjects());
   }, []);
+
   return (
-    <div>
+    <div className="box">
       <DashboardBodyTitle title="Projects" />
       <button
-        className="button is-link"
+        className="button is-link rs-mb-3"
         type="button"
         onClick={() => {
           navigate('/dashboard/projects/create');
@@ -40,7 +42,7 @@ const Projects = function Projects() {
       >
         Create new
       </button>
-      <div id="projects" className="box">
+      <div id="projects">
         <table className="table rs-shadow-1 is-hoverable is-fullwidth">
           <thead>
             <tr>
@@ -74,8 +76,13 @@ const EditProjectMenu = function EditProjectMenu({ project }) {
   // hooks
   const [isActive, setIsActive] = useState(false);
   const dropdownRef = useRef();
+  const dispatch = useDispatch();
   // Change my dropdown state to close when clicked outside
   useOutsideClick(dropdownRef, () => setIsActive(false));
+
+  const deleteAndRefetchProjects = async (projectIdToDelete) => {
+    dispatch(deleteProject({ projectId: projectIdToDelete }));
+  };
 
   return (
     <div
@@ -91,10 +98,9 @@ const EditProjectMenu = function EditProjectMenu({ project }) {
       ref={dropdownRef}
     >
       <div className="dropdown-trigger">
-        <button type="button" className="button" aria-haspopup="true" aria-controls="dropdown-menu2">
-          <span>Content</span>
-          <span className="icon is-small">
-            <i className="fas fa-angle-down" aria-hidden="true" />
+        <button type="button" className="button" aria-haspopup="true" aria-controls="dropdown-menu">
+          <span className="icon">
+            <i className="fas fa-ellipsis-v" />
           </span>
         </button>
       </div>
@@ -102,25 +108,19 @@ const EditProjectMenu = function EditProjectMenu({ project }) {
         <div className="dropdown-content">
           <div className="dropdown-item">
             <p>
-              You can insert
-              <strong>any type of content</strong>
-              {' '}
-              within the dropdown menu.
+              <Link to={`/dashboard/projects/edit/${project.id}`}>Edit</Link>
             </p>
           </div>
-          <hr className="dropdown-divider" />
           <div className="dropdown-item">
-            <p>
-              You simply need to use a
-              <code>&lt;div&gt;</code>
-              {' '}
-              instead.
-            </p>
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => deleteAndRefetchProjects(project.id)}
+              onKeyDown={() => deleteAndRefetchProjects(project.id)}
+            >
+              Delete
+            </div>
           </div>
-          <hr className="dropdown-divider" />
-          <Link to="/dashboard/experiments" className="dropdown-item">
-            This is a link
-          </Link>
         </div>
       </div>
     </div>

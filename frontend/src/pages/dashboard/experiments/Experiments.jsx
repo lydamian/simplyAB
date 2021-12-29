@@ -26,16 +26,16 @@ const Experiments = function Experiments() {
   }, []);
 
   return (
-    <div>
+    <div className="box">
       <DashboardBodyTitle title="Experiments" />
       <button
         type="button"
-        className="button is-link"
+        className="button is-link rs-mb-3"
         onClick={() => {}}
       >
         Create New
       </button>
-      <div className="box">
+      <div>
         <table className="table rs-shadow-1 is-hoverable is-fullwidth">
           <thead>
             <tr>

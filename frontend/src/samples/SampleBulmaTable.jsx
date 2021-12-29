@@ -2,7 +2,7 @@ import React from 'react';
 
 const SampleBulmaTable = function () {
   return (
-    <div className="raya-dashboard-body box">
+    <div className="sab-dashboard-body box">
       <table className="table is-fullwidth">
         <thead>
           <tr>
