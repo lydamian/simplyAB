@@ -1,4 +1,3 @@
-/* eslint-disable semi */
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import logger from 'utils/logger';
@@ -16,12 +15,13 @@ const initialState = {
 // selectors
 const selectAllProjects = (state) => state.projects.projects;
 const selectPostProjectSuccess = (state) => state.projects.postProjectSuccess;
-
-// Action creators are generated for each case reducer function
-const { clearPostProjectSuccess } = projectsSlice.actions;
+const selectProjectStatus = (state) => state.projects.status;
+const selectProjectById = (state, projectId) => (
+  state.projects.projects.find((project) => project.id === projectId)
+);
 
 // thunks
-const fetchProjects = createAsyncThunk('applicants/fetchProjects', async (
+const fetchProjects = createAsyncThunk('projects/fetchProjects', async (
   _payload,
   {
     getState,
@@ -57,7 +57,7 @@ const fetchProjects = createAsyncThunk('applicants/fetchProjects', async (
   }
 });
 
-const postProject = createAsyncThunk('applicants/postProject', async (
+const postProject = createAsyncThunk('projects/postProject', async (
   payload,
   {
     dispatch,
@@ -108,7 +108,7 @@ const postProject = createAsyncThunk('applicants/postProject', async (
   }
 });
 
-const deleteProject = createAsyncThunk('applicants/deleteProject', async (
+const deleteProject = createAsyncThunk('projects/deleteProject', async (
   payload,
   {
     dispatch,
@@ -153,6 +153,57 @@ const deleteProject = createAsyncThunk('applicants/deleteProject', async (
   }
 });
 
+const updateProject = createAsyncThunk('projects/updateProject', async (
+  payload,
+  {
+    dispatch,
+    rejectWithValue,
+  },
+) => {
+  const {
+    projectId,
+    title: projectTitle,
+    description: projectDescription,
+  } = payload;
+  try {
+    const response = await projectsService.updateProject(
+      projectId,
+      projectTitle,
+      projectDescription,
+    );
+    const {
+      error,
+      statusCode,
+      description,
+    } = response.data;
+
+    logger.info(
+      `${LOG_TAG} updateProject`,
+      `HTTP_STATUS: ${response.status}`,
+      `error: ${error}`,
+      `status_code: ${statusCode}`,
+      `description: ${description}`,
+    );
+
+    if (error == null) {
+      await dispatch(fetchProjects());
+      dispatch(addAlert({
+        message: 'Successfully updated project',
+        type: 'SUCCESS',
+      }));
+      return true;
+    }
+    dispatch(addAlert({
+      message: description,
+      type: 'DANGER',
+    }));
+    return false;
+  } catch (error) {
+    logger.error(`${LOG_TAG} updateProject ERROR:`, error.message, error.stack);
+    rejectWithValue(false);
+  }
+});
+
 const projectsSlice = createSlice({
   name: 'projects',
   initialState,
@@ -168,13 +219,13 @@ const projectsSlice = createSlice({
       })
       .addCase(fetchProjects.fulfilled, (projectState, action) => {
         const projects = action.payload;
-        projectState.projects = projects
+        projectState.projects = projects;
         projectState.status = 'idle';
       })
       .addCase(fetchProjects.rejected, (projectState, action) => {
         const projects = action.payload;
         projectState.projects = projects;
-        projectState.status = 'idle'
+        projectState.status = 'idle';
       })
       .addCase(postProject.pending, (projectState) => {
         projectState.status = 'loading';
@@ -197,20 +248,34 @@ const projectsSlice = createSlice({
       })
       .addCase(deleteProject.rejected, (projectState, action) => {
         projectState.status = 'idle';
+      })
+      .addCase(updateProject.pending, (projectState) => {
+        projectState.status = 'loading';
+      })
+      .addCase(updateProject.fulfilled, (projectState, action) => {
+        projectState.status = 'idle';
+      })
+      .addCase(updateProject.rejected, (projectState, action) => {
+        projectState.status = 'idle';
       });
   },
 });
 
-// exports
+// Action creators are generated for each case reducer function
+const { clearPostProjectSuccess } = projectsSlice.actions;
+
 export default projectsSlice.reducer;
 export {
   // selectors
   selectAllProjects,
   selectPostProjectSuccess,
+  selectProjectStatus,
+  selectProjectById,
 
   // actions
   clearPostProjectSuccess,
   fetchProjects,
   postProject,
   deleteProject,
+  updateProject,
 };

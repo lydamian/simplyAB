@@ -6,6 +6,7 @@ import {
   selectPostProjectSuccess,
   postProject,
   clearPostProjectSuccess,
+  selectProjectStatus,
 } from 'features/projects/projectsSlice';
 
 const CreateProject = function CreateProject() {
@@ -15,7 +16,7 @@ const CreateProject = function CreateProject() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const postProjectSuccess = useSelector(selectPostProjectSuccess);
-  const status = useSelector((state) => state.projects.status);
+  const status = useSelector(selectProjectStatus);
 
   useEffect(() => {
     if (postProjectSuccess === true && status !== 'loading') {
@@ -51,6 +52,7 @@ const CreateProject = function CreateProject() {
                 id="new-project-title"
                 type="text"
                 placeholder="Title"
+                value={newProjectTitle}
                 onChange={(e) => setNewProjectTitle(e.target.value)}
               />
             </div>
@@ -69,6 +71,7 @@ const CreateProject = function CreateProject() {
                 className="textarea"
                 id="new-project-description"
                 placeholder="Description"
+                value={newProjectDescription}
                 onChange={(e) => setNewProjectDescription(e.target.value)}
               />
             </div>

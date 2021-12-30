@@ -112,19 +112,27 @@ const deleteProject = async (projectId) => {
 };
 
 /**
- * Deletes a project.
+ * Updates a project.
  *
  * @param {Number} projectId
+ * @param {String} title
+ * @param {String} description
  *
  * @returns {Promise.<Object>} response
  */
-const updateProject = async (projectId) => {
+const updateProject = async (
+  projectId,
+  title,
+  description,
+) => {
   try {
     const response = await axios({
-      method: 'DELETE',
-      url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      method: 'PUT',
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/update`,
       data: {
         project_id: projectId,
+        title,
+        description,
       },
       headers: {
         Authorization: helpers.getAuthToken(),
@@ -132,7 +140,7 @@ const updateProject = async (projectId) => {
     });
     logger.info(
       LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/update`,
       response.status,
       JSON.stringify(response.data),
     );
@@ -140,7 +148,7 @@ const updateProject = async (projectId) => {
   } catch (error) {
     logger.error(
       LOG_TAG,
-      `${constants.SIMPLY_AB_HOSTNAME}/api/project/delete`,
+      `${constants.SIMPLY_AB_HOSTNAME}/api/project/update`,
       error.response.data,
       error.response.status,
       error.message,
@@ -154,4 +162,5 @@ export default {
   getProjects,
   createProject,
   deleteProject,
+  updateProject,
 };

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Link,
@@ -7,14 +7,19 @@ import {
 } from 'react-router-dom';
 import { format } from 'date-fns';
 import { nanoid } from 'nanoid';
-import { getExperiments, fetchExperiments } from 'features/experiments/experimentsSlice';
+import {
+  selectAllExperiments,
+  fetchExperiments,
+  updateExperiment,
+} from 'features/experiments/experimentsSlice';
 import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
+import useOutsideClick from 'hooks/useOutsideClick';
 import experimentConstants from './ExperimentConstants';
 
 const Experiments = function Experiments() {
   // hooks
   const dispatch = useDispatch();
-  const experiments = useSelector(getExperiments);
+  const experiments = useSelector(selectAllExperiments);
   const params = useParams();
   const { projectId } = params;
   const experimentsStatus = useSelector((state) => state.experiments.status);
@@ -62,7 +67,7 @@ const Experiments = function Experiments() {
                 <td>{format(new Date(experiment.createdAt), 'PPpp')}</td>
                 <td>{format(new Date(experiment.lastUpdatedAt), 'PPpp')}</td>
                 <td className="rs-cursor-pointer">
-                  <EditExperimentDropdown />
+                  <EditExperimentMenu experiment={experiment} />
                 </td>
               </tr>
             ))}
@@ -73,25 +78,55 @@ const Experiments = function Experiments() {
   );
 };
 
-const EditExperimentDropdown = function EditExperimentDropdown() {
+const EditExperimentMenu = function EditProjectMenu({ experiment }) {
+  // hooks
+  const [isActive, setIsActive] = useState(false);
+  const dropdownRef = useRef();
+  const dispatch = useDispatch();
+  // Change my dropdown state to close when clicked outside
+  useOutsideClick(dropdownRef, () => setIsActive(false));
+
+  const archiveAndRefetchExperiments = async (experimentId) => {
+    dispatch(updateExperiment({ experimentId }));
+  };
+
   return (
-    <div className="dropdown is-right is-hoverable">
+    <div
+      className={`dropdown ${isActive ? 'is-active' : ''}`}
+      role="menu"
+      onClick={(event) => {
+        setIsActive(!isActive);
+      }}
+      tabIndex={0}
+      onKeyDown={(event) => {
+        setIsActive(!isActive);
+      }}
+      ref={dropdownRef}
+    >
       <div className="dropdown-trigger">
-        <button type="button" className="button is-ghost" aria-haspopup="true" aria-controls="dropdown-menu">
+        <button type="button" className="button" aria-haspopup="true" aria-controls="dropdown-menu">
           <span className="icon">
             <i className="fas fa-ellipsis-v" />
           </span>
         </button>
       </div>
-      <div className="dropdown-menu" id="dropdown-menu" role="menu">
+      <div className="dropdown-menu" id="dropdown-menu2" role="menu">
         <div className="dropdown-content">
-          <a href="/dashboard/" className="dropdown-item">
-            Copy
-          </a>
-          <hr className="dropdown-divider" />
-          <a href="/dashboard/" className="dropdown-item">
-            Delete
-          </a>
+          <div className="dropdown-item">
+            <p>
+              <Link to={`/dashboard/projects/edit/${experiment.id}`}>Edit</Link>
+            </p>
+          </div>
+          <div className="dropdown-item">
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={() => archiveAndRefetchExperiments(experiment.id)}
+              onKeyDown={() => archiveAndRefetchExperiments(experiment.id)}
+            >
+              Archive
+            </div>
+          </div>
         </div>
       </div>
     </div>

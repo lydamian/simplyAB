@@ -10,7 +10,8 @@ const initialState = {
   experiments: [],
 };
 
-export const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async (
+// thunks
+const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async (
   payload,
   {
     rejectWithValue,
@@ -46,7 +47,46 @@ export const fetchExperiments = createAsyncThunk('experiments/fetchExperiments',
   }
 });
 
-export const experimentsSlice = createSlice({
+const updateExperiment = createAsyncThunk('experiments/archiveExperiment', async (
+  payload,
+  {
+    rejectWithValue,
+  },
+) => {
+  try {
+    const projectId = payload?.projectId;
+    const response = await experimentsService.updateExperiment(projectId);
+
+    const {
+      error,
+      statusCode,
+      description,
+      experiments,
+    } = response.data;
+
+    logger.info(
+      `${LOG_TAG} fetchExperiments`,
+      `HTTP_STATUS: ${response.status}`,
+      `error: ${error}`,
+      `status_code: ${statusCode}`,
+      `description: ${description}`,
+      `experiments: ${JSON.stringify(experiments)}`,
+    );
+
+    if (error != null) {
+      return initialState.experiments;
+    }
+    return experiments;
+  } catch (error) {
+    logger.error(`${LOG_TAG} fetchExperiments ERROR:`, error.message, error.stack);
+    rejectWithValue(initialState.experiments);
+  }
+});
+
+// selectors
+const selectAllExperiments = (state) => state.experiments.experiments;
+
+const experimentsSlice = createSlice({
   name: 'experiments',
   initialState,
   reducers: {
@@ -75,9 +115,15 @@ export const experimentsSlice = createSlice({
   },
 });
 
-export const getExperiments = (state) => state.experiments.experiments;
-
 // Action creators are generated for each case reducer function
-export const { updateExperiments } = experimentsSlice.actions;
+const { updateExperiments } = experimentsSlice.actions;
 
 export default experimentsSlice.reducer;
+export {
+  // action creators
+  fetchExperiments,
+  updateExperiment,
+
+  // selectors
+  selectAllExperiments,
+};

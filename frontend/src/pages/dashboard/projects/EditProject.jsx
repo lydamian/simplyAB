@@ -1,35 +1,46 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  selectPostProjectSuccess,
-  postProject,
-  clearPostProjectSuccess,
+  fetchProjects,
+  selectProjectById,
+  selectProjectStatus,
+  updateProject,
 } from 'features/projects/projectsSlice';
 
 const EditProject = function EditProject() {
   // hooks
-  const [newProjectTitle, setNewProjectTitle] = useState('');
-  const [newProjectDescription, setNewProjectDescription] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const postProjectSuccess = useSelector(selectPostProjectSuccess);
-  const status = useSelector((state) => state.projects.status);
+  const params = useParams();
+  const {
+    projectId,
+  } = params;
+  const projectToUpdate = useSelector((state) => selectProjectById(state, projectId));
+  const [newProjectTitle, setNewProjectTitle] = useState(projectToUpdate.title);
+  const [newProjectDescription, setNewProjectDescription] = useState(projectToUpdate.description);
+  const status = useSelector(selectProjectStatus);
 
   useEffect(() => {
-    if (postProjectSuccess === true && status !== 'loading') {
-      dispatch(clearPostProjectSuccess());
-      navigate('/dashboard/projects');
+    if (status !== 'loading') {
+      // lets refetch projects to be safe.
+      dispatch(fetchProjects());
     }
-  }, [postProjectSuccess]);
+  }, []);
 
-  const submitCreateProjectFormHandler = (event) => {
+  const submitEditProjectFormHandler = async (event) => {
     event.preventDefault();
-    dispatch(postProject({
+    const dispatchResult = await dispatch(updateProject({
+      projectId,
       title: newProjectTitle,
       description: newProjectDescription,
     }));
+    if (dispatchResult.type === 'projects/updateProject/fulfilled'
+    && dispatchResult.payload === true
+    ) {
+      navigate('/dashboard/projects');
+    }
   };
 
   return (
@@ -51,6 +62,7 @@ const EditProject = function EditProject() {
                 id="new-project-title"
                 type="text"
                 placeholder="Title"
+                value={newProjectTitle}
                 onChange={(e) => setNewProjectTitle(e.target.value)}
               />
             </div>
@@ -69,6 +81,7 @@ const EditProject = function EditProject() {
                 className="textarea"
                 id="new-project-description"
                 placeholder="Description"
+                value={newProjectDescription}
                 onChange={(e) => setNewProjectDescription(e.target.value)}
               />
             </div>
@@ -76,7 +89,7 @@ const EditProject = function EditProject() {
           <button
             type="submit"
             className="button is-info"
-            onClick={submitCreateProjectFormHandler}
+            onClick={submitEditProjectFormHandler}
           >
             Save
           </button>
