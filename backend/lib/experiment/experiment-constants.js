@@ -3,7 +3,6 @@ const EXPERIMENT_STATUS_TYPES = {
   RUNNING: 'RUNNING',
   PAUSED: 'PAUSED',
   ARCHIVED: 'ARCHIVED',
-  DELETED: 'DELETED',
 };
 
 module.exports = {

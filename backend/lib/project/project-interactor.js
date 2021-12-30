@@ -17,15 +17,16 @@ module.exports = {
     );
     return project_id;
   },
-  update: async (user_id, project_id, title, description) => {
+  update: async (user_id, project_id, title, description, status) => {
     await project_helper.validate_project_ownership(user_id, project_id);
-    const success = await project_model.update(user_id, project_id, title, description);
+    const success = await project_model.update(user_id, project_id, title, description, status);
     if (success === false) {
       console.error(
         `Error updating project for user: ${user_id}`,
         `project_id: ${project_id},`,
         `title: ${title},`,
         `description: ${description}`
+        `status: ${status}`
       );
       throw new Error(`unsuccessfully updated project ${project_id} for user: ${user_id}`);
     }

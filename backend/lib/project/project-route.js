@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const project_handler = require('./project-handler');
-const C = require('../constants');
+const project_constants = require('./project-constants');
 
 module.exports = [
   {
@@ -38,6 +38,10 @@ module.exports = [
             .required(),
           description: Joi.string()
             .required(),
+          status: Joi.string()
+            .valid(...Object.values(project_constants.PROJECT_STATUS_TYPES))
+            .optional()
+            .default(project_constants.DEFAULT_PROJECT_STATUS_TYPE),
         }),
       },
     },

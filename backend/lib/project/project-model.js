@@ -21,13 +21,14 @@ module.exports = {
     return result[0].id;
   },
 
-  update: async (user_id, project_id, title, description) => {
+  update: async (user_id, project_id, title, description, status) => {
     const updated_rows = await knex_pg('project')
       .where('id', project_id)
       .andWhere('user_id', user_id)
       .update({
         title,
         description,
+        status,
       })
     const success = updated_rows > 0;
     return success;

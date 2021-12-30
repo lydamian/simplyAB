@@ -36,8 +36,15 @@ module.exports = {
         project_id,
         title,
         description,
+        status,
       } = req.payload;
-      await project_interactor.update(user_id, project_id, title, description);
+      await project_interactor.update(
+        user_id,
+        project_id,
+        title,
+        description,
+        status
+      );
       return h.response({
         error: null,
         status_code: 'PROJECT_UPDATED_SUCCESSFULLY',
