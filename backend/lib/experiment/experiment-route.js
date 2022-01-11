@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const experiment_handler = require('./experiment-handler');
 const experiment_constants = require('./experiment-constants');
+const constants = require('../constants');
 
 module.exports = [
   {
@@ -17,6 +18,7 @@ module.exports = [
           key: Joi.string()
             .min(1)
             .max(100)
+            .regex(constants.REGEXES.SNAKE_CASE)
             .required(),
           title: Joi.string()
             .min(1)

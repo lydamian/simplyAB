@@ -4,12 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   Link,
   useParams,
+  useNavigate,
 } from 'react-router-dom';
 import { format } from 'date-fns';
 import { nanoid } from 'nanoid';
 import {
   selectAllExperiments,
-  fetchExperiments,
+  fetchExperimentsAndSet,
   updateExperiment,
 } from 'features/experiments/experimentsSlice';
 import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
@@ -19,6 +20,7 @@ import experimentConstants from './ExperimentConstants';
 const Experiments = function Experiments() {
   // hooks
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const experiments = useSelector(selectAllExperiments);
   const params = useParams();
   const { projectId } = params;
@@ -26,7 +28,7 @@ const Experiments = function Experiments() {
 
   useEffect(() => {
     if (experimentsStatus === 'idle') {
-      dispatch(fetchExperiments({ projectId }));
+      dispatch(fetchExperimentsAndSet({ projectId }));
     }
   }, []);
 
@@ -36,7 +38,7 @@ const Experiments = function Experiments() {
       <button
         type="button"
         className="button is-link rs-mb-3"
-        onClick={() => {}}
+        onClick={() => { navigate(`/dashboard/projects/${projectId}/experiments/create`); }}
       >
         Create New
       </button>
@@ -80,6 +82,8 @@ const Experiments = function Experiments() {
 
 const EditExperimentMenu = function EditProjectMenu({ experiment }) {
   // hooks
+  const params = useParams();
+  const { projectId } = params;
   const [isActive, setIsActive] = useState(false);
   const dropdownRef = useRef();
   const dispatch = useDispatch();
@@ -114,7 +118,7 @@ const EditExperimentMenu = function EditProjectMenu({ experiment }) {
         <div className="dropdown-content">
           <div className="dropdown-item">
             <p>
-              <Link to={`/dashboard/projects/edit/${experiment.id}`}>Edit</Link>
+              <Link to={`/dashboard/projects/${projectId}/experiments/edit/${experiment.id}`}>Edit</Link>
             </p>
           </div>
           <div className="dropdown-item">

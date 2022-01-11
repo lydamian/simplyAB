@@ -1,25 +1,32 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import experimentsService from 'services/experiments';
+import { addAlert, ALERT_TYPES } from 'features/alerts/alertsSlice';
 import logger from 'utils/logger';
 
 const LOG_TAG = '[experimentsSlice]';
 
 const initialState = {
   status: 'idle',
-  experiments: [],
+  experiments: {},
 };
 
 // thunks
-const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async (
+const fetchExperimentsAndSet = createAsyncThunk('experiments/fetchExperimentsAndSet', async (
   payload,
   {
     rejectWithValue,
   },
 ) => {
   try {
-    const projectId = payload?.projectId;
-    const response = await experimentsService.getExperiments(projectId);
+    const {
+      projectId,
+      experimentId,
+    } = payload;
+    const response = await experimentsService.getExperiments(
+      projectId,
+      experimentId,
+    );
 
     const {
       error,
@@ -29,7 +36,7 @@ const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async 
     } = response.data;
 
     logger.info(
-      `${LOG_TAG} fetchExperiments`,
+      `${LOG_TAG} fetchAllExperiments`,
       `HTTP_STATUS: ${response.status}`,
       `error: ${error}`,
       `status_code: ${statusCode}`,
@@ -40,88 +47,174 @@ const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async 
     if (error != null) {
       return initialState.experiments;
     }
-    return experiments;
+    return experiments.reduce((hash, experiment) => {
+      hash[experiment.id] = experiment;
+      return hash;
+    }, {});
   } catch (error) {
-    logger.error(`${LOG_TAG} fetchExperiments ERROR:`, error.message, error.stack);
+    logger.error(`${LOG_TAG} fetchAllExperiments ERROR:`, error.message, error.stack);
     rejectWithValue(initialState.experiments);
   }
 });
 
-const updateExperiment = createAsyncThunk('experiments/archiveExperiment', async (
+const createExperiment = createAsyncThunk('experiments/createExperiment', async (
+  payload,
+  {
+    rejectWithValue,
+    dispatch,
+  },
+) => {
+  try {
+    const {
+      projectId,
+      key,
+      title,
+      description: experimentDescription,
+      trafficAllocationPercentage,
+    } = payload;
+    const response = await experimentsService.createExperiment(
+      projectId,
+      key,
+      title,
+      experimentDescription,
+      trafficAllocationPercentage,
+    );
+
+    const {
+      error,
+      statusCode,
+      description,
+      experimentId,
+    } = response.data;
+
+    logger.info(
+      `${LOG_TAG} createExperiment`,
+      `HTTP_STATUS: ${response.status}`,
+      `error: ${error}`,
+      `status_code: ${statusCode}`,
+      `description: ${description}`,
+      `experiment_id: ${experimentId}`,
+    );
+
+    if (error != null) {
+      dispatch(addAlert({
+        message: description,
+        type: ALERT_TYPES.DANGER,
+      }));
+      return rejectWithValue(false);
+    }
+    dispatch(addAlert({
+      message: 'Successfully created experiment',
+      type: ALERT_TYPES.SUCCESS,
+    }));
+    return true;
+  } catch (error) {
+    logger.error(`${LOG_TAG} createExperiment ERROR:`, error.message, error.stack);
+    return rejectWithValue(false);
+  }
+});
+
+const updateExperiment = createAsyncThunk('experiments/updateExperiment', async (
   payload,
   {
     rejectWithValue,
   },
 ) => {
   try {
-    const projectId = payload?.projectId;
-    const response = await experimentsService.updateExperiment(projectId);
+    const {
+      experimentId,
+      key,
+      title,
+      description: experimentDescription,
+      trafficAllocationPercentage,
+      status,
+    } = payload;
+    const response = await experimentsService.updateExperiment(
+      experimentId,
+      key,
+      title,
+      experimentDescription,
+      trafficAllocationPercentage,
+      status,
+    );
 
     const {
       error,
       statusCode,
       description,
-      experiments,
+      success,
     } = response.data;
 
     logger.info(
-      `${LOG_TAG} fetchExperiments`,
+      `${LOG_TAG} updateExperiment`,
       `HTTP_STATUS: ${response.status}`,
       `error: ${error}`,
       `status_code: ${statusCode}`,
       `description: ${description}`,
-      `experiments: ${JSON.stringify(experiments)}`,
+      `success: ${success}`,
     );
 
     if (error != null) {
-      return initialState.experiments;
+      return false;
     }
-    return experiments;
+    return success;
   } catch (error) {
-    logger.error(`${LOG_TAG} fetchExperiments ERROR:`, error.message, error.stack);
-    rejectWithValue(initialState.experiments);
+    logger.error(`${LOG_TAG} updateExperiment ERROR:`, error.message, error.stack);
+    rejectWithValue(false);
   }
 });
 
 // selectors
-const selectAllExperiments = (state) => state.experiments.experiments;
+const selectAllExperiments = (state) => Object.values(state.experiments.experiments);
 
 const experimentsSlice = createSlice({
   name: 'experiments',
   initialState,
-  reducers: {
-    updateApplicantsData(state, action) {
-      const applicantsData = action.payload;
-      state.applicantsData = [
-        ...applicantsData,
-      ];
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchExperiments.pending, (state) => {
+      .addCase(fetchExperimentsAndSet.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchExperiments.fulfilled, (state, action) => {
+      .addCase(fetchExperimentsAndSet.fulfilled, (state, action) => {
+        const experiments = action.payload;
+        state.experiments = {
+          ...state.experiments,
+          ...experiments,
+        };
+        state.status = 'idle';
+      })
+      .addCase(fetchExperimentsAndSet.rejected, (state, action) => {
         const experiments = action.payload;
         state.experiments = experiments;
         state.status = 'idle';
       })
-      .addCase(fetchExperiments.rejected, (state, action) => {
-        const experiments = action.payload;
-        state.experiments = experiments;
+      .addCase(createExperiment.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(createExperiment.fulfilled, (state, action) => {
+        state.status = 'idle';
+      })
+      .addCase(createExperiment.rejected, (state, action) => {
+        state.status = 'idle';
+      })
+      .addCase(updateExperiment.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateExperiment.fulfilled, (state, action) => {
+        state.status = 'idle';
+      })
+      .addCase(updateExperiment.rejected, (state, action) => {
         state.status = 'idle';
       });
   },
 });
 
-// Action creators are generated for each case reducer function
-const { updateExperiments } = experimentsSlice.actions;
-
 export default experimentsSlice.reducer;
 export {
   // action creators
-  fetchExperiments,
+  fetchExperimentsAndSet,
+  createExperiment,
   updateExperiment,
 
   // selectors

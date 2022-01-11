@@ -8,4 +8,10 @@ export default {
       PROJECTS: 'PROJECTS',
     },
   },
+  REGEXES: {
+    SNAKE_CASE: /^[a-z]+(?:_[a-z]+)*$/,
+  },
+  HTML_REGEXES: {
+    SNAKE_CASE: '[a-z]+(?:_[a-z]+)*$',
+  },
 };

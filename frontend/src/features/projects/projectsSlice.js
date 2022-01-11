@@ -47,7 +47,7 @@ const fetchProjects = createAsyncThunk('projects/fetchProjects', async (
       `projects: ${JSON.stringify(projects)}`,
     );
 
-    if (error != null) {
+    if (error != null || projects == null) {
       return initialState.projects;
     }
     return projects;

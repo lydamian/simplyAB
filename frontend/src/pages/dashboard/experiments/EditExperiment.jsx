@@ -3,44 +3,54 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  createExperiment,
+  fetchExperimentsAndSet,
+  updateExperiment,
+  selectAllExperiments,
 } from 'features/experiments/experimentsSlice';
 import constants from 'Constants';
 
-const CreateExperiment = function CreateExperiment() {
+const EditExperiment = function EditExperiment() {
   // hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
-  const [key, setKey] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [trafficAllocationPercentage, setTrafficAllocationPercentage] = useState('100');
   const {
+    experimentId,
     projectId,
   } = params;
+  const originalExperiment = useSelector(selectAllExperiments)[experimentId];
+  const [key, setKey] = useState(originalExperiment.key);
+  const [title, setTitle] = useState(originalExperiment.title);
+  const [description, setDescription] = useState(originalExperiment.description);
+  const [trafficAllocationPercentage, setTrafficAllocationPercentage] = (
+    useState(originalExperiment.trafficAllocationPercentage)
+  );
+
+  useEffect(() => {
+    dispatch(fetchExperimentsAndSet({ projectId, experimentId }));
+  }, []);
 
   const submitCreateExperimentFormHandler = async (event) => {
     event.preventDefault();
-    const dispatchResult = await dispatch(createExperiment({
-      projectId,
+    const dispatchResult = await dispatch(updateExperiment({
+      experimentId,
       key,
       title,
       description,
       trafficAllocationPercentage,
     }));
 
-    if (dispatchResult.type === 'experiments/createExperiment/fulfilled'
+    if (dispatchResult.type === 'experiments/updateExperiment/fulfilled'
     && dispatchResult.payload === true
     ) {
-      navigate(`/dashboard/projects/${projectId}/experiments`);
+      navigate(`/dashboard/experiments/${projectId}`);
     }
   };
 
   return (
     <div>
       <div className="box">
-        <h3 className="title is-3">Create new experiment</h3>
+        <h3 className="title is-3">Update Experiment</h3>
         <p>
           Use SimplyAB to run experiments on a variety of platforms.
         </p>
@@ -108,6 +118,7 @@ const CreateExperiment = function CreateExperiment() {
                 max="100"
                 placeholder="Percentage"
                 value={trafficAllocationPercentage}
+                title="number must be between 0 - 100"
                 onChange={(e) => setTrafficAllocationPercentage(e.target.value)}
                 required
               />
@@ -139,7 +150,7 @@ const CreateExperiment = function CreateExperiment() {
             type="submit"
             className="button is-info"
           >
-            Create Experiment
+            Save
           </button>
         </form>
       </div>
@@ -147,4 +158,4 @@ const CreateExperiment = function CreateExperiment() {
   );
 };
 
-export default CreateExperiment;
+export default EditExperiment;

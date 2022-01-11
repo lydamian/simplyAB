@@ -2,13 +2,12 @@
 import React from 'react';
 import 'animate.css';
 import './Alerts.css';
-import { clearAlert, getAllAlerts } from 'features/alerts/alertsSlice';
+import { clearAlert, selectAllAlerts, ALERT_TYPES } from 'features/alerts/alertsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import ALERT_TYPES from '../../features/alerts/ALERT_TYPES';
 // import PropTypes from 'prop-types';
 
 const Alerts = function Alerts() {
-  const alerts = useSelector(getAllAlerts);
+  const alerts = useSelector(selectAllAlerts);
   return (
     <div className="alerts is-fullwidth rs-fixed rs-w-full rs-z-40">
       {

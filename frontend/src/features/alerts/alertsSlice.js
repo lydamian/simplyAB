@@ -6,11 +6,16 @@ import {
 } from '@reduxjs/toolkit';
 import { nanoid } from 'nanoid';
 import logger from 'utils/logger';
-import ALERT_TYPES from 'features/alerts/ALERT_TYPES';
 
 const LOG_TAG = '[alertsSlice]';
 const THREE_SECONDS_MS = 3000;
 const initialState = [];
+const ALERT_TYPES = {
+  INFO: 'INFO',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  DANGER: 'DANGER',
+};
 
 // thunks
 const addAlert = createAsyncThunk('alerts/addAlert', async ({
@@ -59,15 +64,17 @@ export const alertsSlice = createSlice({
   },
 });
 
-const getAllAlerts = (state) => state.alerts;
-
-export {
-  getAllAlerts,
-  // my thunks
-  addAlert,
-};
-
 // action creators are generated for each case reducer function
-export const { clearAlert } = alertsSlice.actions;
+const { clearAlert } = alertsSlice.actions;
+const selectAllAlerts = (state) => state.alerts;
 
 export default alertsSlice.reducer;
+export {
+  clearAlert,
+  selectAllAlerts,
+  // my thunks
+  addAlert,
+
+  // types
+  ALERT_TYPES,
+};

@@ -56,7 +56,7 @@ const Projects = function Projects() {
           <tbody>
             {projects.map((project) => (
               <tr key={nanoid()}>
-                <td><Link to={`/dashboard/experiments/${project.id}`}>{project.title}</Link></td>
+                <td><Link to={`/dashboard/projects/${project.id}/experiments`}>{project.title}</Link></td>
                 <td>{project.description}</td>
                 <td>{format(new Date(project.createdAt), 'PPpp')}</td>
                 <td>{format(new Date(project.lastUpdatedAt), 'PPpp')}</td>
