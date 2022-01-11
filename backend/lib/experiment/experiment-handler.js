@@ -110,6 +110,35 @@ module.exports = {
     } = req.auth.credentials;
     const {
       project_id,
+      experiment_id
+    } = req.query;
+    try {
+      const experiments = await experiment_interactor.get(
+        user_id,
+        project_id,
+        experiment_id,
+      );
+      return h.response({
+        error: null,
+        status_code: 'EXPERIMENTS_FETCH_SUCCESS',
+        description: `successfully fetched experiments for project: ${project_id}`,
+        experiments
+      }).code(201);
+    } catch (error) {
+      console.error(error, error.stack);
+      return h.response({
+        error: error.message,
+        status_code: 'EXPERIMENTS_FETCH_ERROR',
+        description: `unsuccessfully fetched experiments for project: ${project_id}`,
+      }).code(400);
+    }
+  },
+  getOne: async (req, h) => {
+    const {
+      user_id,
+    } = req.auth.credentials;
+    const {
+      project_id,
     } = req.query;
     try {
       const experiments = await experiment_interactor.get(user_id, project_id);

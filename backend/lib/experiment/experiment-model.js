@@ -75,11 +75,11 @@ module.exports = {
    * 
    * @param {Number} user_id
    * @param {Number|null} project_id (optional)
-   * @param {String|null} status (optional)
+   * @param {Number|null} experiment_id (optional)
    *
    * @returns {Promise.<Array.<Object>>}
    */
-  get: async (user_id, project_id, status) => {
+  get: async (user_id, project_id, experiment_id) => {
     const rows = await knex_pg
       .select('experiment.*')
       .from('experiment')
@@ -89,8 +89,8 @@ module.exports = {
         if (project_id != null) {
             queryBuilder.where('project_id', project_id);
         }
-        if (status != null) {
-          queryBuilder.where('status', status);
+        if (experiment_id != null) {
+            queryBuilder.where('experiment_id', experiment_id);
         }
       })
     return rows;

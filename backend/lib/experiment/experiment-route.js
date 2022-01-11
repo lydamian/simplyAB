@@ -92,13 +92,16 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/experiment/get/{project_id?}',
+    path: '/api/experiment/get',
     handler: experiment_handler.get,
     options: {
       auth: 'jwt-auth-strategy',
       validate: {
-        params: Joi.object({
+        query: Joi.object({
           project_id: Joi.number()
+            .max(Number.MAX_SAFE_INTEGER)
+            .optional(),
+          experiment_id: Joi.number()
             .max(Number.MAX_SAFE_INTEGER)
             .optional(),
         }),
