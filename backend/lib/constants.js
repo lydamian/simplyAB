@@ -15,6 +15,6 @@ module.exports = {
     ADMIN: 'ADMIN'
   },
   REGEXES: {
-    SNAKE_CASE: /^[a-z]+(?:_[a-z]+)*$/,
+    SNAKE_CASE: /[a-z]+(?:_\S+)*$/,
   }
 };
