@@ -12,7 +12,7 @@ const initialState = {
 };
 
 // thunks
-const fetchExperimentsAndSet = createAsyncThunk('experiments/fetchExperimentsAndSet', async (
+const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async (
   payload,
   {
     rejectWithValue,
@@ -98,7 +98,7 @@ const createExperiment = createAsyncThunk('experiments/createExperiment', async 
 
     if (error != null) {
       dispatch(addAlert({
-        message: description,
+        message: 'Error creating experiment',
         type: ALERT_TYPES.DANGER,
       }));
       return rejectWithValue(false);
@@ -166,6 +166,9 @@ const updateExperiment = createAsyncThunk('experiments/updateExperiment', async 
 
 // selectors
 const selectAllExperiments = (state) => Object.values(state.experiments.experiments);
+const selectExperimentById = (state, experimentId) => (
+  state.experiments.experiments[experimentId]
+);
 
 const experimentsSlice = createSlice({
   name: 'experiments',
@@ -173,10 +176,10 @@ const experimentsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchExperimentsAndSet.pending, (state) => {
+      .addCase(fetchExperiments.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchExperimentsAndSet.fulfilled, (state, action) => {
+      .addCase(fetchExperiments.fulfilled, (state, action) => {
         const experiments = action.payload;
         state.experiments = {
           ...state.experiments,
@@ -184,9 +187,12 @@ const experimentsSlice = createSlice({
         };
         state.status = 'idle';
       })
-      .addCase(fetchExperimentsAndSet.rejected, (state, action) => {
+      .addCase(fetchExperiments.rejected, (state, action) => {
         const experiments = action.payload;
-        state.experiments = experiments;
+        state.experiments = {
+          ...state.experiments,
+          ...experiments,
+        };
         state.status = 'idle';
       })
       .addCase(createExperiment.pending, (state) => {
@@ -213,10 +219,11 @@ const experimentsSlice = createSlice({
 export default experimentsSlice.reducer;
 export {
   // action creators
-  fetchExperimentsAndSet,
+  fetchExperiments,
   createExperiment,
   updateExperiment,
 
   // selectors
   selectAllExperiments,
+  selectExperimentById,
 };

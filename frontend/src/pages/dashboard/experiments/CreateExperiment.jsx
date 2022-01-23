@@ -98,7 +98,7 @@ const CreateExperiment = function CreateExperiment() {
             <h4 className="title is-size-4">
               Traffic Allocation Percentage
             </h4>
-            <label htmlFor="new-project-title" className="label subtitle has-text-weight-light">Percentage of users you want to be sharded into this experiment.</label>
+            <label htmlFor="new-project-title" className="label subtitle has-text-weight-light">Percentage of users you want to be sharded into this experiment</label>
             <div className="control has-icons-right">
               <input
                 className="input"

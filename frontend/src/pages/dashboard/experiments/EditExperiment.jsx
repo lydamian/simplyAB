@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { addAlert } from 'features/alerts/alertsSlice';
 import {
-  fetchExperimentsAndSet,
+  fetchExperiments,
   updateExperiment,
-  selectAllExperiments,
+  selectExperimentById,
 } from 'features/experiments/experimentsSlice';
 import constants from 'Constants';
 
@@ -18,7 +19,7 @@ const EditExperiment = function EditExperiment() {
     experimentId,
     projectId,
   } = params;
-  const originalExperiment = useSelector(selectAllExperiments)[experimentId];
+  const originalExperiment = useSelector((state) => selectExperimentById(state, experimentId));
   const [key, setKey] = useState(originalExperiment.key);
   const [title, setTitle] = useState(originalExperiment.title);
   const [description, setDescription] = useState(originalExperiment.description);
@@ -27,7 +28,7 @@ const EditExperiment = function EditExperiment() {
   );
 
   useEffect(() => {
-    dispatch(fetchExperimentsAndSet({ projectId, experimentId }));
+    dispatch(fetchExperiments({ projectId, experimentId }));
   }, []);
 
   const submitCreateExperimentFormHandler = async (event) => {
@@ -39,12 +40,20 @@ const EditExperiment = function EditExperiment() {
       description,
       trafficAllocationPercentage,
     }));
-
+    console.log('dispatchResults', dispatchResult.payload, dispatchResult.payload);
     if (dispatchResult.type === 'experiments/updateExperiment/fulfilled'
     && dispatchResult.payload === true
     ) {
-      navigate(`/dashboard/experiments/${projectId}`);
+      await dispatch(addAlert({
+        message: 'Successfully updated experiment',
+        type: 'SUCCESS',
+      }));
+      return navigate(`/dashboard/projects/${projectId}/experiments`);
     }
+    await dispatch(addAlert({
+      message: 'Error updating experiment',
+      type: 'DANGER',
+    }));
   };
 
   return (

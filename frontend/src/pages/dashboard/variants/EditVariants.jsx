@@ -37,13 +37,6 @@ const Variants = function Variants() {
   return (
     <div className="box">
       <DashboardBodyTitle title="Variants" />
-      <button
-        type="button"
-        className="button is-link rs-mb-3"
-        onClick={() => { navigate(`/dashboard/projects/${projectId}/experiments/${experimentId}/variants/create`); }}
-      >
-        Create New
-      </button>
       <table className="table rs-shadow-1 is-hoverable is-fullwidth">
         <thead>
           <tr>
@@ -66,6 +59,13 @@ const Variants = function Variants() {
               </td>
             </tr>
           ))}
+          <button
+            type="button"
+            className="button is-ghost rs-m-3"
+            onClick={() => { navigate(`/dashboard/projects/${projectId}/experiments/${experimentId}/variants/create`); }}
+          >
+            Create New
+          </button>
         </tbody>
       </table>
     </div>

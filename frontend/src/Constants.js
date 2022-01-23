@@ -9,9 +9,9 @@ export default {
     },
   },
   REGEXES: {
-    SNAKE_CASE: /^[a-z]+(?:_[a-z]+)*$/,
+    SNAKE_CASE: /[a-z]+(?:_\S+)*$/,
   },
   HTML_REGEXES: {
-    SNAKE_CASE: '[a-z]+(?:_[a-z]+)*$',
+    SNAKE_CASE: '[a-z]+(?:_\\S+)*$',
   },
 };

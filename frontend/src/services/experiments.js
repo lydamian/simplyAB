@@ -114,7 +114,7 @@ const updateExperiment = async (
         title,
         description,
         traffic_allocation_percentage: trafficAllocationPercentage,
-        status: status,
+        status,
       },
       headers: {
         Authorization: helpers.getAuthToken(),

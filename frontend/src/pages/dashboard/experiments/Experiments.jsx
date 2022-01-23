@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import { nanoid } from 'nanoid';
 import {
   selectAllExperiments,
-  fetchExperimentsAndSet,
+  fetchExperiments,
   updateExperiment,
 } from 'features/experiments/experimentsSlice';
 import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
@@ -28,7 +28,7 @@ const Experiments = function Experiments() {
 
   useEffect(() => {
     if (experimentsStatus === 'idle') {
-      dispatch(fetchExperimentsAndSet({ projectId }));
+      dispatch(fetchExperiments({ projectId }));
     }
   }, []);
 
@@ -57,7 +57,7 @@ const Experiments = function Experiments() {
           <tbody>
             {experiments.map((experiment) => (
               <tr key={nanoid()}>
-                <td><Link to={`/dashboard/variants/${experiment.id}`}>{experiment.title}</Link></td>
+                <td><Link to={`/dashboard/projects/${projectId}/experiments/${experiment.id}/variants`}>{experiment.title}</Link></td>
                 <td>{experiment.description}</td>
                 <td
                   style={{
