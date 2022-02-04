@@ -40,9 +40,9 @@ const Variants = function Variants() {
       <button
         type="button"
         className="button is-link rs-mb-3"
-        onClick={() => { navigate(`/dashboard/projects/${projectId}/experiments/${experimentId}/variants/create`); }}
+        onClick={() => { navigate(`/dashboard/projects/${projectId}/experiments/${experimentId}/variants/edit`); }}
       >
-        Create New
+        Edit/Add
       </button>
       <table className="table rs-shadow-1 is-hoverable is-fullwidth">
         <thead>

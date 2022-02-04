@@ -18,7 +18,7 @@ const NavBar = function NavBar() {
       <hr className="has-background-primary-dark" />
       <div>
         <Link to="/dashboard/projects">
-          <button type="button" className="button is-fullwidth is-rounded is-link link">
+          <button type="button" className="button is-fullwidth is-link link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
             </span>
@@ -26,7 +26,7 @@ const NavBar = function NavBar() {
           </button>
         </Link>
         <Link to="/dashboard/experiments">
-          <button type="button" className="button is-fullwidth is-rounded is-link link">
+          <button type="button" className="button is-fullwidth is-link link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
             </span>
@@ -34,7 +34,7 @@ const NavBar = function NavBar() {
           </button>
         </Link>
         <Link to="/dashboard/variants">
-          <button type="button" className="button is-fullwidth is-rounded is-link link">
+          <button type="button" className="button is-fullwidth is-link link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
             </span>
@@ -42,7 +42,7 @@ const NavBar = function NavBar() {
           </button>
         </Link>
         <hr className="has-background-primary-dark" />
-        <button type="button" onClick={() => dispatch(logout())} className="button is-primary is-fullwidth is-rounded is-dark link">
+        <button type="button" onClick={() => dispatch(logout())} className="button is-primary is-fullwidth is-dark link">
           <span className="icon is-large">
             <i className="fas fa-lg fa-power-off" />
           </span>
