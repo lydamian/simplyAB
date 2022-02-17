@@ -36,7 +36,7 @@ const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async 
     } = response.data;
 
     logger.info(
-      `${LOG_TAG} fetchAllExperiments`,
+      `${LOG_TAG} fetchExperiments`,
       `HTTP_STATUS: ${response.status}`,
       `error: ${error}`,
       `status_code: ${statusCode}`,
@@ -52,7 +52,7 @@ const fetchExperiments = createAsyncThunk('experiments/fetchExperiments', async 
       return hash;
     }, {});
   } catch (error) {
-    logger.error(`${LOG_TAG} fetchAllExperiments ERROR:`, error.message, error.stack);
+    logger.error(`${LOG_TAG} fetchExperiments ERROR:`, error.message, error.stack);
     rejectWithValue(initialState.experiments);
   }
 });
@@ -182,7 +182,6 @@ const experimentsSlice = createSlice({
       .addCase(fetchExperiments.fulfilled, (state, action) => {
         const experiments = action.payload;
         state.experiments = {
-          ...state.experiments,
           ...experiments,
         };
         state.status = 'idle';
@@ -190,7 +189,6 @@ const experimentsSlice = createSlice({
       .addCase(fetchExperiments.rejected, (state, action) => {
         const experiments = action.payload;
         state.experiments = {
-          ...state.experiments,
           ...experiments,
         };
         state.status = 'idle';

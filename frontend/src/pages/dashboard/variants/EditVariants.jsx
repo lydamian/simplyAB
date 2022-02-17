@@ -133,6 +133,7 @@ const Variants = function Variants() {
                         className="input"
                         type="number"
                         placeholder="title"
+                        step="any"
                         defaultValue={variant.trafficAllocationPercentage}
                         onBlur={(event) => { onChange(event, variant.id, 'trafficAllocationPercentage'); }}
                         min="0"

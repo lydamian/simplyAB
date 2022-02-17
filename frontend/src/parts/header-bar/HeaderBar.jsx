@@ -30,11 +30,11 @@ const HeaderBar = () => {
 
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item">
+            <a href="/" className="navbar-item">
               Home
             </a>
 
-            <a className="navbar-item">
+            <a href="https://github.com/lydamian/simplyAB" className="navbar-item">
               Documentation
             </a>
           </div>

@@ -17,28 +17,20 @@ const NavBar = function NavBar() {
       </Link>
       <hr className="has-background-primary-dark" />
       <div>
+        <Link to="/dashboard">
+          <button type="button" className="button is-fullwidth is-link link">
+            <span className="icon is-large">
+              <i className="fas fa-lg fa-user-clock" />
+            </span>
+            <div>&nbsp;Home</div>
+          </button>
+        </Link>
         <Link to="/dashboard/projects">
           <button type="button" className="button is-fullwidth is-link link">
             <span className="icon is-large">
               <i className="fas fa-lg fa-user-clock" />
             </span>
             <div>&nbsp;Projects</div>
-          </button>
-        </Link>
-        <Link to="/dashboard/experiments">
-          <button type="button" className="button is-fullwidth is-link link">
-            <span className="icon is-large">
-              <i className="fas fa-lg fa-user-clock" />
-            </span>
-            <div>&nbsp;Experiments</div>
-          </button>
-        </Link>
-        <Link to="/dashboard/variants">
-          <button type="button" className="button is-fullwidth is-link link">
-            <span className="icon is-large">
-              <i className="fas fa-lg fa-user-clock" />
-            </span>
-            <div>&nbsp;Variants</div>
           </button>
         </Link>
         <hr className="has-background-primary-dark" />

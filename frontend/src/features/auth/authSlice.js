@@ -214,11 +214,9 @@ const authSlice = createSlice({
 });
 
 const isAuthenticated = (state) => state.auth.isAuthenticated;
-const getStatus = (state) => state.auth.status;
 
 export {
   isAuthenticated,
-  getStatus,
   login,
   register,
 };

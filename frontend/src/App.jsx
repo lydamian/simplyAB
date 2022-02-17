@@ -13,6 +13,7 @@ import EditExperiment from 'pages/dashboard/experiments/EditExperiment';
 import Variants from 'pages/dashboard/variants/Variants';
 import CreateVariants from 'pages/dashboard/variants/CreateVariants';
 import EditVariants from 'pages/dashboard/variants/EditVariants';
+import Home from 'pages/dashboard/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import Landing from './pages/landing/Landing';
@@ -36,7 +37,8 @@ const App = function App() {
           </PrivateRoute>
         )}
       >
-        <Route index path="projects" element={<Projects />} />
+        <Route index element={<Home />} />
+        <Route path="projects" element={<Projects />} />
         <Route path="projects/create" element={<CreateProject />} />
         <Route path="projects/edit/:projectId" element={<EditProject />} />
         <Route path="projects/:projectId/experiments" element={<Experiments />} />
