@@ -42,7 +42,7 @@ const rootReducer = (state, action) => {
     storage.removeItem('persist:root');
 
     // remove auth token from localStorage
-    localStorage.removeItem('simply_ab_auth_token');
+    localStorage.removeItem('simply_ab_login_token');
     return appReducer(undefined, action);
   }
   return appReducer(state, action);

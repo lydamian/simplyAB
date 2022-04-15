@@ -12,11 +12,11 @@ const calculateAge = (dateOfBirth) => {
   return Math.abs(ageDt.getUTCFullYear() - 1970);
 };
 
-const getAuthToken = () => localStorage.getItem('simply_ab_auth_token');
+const getLoginToken = () => localStorage.getItem('simply_ab_login_token');
 
 const defaultExport = {
   getRandomItem,
   calculateAge,
-  getAuthToken,
+  getLoginToken,
 };
 export default defaultExport;

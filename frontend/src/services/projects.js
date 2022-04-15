@@ -20,7 +20,7 @@ const getProjects = async (userId) => {
       method: 'get',
       url: `${constants.SIMPLY_AB_HOSTNAME}/api/project/get?${queryParams}`,
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     return response;
@@ -50,7 +50,7 @@ const createProject = async (
         description,
       },
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     logger.info(
@@ -88,7 +88,7 @@ const deleteProject = async (projectId) => {
         project_id: projectId,
       },
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     logger.info(
@@ -135,7 +135,7 @@ const updateProject = async (
         description,
       },
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     logger.info(

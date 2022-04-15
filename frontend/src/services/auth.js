@@ -12,7 +12,7 @@ const LOG_TAG = '[services/auth]';
  * @returns {{token: String, username: String }} Object
 }
  */
-const getAuthToken = async (emailAddress, password) => {
+const getLoginToken = async (emailAddress, password) => {
   try {
     const queryParams = new URLSearchParams({
       email_address: emailAddress,
@@ -20,7 +20,7 @@ const getAuthToken = async (emailAddress, password) => {
     }).toString();
     const response = await axios({
       method: 'get',
-      url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/token?${queryParams}`,
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/login_token?${queryParams}`,
     });
     return response;
   } catch (error) {
@@ -73,7 +73,7 @@ const getUser = async () => {
       method: 'get',
       url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/user`,
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     logger.info(
@@ -97,7 +97,7 @@ const getUser = async () => {
 };
 const defaultExport = {
   registerUser,
-  getAuthToken,
+  getLoginToken,
   getUser,
 };
 export default defaultExport;

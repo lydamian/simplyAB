@@ -65,7 +65,7 @@ const login = createAsyncThunk('auth/login', async (
   },
 ) => {
   try {
-    const response = await authService.getAuthToken(emailAddress, password);
+    const response = await authService.getLoginToken(emailAddress, password);
 
     const {
       statusCode,
@@ -93,7 +93,7 @@ const login = createAsyncThunk('auth/login', async (
       };
     }
 
-    localStorage.setItem('simply_ab_auth_token', authToken);
+    localStorage.setItem('simply_ab_login_token', authToken);
     await dispatch(addAlert({
       message: 'Succesfully logged in user',
       type: 'SUCCESS',

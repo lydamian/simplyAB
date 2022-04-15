@@ -35,7 +35,7 @@ const getExperiments = async (
       method: 'get',
       url: `${constants.SIMPLY_AB_HOSTNAME}/api/experiment/get?${queryParams}`,
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     return response;
@@ -74,7 +74,7 @@ const createExperiment = async (
         traffic_allocation_percentage: trafficAllocationPercentage,
       },
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     return response;
@@ -117,7 +117,7 @@ const updateExperiment = async (
         status,
       },
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     return response;

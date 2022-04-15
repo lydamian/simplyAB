@@ -16,7 +16,7 @@ const getVariants = async (experimentId) => {
       method: 'get',
       url: `${constants.SIMPLY_AB_HOSTNAME}/api/variant/get/${experimentId}`,
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     return response;
@@ -43,7 +43,7 @@ const createVariants = async (experimentId, variants) => {
         variants,
       },
       headers: {
-        Authorization: helpers.getAuthToken(),
+        Authorization: helpers.getLoginToken(),
       },
     });
     return response;

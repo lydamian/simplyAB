@@ -47,6 +47,7 @@ const Experiments = function Experiments() {
           <thead>
             <tr>
               <th>Name</th>
+              <th>Key</th>
               <th>Description</th>
               <th>Status</th>
               <th>Created</th>
@@ -58,6 +59,7 @@ const Experiments = function Experiments() {
             {experiments.map((experiment) => (
               <tr key={nanoid()}>
                 <td><Link to={`/dashboard/projects/${projectId}/experiments/${experiment.id}/variants`}>{experiment.title}</Link></td>
+                <td>{experiment.key}</td>
                 <td>{experiment.description}</td>
                 <td
                   style={{

@@ -15,6 +15,7 @@
     "date-fns": "^2.27.0",
     "dotenv": "^9.0.2",
     "faker": "^5.5.3",
+    "http-status-codes": "^2.2.0",
     "lodash": "^4.17.21",
     "miragejs": "^0.1.42",
     "nanoid": "^3.1.30",
