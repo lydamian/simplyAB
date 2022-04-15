@@ -27,8 +27,8 @@ module.exports = [
   },
   {
     method: 'GET',
-    path: '/api/auth/token',
-    handler: auth_handler.get_token,
+    path: '/api/auth/login_token',
+    handler: auth_handler.get_login_token,
     options: {
       auth: false,
       validate: {
@@ -37,6 +37,35 @@ module.exports = [
             .regex(new RegExp(C.EMAIL_VALIDATION_REGEX))
             .required(),
           password: Joi.string().min(3).required(),
+        }),
+      },
+    },
+  },
+  {
+    method: 'GET',
+    path: '/api/auth/api_token',
+    handler: auth_handler.get_api_tokens,
+    options: {
+      auth: 'jwt-auth-strategy',
+    },
+  },
+  {
+    method: 'POST',
+    path: '/api/auth/api_token',
+    handler: auth_handler.create_api_token,
+    options: {
+      auth: 'jwt-auth-strategy',
+    },
+  },
+  {
+    method: 'DELETE',
+    path: '/api/auth/api_token',
+    handler: auth_handler.delete_api_token,
+    options: {
+      auth: 'jwt-auth-strategy',
+      validate: {
+        payload: Joi.object({
+          api_token: Joi.string().required(),
         }),
       },
     },

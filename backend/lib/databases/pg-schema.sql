@@ -112,6 +112,15 @@ CREATE TABLE IF NOT EXISTS variant_assignment
   CONSTRAINT no_duplicate_variant_assignment UNIQUE (variant_id, experiment_entity_id)
 );
 
+DROP TABLE IF EXISTS api_token CASCADE;
+CREATE TABLE IF NOT EXISTS api_token
+(
+  token varchar(100) PRIMARY KEY,
+  user_id BIGINT REFERENCES user_account(id) ON DELETE CASCADE,
+  created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
+  last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
+);
+
 -- Changes the owner of the table to postgres which is the default when installing postgres
 ALTER TABLE user_account
   OWNER to postgres;

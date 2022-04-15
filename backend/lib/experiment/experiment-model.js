@@ -109,5 +109,5 @@ module.exports = {
       .innerJoin('project', 'experiment.project_id', 'project.id')
       .where('experiment.id', experiment_id);
     return rows?.[0]?.user_id ?? null;
-  }
+  },
 };

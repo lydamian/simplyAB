@@ -59,4 +59,40 @@ module.exports = {
       .andWhere('password', password);
     return result[0] ?? null;
   },
+ 
+  get_api_tokens: async (user_id) => {
+    const rows = await knex_pg
+      .select('*')
+      .from('api_token')
+      .where('user_id', user_id)
+      .orderBy('created_at', 'desc');
+    return rows;
+  },
+
+  get_auth_user_from_api_token: async (api_token, user_id) => {
+    const rows = await knex_pg
+    .select('*')
+    .from('api_token')
+    .where('token', api_token)
+    .andWhere('user_id', user_id);
+    return rows[0];
+  },
+
+  create_api_token: async (user_id, api_token) => {
+    const data = {
+      user_id,
+      token: api_token,
+    };
+    const result = await knex_pg('api_token')
+      .insert(data, ['token']);
+    return result[0].token;
+  },
+
+  delete_api_token: async (user_id, api_token) => {
+    const num_deleted = await knex_pg('api_token')
+      .where('token', api_token)
+      .where('user_id', user_id)
+      .del();
+    return num_deleted > 0;
+  },
 };

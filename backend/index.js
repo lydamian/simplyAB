@@ -1,9 +1,51 @@
 const Hapi = require('@hapi/hapi');
 const Jwt = require('hapi-auth-jwt2');
 const C = require('./lib/constants');
+const auth_model = require('./lib/auth/auth-model')
+const {
+	StatusCodes: HTTP_STATUS_CODES,
+} = require('http-status-codes');
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
+}
+
+const api_token_scheme = function (server, options) {
+  return {
+    authenticate: api_token_validate,
+  };
+};
+
+const api_token_validate = async (request, h) => {
+  const authorization = request.headers.authorization;
+
+  const user_id = request.params?.user_id;
+
+  if (null == authorization) {
+    return h.response({
+      message: 'Need api token',
+    }).takeover().code(HTTP_STATUS_CODES.UNAUTHORIZED);
+  }
+
+  if (null == user_id) {
+    return h.response({
+      message: 'Need user_id',
+    }).takeover().code(HTTP_STATUS_CODES.UNAUTHORIZED);
+  }
+
+  // query database
+  auth_user = await auth_model.get_auth_user_from_api_token(authorization, request.params?.user_id);
+  const auth_user_id = auth_user?.user_id;
+
+  if (user_id != auth_user_id) {
+    return h.response({
+      message: 'Bad api token',
+    }).takeover().code(HTTP_STATUS_CODES.UNAUTHORIZED);
+  }
+  const credentials = {
+    user_id: auth_user_id
+  }; 
+  return h.authenticated({ credentials });
 }
 
 const init = async () => {
@@ -20,6 +62,8 @@ const init = async () => {
   });
 
   await server.register(Jwt);
+
+  // authentication strategies
   server.auth.strategy('jwt-auth-strategy', 'jwt',
   {
     key: C.JWT_SHARED_SECRET,
@@ -46,6 +90,9 @@ const init = async () => {
     },
   });
 
+  server.auth.scheme('api_token_scheme', api_token_scheme);
+  server.auth.strategy('api-auth-strategy', 'api_token_scheme'),
+
   // Set the auth strategy
   server.auth.default('jwt-auth-strategy');
 
@@ -58,6 +105,7 @@ const init = async () => {
   server.route(require('./lib/project/project-route'));
   server.route(require('./lib/experiment/experiment-route'));
   server.route(require('./lib/variant/variant-route'));
+  server.route(require('./lib/user/v1/user-route'));
 
   await server.start();
   console.log('Server running on %s', server.info.uri);
