@@ -16,10 +16,10 @@ const api_token_scheme = function (server, options) {
   };
 };
 
-const api_token_validate = async (request, h) => {
-  const authorization = request.headers.authorization;
+const api_token_validate = async (req, h) => {
+  const authorization = req.headers.authorization;
 
-  const user_id = request.params?.user_id;
+  const user_id = req.params?.user_id;
 
   if (null == authorization) {
     return h.response({
@@ -34,16 +34,11 @@ const api_token_validate = async (request, h) => {
   }
 
   // query database
-  auth_user = await auth_model.get_auth_user_from_api_token(authorization, request.params?.user_id);
-  const auth_user_id = auth_user?.user_id;
+  const api_token = await auth_model.get_api_token(authorization);
 
-  if (user_id != auth_user_id) {
-    return h.response({
-      message: 'Bad api token',
-    }).takeover().code(HTTP_STATUS_CODES.UNAUTHORIZED);
-  }
   const credentials = {
-    user_id: auth_user_id
+    user_id: api_token.user_id,
+    project_id: api_token.project_id
   }; 
   return h.authenticated({ credentials });
 }

@@ -5,16 +5,16 @@ import helpers from 'utils/helpers';
 /**
  * Creates an API Access token
  *
- * @param {Number|null} experimentId
+ * @param {Number} projectId
  *
  * @returns {Promise.<Object>} Object
 }
  */
-const createAPIToken = async () => {
+const createAPIToken = async (projectId) => {
   try {
     const response = await axios({
       method: 'post',
-      url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/api_token`,
+      url: `${constants.SIMPLY_AB_HOSTNAME}/api/auth/project/${projectId}/api_token`,
       headers: {
         Authorization: helpers.getLoginToken(),
       },

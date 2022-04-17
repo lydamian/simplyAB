@@ -7,13 +7,13 @@ const apiAuthController = {
   /**
    * Get an APIAuthToken for a userId.
    *
-   * @param {Number} user_id
+   * @param {Number} projectId
    *
    * @returns {Promise.<Boolean>} true if successful, false otherwise
    */
-  createAPIToken: async () => {
+  createAPIToken: async (projectId) => {
     try {
-      const response = await apiAccessService.createAPIToken();
+      const response = await apiAccessService.createAPIToken(projectId);
 
       const {
         statusCode,
@@ -98,7 +98,7 @@ const apiAuthController = {
       return success;
     } catch (error) {
       logger.error(`${LOG_TAG} getAPITokens ERROR:`, error.message, error.stack);
-      return [];
+      return false;
     }
   },
 };

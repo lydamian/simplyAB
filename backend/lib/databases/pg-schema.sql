@@ -117,6 +117,7 @@ CREATE TABLE IF NOT EXISTS api_token
 (
   token varchar(100) PRIMARY KEY,
   user_id BIGINT REFERENCES user_account(id) ON DELETE CASCADE,
+  project_id BIGINT REFERENCES project(id) ON DELETE CASCADE,
   created_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL,
   last_updated_at timestamp with time zone DEFAULT (now())::timestamp with time zone NOT NULL
 );

@@ -1,4 +1,4 @@
-const Dropdown = function Dropdown({ children}) {
+const Dropdown = function Dropdown({ children }) {
   const [isActive, setIsActive] = useState(false);
   const dropdownRef = useRef();
   // Change my dropdown state to close when clicked outside

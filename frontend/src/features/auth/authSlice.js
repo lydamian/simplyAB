@@ -6,7 +6,6 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit';
 import authService from 'services/auth';
-import store from 'state/store';
 import { addAlert } from 'features/alerts/alertsSlice';
 import logger from 'utils/logger';
 

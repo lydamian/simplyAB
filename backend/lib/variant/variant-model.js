@@ -74,20 +74,29 @@ module.exports = {
   * Gets variants given experiment_key and project_key
   *
   * @param {Number} user_id 
+  * @param {Number} project_key 
   * @param {String} experiment_key 
-  * @param {String} project_key 
   *
   * @returns {Promise.<Number>|null}
   */
-  get_variants_by_key: async (user_id, experiment_key, project_key) => {
+  get_variants_by_key: async (project_id, experiment_key) => {
     const rows = await knex_pg
-      .select('user_id')
-      .from('variant')
-      .innerJoin('experiment', 'variant.experiment_id', 'experiment.id')
-      .innerJoin('project', 'experiment.project_id', 'project.id')
-      .where('experiment.key', experiment_key)
-      .andWhere('project.key', project_key)
-      .andWhere('project.user_id', user_id);
+      .select([
+        'v.id as variant_id',
+        'v.traffic_allocation_percentage as variant_traffic_allocation_percentage',
+        'v.key as variant_key',
+        'v.created_at as variant_created_at',
+        'v.last_updated_at as variant_last_updated_at',
+        'e.id as experiment_id',
+        'e.key as experiment_key',
+        'e.traffic_allocation_percentage as experiment_traffic_allocation_percentage',
+        'p.id as project_id'
+      ])
+      .from('variant as v')
+      .innerJoin('experiment as e', 'v.experiment_id', 'e.id')
+      .innerJoin('project as p', 'e.project_id', 'p.id')
+      .where('e.key', experiment_key)
+      .andWhere('p.id', project_id)
     return rows;
   }
 }

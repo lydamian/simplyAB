@@ -19,6 +19,7 @@ import {
 import DashboardBodyTitle from 'parts/title/DashboardBodyTitle';
 import './Projects.css';
 import useOutsideClick from 'hooks/useOutsideClick';
+import APIToken from './APIToken';
 
 const Projects = function Projects() {
   // hooks
@@ -32,42 +33,48 @@ const Projects = function Projects() {
 
   return (
     <div className="box">
-      <DashboardBodyTitle title="Projects" />
-      <button
-        className="button is-link rs-mb-3"
-        type="button"
-        onClick={() => {
-          navigate('/dashboard/projects/create');
-        }}
-      >
-        Create new
-      </button>
-      <div id="projects">
-        <table className="table rs-shadow-1 is-hoverable is-fullwidth">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Created</th>
-              <th>Last Modified</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {projects.map((project) => (
-              <tr key={nanoid()}>
-                <td><Link to={`/dashboard/projects/${project.id}/experiments`}>{project.title}</Link></td>
-                <td>{project.description}</td>
-                <td>{format(new Date(project.createdAt), 'PPpp')}</td>
-                <td>{format(new Date(project.lastUpdatedAt), 'PPpp')}</td>
-                <td className="rs-cursor-pointer">
-                  <EditProjectMenu project={project} />
-                </td>
+      <div className="box">
+        <DashboardBodyTitle title="Projects" />
+        <button
+          className="button is-link rs-mb-3"
+          type="button"
+          onClick={() => {
+            navigate('/dashboard/projects/create');
+          }}
+        >
+          Create new
+        </button>
+        <div id="projects">
+          <table className="table rs-shadow-1 is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Created</th>
+                <th>Last Modified</th>
+                <th />
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {(projects ?? []).map((project) => (
+                <tr key={nanoid()}>
+                  <td><Link to={`/dashboard/projects/${project.id}/experiments`}>{project.title}</Link></td>
+                  <td>{project.description}</td>
+                  <td>{format(new Date(project.createdAt), 'PPpp')}</td>
+                  <td>{format(new Date(project.lastUpdatedAt), 'PPpp')}</td>
+                  <td className="rs-cursor-pointer">
+                    <EditProjectMenu project={project} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+      <APIToken />
+      {/* <div className="box">
+        Get api token for project
+      </div> */}
     </div>
   );
 };
@@ -111,7 +118,7 @@ const EditProjectMenu = function EditProjectMenu({ project }) {
               <Link to={`/dashboard/projects/edit/${project.id}`}>Edit</Link>
             </p>
           </div>
-          <div className="dropdown-item">
+          <div className="dropdown-item has-text-danger">
             <div
               role="button"
               tabIndex={0}

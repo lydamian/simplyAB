@@ -51,10 +51,17 @@ module.exports = [
   },
   {
     method: 'POST',
-    path: '/api/auth/api_token',
+    path: '/api/auth/project/{project_id}/api_token',
     handler: auth_handler.create_api_token,
     options: {
       auth: 'jwt-auth-strategy',
+      validate: {
+        params: Joi.object({
+          project_id: Joi.number()
+            .max(Number.MAX_SAFE_INTEGER)
+            .required(),
+        }),
+      },
     },
   },
   {

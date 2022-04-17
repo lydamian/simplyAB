@@ -7,6 +7,7 @@ import {
 import store, {
   logout,
 } from 'state/store';
+import { addAlert } from 'features/alerts/alertsSlice';
 
 const customAxiosInstance = axios.create();
 
@@ -21,7 +22,11 @@ customAxiosInstance.interceptors.response.use(
     }),
   (error) => {
     // force logout user if we get unauthorized code
-    if (error.statusCode === StatusCodes.UNAUTHORIZED) {
+    if (error.response.status === StatusCodes.UNAUTHORIZED) {
+      store.dispatch(addAlert({
+        message: 'Auth session expired, please login again',
+        type: 'WARNING',
+      }));
       store.dispatch(logout());
     }
 

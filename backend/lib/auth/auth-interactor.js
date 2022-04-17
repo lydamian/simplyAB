@@ -49,8 +49,8 @@ module.exports = {
     return api_tokens;
   },
 
-  create_api_token: async (user_id) => {
-    const api_tokens = await auth_model.get_api_tokens(user_id);
+  create_api_token: async (user_id, project_id) => {
+    const api_tokens = await auth_model.get_api_tokens(user_id, project_id);
     if (api_tokens.length >= MAX_API_TOKENS) {
       throw new Error(`Error, max API Tokens reached`);
     }
@@ -58,6 +58,7 @@ module.exports = {
     const new_api_token = create_api_token();
     const api_token = await auth_model.create_api_token(
       user_id,
+      project_id,
       new_api_token
     );
 

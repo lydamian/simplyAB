@@ -68,29 +68,34 @@ module.exports = {
   get_api_tokens: async (req, h) => {
     try {
       const user_id = req.auth.credentials.user_id;
+
       const api_tokens = await auth_interactor.get_api_tokens(user_id);
 
       return h.response({
         error: null,
-        status_code: 'GET_LOGIN_TOKEN_SUCCESS',
-        description: 'user successfully received login token',
+        status_code: 'GET_API_TOKEN_SUCCESS',
+        description: 'user successfully received api tokens',
         api_tokens,
       }).code(201);
     } catch (error) {
       console.log(LOG_TAG, error.message, error.stack);
       return h.response({
         error: error.message,
-        status_code: 'GET_LOGIN_TOKEN_ERROR',
-        description: 'user unsuccesfully received login token',
+        status_code: 'GET_API_TOKEN_ERROR',
+        description: 'user unsuccesfully received api tokens',
       }).code(400);
     }
   },
 
   create_api_token: async (req, h) => {
-    const user_id = req.auth.credentials.user_id;
-
     try {
-      const api_token = await auth_interactor.create_api_token(user_id);
+      const user_id = req.auth.credentials.user_id;
+
+      const {
+        project_id
+      } = req.params;
+
+      const api_token = await auth_interactor.create_api_token(user_id, project_id);
 
       return h.response({
         error: null,
