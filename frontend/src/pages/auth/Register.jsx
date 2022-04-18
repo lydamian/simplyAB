@@ -20,7 +20,7 @@ const Register = function () {
     return <Navigate to="/dashboard" />;
   }
 
-  const registerHandler = (event) => {
+  const registerHandler = async (event) => {
     dispatch(register({
       emailAddress,
       password,
@@ -40,6 +40,18 @@ const Register = function () {
             <img src={UndrawLogin} alt="login-placeholder-img" />
           </figure>
           <form onSubmit={registerHandler}>
+            <div className="field">
+              <div className="control">
+                <input className="input" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name" />
+              </div>
+            </div>
+
+            <div className="field">
+              <div className="control">
+                <input className="input" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name" />
+              </div>
+            </div>
+
             <div className="field">
               <div className="control">
                 <input className="input" name="email-address" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} type="text" placeholder="Email" />
@@ -62,18 +74,6 @@ const Register = function () {
                     onClick={() => setShowPassword(!showPassword)}
                   />
                 </span>
-              </div>
-            </div>
-
-            <div className="field">
-              <div className="control">
-                <input className="input" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" placeholder="First Name" />
-              </div>
-            </div>
-
-            <div className="field">
-              <div className="control">
-                <input className="input" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" placeholder="Last Name" />
               </div>
             </div>
 

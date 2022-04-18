@@ -13,11 +13,11 @@
 <script>
   const singleton_config = {
     project_id: 1,
-    simply_ab_api_auth_token: 'd549e7487d128c445c743172c1ea2f5ab0d217ab53cdff9e599d1366d2c830a7',
+    simply_ab_api_auth_token: '155d81bbedb3671eff9208cb33796541c4680894f963e78257b43c54b72fd697',
   };
 
   const get_user_variant = async (user_id, experiment_key) => {
-    const button_experiment_variant_url = `http://localhost:5000/api/v1/user/${user_id}/project/${singleton_config.project_id}/experiment/${experiment_key}/variant-info`;
+    const button_experiment_variant_url = `http://localhost:5000/api/v1/user/${user_id}/experiment/${experiment_key}/variant-info`;
     const response = await fetch(button_experiment_variant_url, {
       method: 'GET',
       headers: {
@@ -31,8 +31,8 @@
   document.addEventListener("DOMContentLoaded", async function(){
     //dom is fully loaded, but maybe waiting on images & css files
     // lets load the api framework
-    const user_id = 1;
-    const experiment_key="landing_page_button_experiment";
+    const user_id = 18;
+    const experiment_key="button_experiment";
     const show_number_elem = document.getElementById('show-number');
     const user_button_experiment_variant = await get_user_variant(user_id, experiment_key);
     if (user_button_experiment_variant.variant_key === "treatment") {

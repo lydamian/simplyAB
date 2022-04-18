@@ -33,6 +33,7 @@ module.exports = {
         error: error.message,
         status_code: 'USER_REGISTERED_ERROR',
         description: 'error registering user',
+        user_id: null,
       }).code(400);
     }
   },

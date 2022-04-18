@@ -148,7 +148,7 @@ const register = createAsyncThunk('auth/register', async (
 
     if (error != null) {
       dispatch(addAlert({
-        message: 'Something went wrong',
+        message: error,
         type: 'DANGER',
       }));
       return;
@@ -167,6 +167,10 @@ const register = createAsyncThunk('auth/register', async (
     return;
   } catch (error) {
     logger.error(`${LOG_TAG} register ERROR:`, error.message, error.stack);
+    dispatch(addAlert({
+      message: 'Something went wrong',
+      type: 'DANGER',
+    }));
   }
 });
 

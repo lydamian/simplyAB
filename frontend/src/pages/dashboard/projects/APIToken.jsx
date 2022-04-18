@@ -20,7 +20,7 @@ const APIToken = function APIToken() {
   const [apiTokens, setAPITokens] = useState([]);
   const dispatch = useDispatch();
   const projects = useSelector(selectAllProjects);
-  const [selectedProject, setSelectedProject] = useState(projects?.[0]);
+  const [selectedProject, setSelectedProject] = useState(projects?.[0]?.id);
 
   useEffect(() => {
     dispatch(fetchProjects());
@@ -137,56 +137,6 @@ const APIToken = function APIToken() {
             ))}
           </tbody>
         </table>
-      </div>
-    </div>
-  );
-};
-
-const ProjectDropdown = function ProjectDropdown() {
-  // hooks
-  const [isActive, setIsActive] = useState(false);
-  const dropdownRef = useRef();
-  const dispatch = useDispatch();
-  const projects = useSelector(selectAllProjects);
-
-  useEffect(() => {
-    dispatch(fetchProjects());
-  }, []);
-
-  // Change my dropdown state to close when clicked outside
-  useOutsideClick(dropdownRef, () => setIsActive(false));
-
-  return (
-    <div
-      className={`dropdown ${isActive ? 'is-active' : ''}`}
-      role="menu"
-      onClick={(event) => {
-        setIsActive(!isActive);
-      }}
-      tabIndex={0}
-      onKeyDown={(event) => {
-        setIsActive(!isActive);
-      }}
-      ref={dropdownRef}
-    >
-      <div className="dropdown-trigger">
-        <button type="button" className="button" aria-haspopup="true" aria-controls="dropdown-menu">
-          Projects
-        </button>
-      </div>
-      <div className="dropdown-menu" id="dropdown-menu2" role="menu">
-        <div className="dropdown-content">
-          {projects.map((project) => (
-            <div className="dropdown-item">
-              <div
-                role="button"
-                tabIndex={0}
-              >
-                {project.title}
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

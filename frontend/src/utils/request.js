@@ -32,7 +32,7 @@ customAxiosInstance.interceptors.response.use(
 
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    Promise.reject(error);
+    return error.response;
   }
   ,
 );
